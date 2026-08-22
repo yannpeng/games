@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>CYBERPUNK ARCADE - Multi-Game Hub</title>
+  <link rel="stylesheet" href="/hub_static/css/hub.css?v=1.1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Animated Cyberpunk Canvas Background -->
+  <div class="hub-background">
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="hub-container">
+    <!-- Top Navigation Header -->
+    <header class="hub-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <span class="block b-cyan"></span>
+          <span class="block b-purple"></span>
+          <span class="block b-green"></span>
+          <span class="block b-pink"></span>
+        </div>
+        <h1 class="brand-title">CYBERPUNK <span>ARCADE</span></h1>
+      </div>
+
+      <div class="header-right">
+        <!-- Language Selector Dropdown -->
+        <div class="lang-selector-wrap">
+          <select id="lang-select-dropdown" class="lang-select" aria-label="Language Selector">
+            <option value="en">🌐 English</option>
+            <option value="zh">🇨🇳 简体中文</option>
+            <option value="zh-TW">🇭🇰 繁體中文</option>
+            <option value="ja">🇯🇵 日本語</option>
+          </select>
+        </div>
+
+        <!-- Unified User Auth Button -->
+        <button id="btn-user-auth" class="btn btn-secondary btn-small">
+          <span class="user-icon">👤</span>
+          <span id="user-display-name" data-i18n="hub.login_btn">Login / Register</span>
+        </button>
+
+        <!-- Global Leaderboard Button -->
+        <button id="btn-open-leaderboard" class="btn btn-primary btn-small" data-i18n="hub.leaderboard_btn">
+          🏆 Leaderboard
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero Banner Section -->
+    <section class="hub-hero">
+      <div class="hero-tag" data-i18n="hub.hero_tag">⚡ NEXT-GEN RETRO ARCADE ⚡</div>
+      <h2 class="hero-title" data-i18n="hub.hero_title">CHOOSE YOUR UNIVERSE</h2>
+      <p class="hero-desc" data-i18n="hub.hero_desc">Adaptive Web Arcade Platform · Real-time AI Battles · 50-Level High Speed · Global Top 50 Leaderboards</p>
+    </section>
+
+    <!-- Game Selection Grid -->
+    <main class="games-grid" id="games-grid">
+      <!-- Card 1: Tetris Pro -->
+      <div class="game-card card-tetris" data-route="/tetris">
+        <div class="card-glow"></div>
+        <div class="card-header-badge badge-cyan" data-i18n="tetris.badge">🔥 POPULAR</div>
+        <div class="card-visual">
+          <div class="visual-icon">🕹️</div>
+          <div class="visual-preview tetris-preview">
+            <span class="tet-block b-i"></span>
+            <span class="tet-block b-t"></span>
+            <span class="tet-block b-l"></span>
+            <span class="tet-block b-s"></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="game-title"><span data-i18n="tetris.title">TETRIS PRO</span></h3>
+          <p class="game-tagline" data-i18n="tetris.tagline">7-Bag SRS Competitive Engine · 50-Level Campaign · 1:1 Zero-Latency AI Duel</p>
+          <div class="game-features">
+            <span class="feature-tag" data-i18n="tetris.feat1">SRS Wall Kicks</span>
+            <span class="feature-tag" data-i18n="tetris.feat2">Dual Battle</span>
+            <span class="feature-tag" data-i18n="tetris.feat3">50-Level Gravity</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="/tetris" class="btn btn-accent btn-play">
+            <span data-i18n="hub.play_now">🎮 Play Now</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2: Cyber Snake -->
+      <div class="game-card card-snake" data-route="/snake">
+        <div class="card-glow glow-green"></div>
+        <div class="card-header-badge badge-green" data-i18n="snake.badge">✨ NEW GAME</div>
+        <div class="card-visual">
+          <div class="visual-icon">🐍</div>
+          <div class="visual-preview snake-preview">
+            <span class="snake-node head-node"></span>
+            <span class="snake-node body-node"></span>
+            <span class="snake-node body-node"></span>
+            <span class="snake-food"></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="game-title"><span data-i18n="snake.title">NEON SNAKE</span></h3>
+          <p class="game-tagline" data-i18n="snake.tagline">Dynamic Particle Light Burst · Mutated Energy Food Items · Dual Snake Battle Arena</p>
+          <div class="game-features">
+            <span class="feature-tag" data-i18n="snake.feat1">Particle Effects</span>
+            <span class="feature-tag" data-i18n="snake.feat2">Energy Items</span>
+            <span class="feature-tag" data-i18n="snake.feat3">A* AI Duel</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="/snake" class="btn btn-green btn-play">
+            <span data-i18n="hub.play_snake">🐍 Play Snake</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3: Coming Soon Hub -->
+      <div class="game-card card-coming-soon">
+        <div class="card-glow glow-purple"></div>
+        <div class="card-header-badge badge-purple" data-i18n="more.badge">🚀 EXPANDABLE</div>
+        <div class="card-visual">
+          <div class="visual-icon">👾</div>
+        </div>
+        <div class="card-body">
+          <h3 class="game-title"><span data-i18n="more.title">MORE GAMES</span></h3>
+          <p class="game-tagline" data-i18n="more.tagline">Pacman, Minesweeper, and classic retro arcade games coming soon...</p>
+          <div class="game-features">
+            <span class="feature-tag" data-i18n="more.feat1">Seamless Mount</span>
+            <span class="feature-tag" data-i18n="more.feat2">Unified Profile</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-secondary btn-disabled" disabled>
+            <span data-i18n="hub.coming_soon_btn">⏳ Coming Soon</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer Information -->
+    <footer class="hub-footer">
+      <p data-i18n="hub.footer">CYBERPUNK ARCADE PLATFORM · Unified Account & Cross-Game Leaderboards · Powered by FastAPI</p>
+    </footer>
+  </div>
+
+  <!-- Unified Auth Modal -->
+  <div id="modal-auth" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="auth-modal-title" data-i18n="auth.login_title">Player Login</h3>
+        <button id="btn-close-auth" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="tab-group auth-tab-group">
+          <button id="tab-login" class="tab-btn active" data-i18n="auth.tab_login">Login</button>
+          <button id="tab-register" class="tab-btn" data-i18n="auth.tab_register">Register</button>
+        </div>
+
+        <form id="auth-form" class="auth-form">
+          <div class="form-group">
+            <label for="auth-username" data-i18n="auth.username_label">Username</label>
+            <input type="text" id="auth-username" required placeholder="3-20 characters" data-i18n-placeholder="auth.username_ph" autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="auth-password" data-i18n="auth.pwd_label">Password</label>
+            <input type="password" id="auth-password" required placeholder="At least 6 characters" data-i18n-placeholder="auth.pwd_ph" autocomplete="current-password">
+          </div>
+          <div id="auth-error-msg" class="error-msg hidden"></div>
+          <button type="submit" id="btn-auth-submit" class="btn btn-green btn-block" data-i18n="auth.btn_login">Login Now</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multi-Game Leaderboard Modal -->
+  <div id="modal-leaderboard" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog modal-dialog-large">
+      <div class="modal-header">
+        <h3 data-i18n="lb.title">🏆 Global Top 50 Leaderboard</h3>
+        <button id="btn-close-leaderboard" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Game Selector Tabs -->
+        <div class="leaderboard-tabs">
+          <button class="lb-game-tab active" data-game="tetris" data-mode="solo" id="lb-tab-tetris" data-i18n="lb.tab_tetris">🕹️ Tetris Pro</button>
+          <button class="lb-game-tab" data-game="snake" data-mode="classic" id="lb-tab-snake" data-i18n="lb.tab_snake">🐍 Neon Snake</button>
+        </div>
+
+        <div class="table-container">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th data-i18n="lb.col_rank">Rank</th>
+                <th data-i18n="lb.col_player">Player</th>
+                <th data-i18n="lb.col_score">Score</th>
+                <th id="th-extra-metric" data-i18n="lb.col_extra">Lines / Length</th>
+                <th data-i18n="lb.col_level">Level</th>
+                <th data-i18n="lb.col_status">Status</th>
+                <th data-i18n="lb.col_time">Time</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-tbody">
+              <tr>
+                <td colspan="7" class="loading-cell" data-i18n="lb.loading">Loading leaderboard data...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-refresh-leaderboard" class="btn btn-secondary btn-small" data-i18n="lb.refresh">🔄 Refresh</button>
+        <button id="btn-close-leaderboard-footer" class="btn btn-primary btn-small" data-i18n="lb.close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Scripts -->
+  <script src="/hub_static/js/i18n.js?v=1.1"></script>
+  <script src="/hub_static/js/hub.js?v=1.1"></script>
+</body>
+</html>

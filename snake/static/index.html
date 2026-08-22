@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>CYBER SNAKE - Adaptive Cyberpunk Arcade Edition</title>
+  <link rel="stylesheet" href="/snake_static/css/snake.css?v=1.1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Cyberpunk Background Animation -->
+  <div class="app-background">
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <span class="block b-g1"></span>
+          <span class="block b-g2"></span>
+          <span class="block b-c1"></span>
+        </div>
+        <h1 class="brand-title">SNAKE <span>NEON</span></h1>
+      </div>
+
+      <!-- Mode Switcher Tabs -->
+      <div class="mode-switch-group">
+        <button id="mode-btn-classic" class="mode-btn active" data-mode="classic">
+          <span class="icon">🏆</span>
+          <span data-i18n="snake.mode_classic">10-Level Campaign</span>
+        </button>
+        <button id="mode-btn-battle" class="mode-btn" data-mode="battle">
+          <span class="icon">⚔️</span>
+          <span data-i18n="snake.mode_battle">Dual Snake Arena</span>
+        </button>
+      </div>
+
+      <div class="header-actions">
+        <!-- Language Selector -->
+        <div class="lang-selector-wrap">
+          <select id="lang-select-dropdown" class="lang-select" aria-label="Language">
+            <option value="en">🌐 English</option>
+            <option value="zh">🇨🇳 简体中文</option>
+            <option value="zh-TW">🇭🇰 繁體中文</option>
+            <option value="ja">🇯🇵 日本語</option>
+          </select>
+        </div>
+
+        <!-- Return to Arcade Game Hub Button -->
+        <a href="/" class="btn btn-secondary" title="Return to Arcade Hub">
+          <span class="icon">🏠</span>
+          <span data-i18n="nav.hub">Hub</span>
+        </a>
+
+        <!-- Mobile Quick Pause Toggle -->
+        <button id="btn-mobile-pause" class="icon-btn touch-only" title="Pause Game" aria-label="Pause Game">
+          ⏸
+        </button>
+
+        <!-- Audio Mute Toggle -->
+        <button id="btn-sound-toggle" class="icon-btn" title="Toggle Sound" aria-label="Toggle Sound">
+          <svg id="icon-sound-on" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+          <svg id="icon-sound-off" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27l4.73 4.73H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+          </svg>
+        </button>
+
+        <!-- Top 50 Leaderboard Button -->
+        <button id="btn-leaderboard" class="btn btn-secondary">
+          <span class="icon">🏆</span>
+          <span data-i18n="lb.title">Leaderboard</span>
+        </button>
+
+        <!-- User Authentication Section -->
+        <div id="user-auth-section" class="user-auth-section">
+          <button id="btn-open-login" class="btn btn-primary">
+            <span class="icon">👤</span>
+            <span data-i18n="nav.login">Login</span>
+          </button>
+          <div id="user-badge" class="user-badge hidden">
+            <div class="avatar" id="user-avatar">U</div>
+            <div class="user-info">
+              <span class="username" id="display-username">Player</span>
+              <span class="user-best" id="display-user-best">Best: 0</span>
+            </div>
+            <button id="btn-logout" class="icon-btn-small" title="Logout">✕</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Game Board Area -->
+    <main id="game-layout" class="game-layout">
+      <!-- Left Panel: Food Items & Controls Info -->
+      <aside class="panel panel-left">
+        <!-- Food Legend Card -->
+        <div class="card food-legend-card">
+          <div class="card-header">
+            <h3 data-i18n="snake.food_title">⚡ Energy Items</h3>
+          </div>
+          <div class="food-list">
+            <div class="food-item">
+              <span class="food-icon">🍎</span>
+              <div class="food-info">
+                <strong data-i18n="snake.food_apple">Energy Core</strong>
+                <small data-i18n="snake.food_apple_desc">+100 pts · Length +1</small>
+              </div>
+            </div>
+            <div class="food-item">
+              <span class="food-icon">⭐</span>
+              <div class="food-info">
+                <strong style="color:#ffd700;" data-i18n="snake.food_golden">Golden Star</strong>
+                <small data-i18n="snake.food_golden_desc">+500 pts · Temporary</small>
+              </div>
+            </div>
+            <div class="food-item">
+              <span class="food-icon">⚡</span>
+              <div class="food-info">
+                <strong style="color:#00f0ff;" data-i18n="snake.food_speed">Speed Surge</strong>
+                <small data-i18n="snake.food_speed_desc">+250 pts · Fast Charge</small>
+              </div>
+            </div>
+            <div class="food-item">
+              <span class="food-icon">🍄</span>
+              <div class="food-info">
+                <strong style="color:#d800ff;" data-i18n="snake.food_shrink">Phase Shifter</strong>
+                <small data-i18n="snake.food_shrink_desc">+300 pts · Shrink -1</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PC Keyboard Operation Hints (Desktop Only) -->
+        <div class="card controls-card desktop-only">
+          <div class="card-header">
+            <h3 data-i18n="tetris.keys_title">💻 Keyboard Guide</h3>
+          </div>
+          <div class="key-guide-grid">
+            <div class="key-row">
+              <span class="action-name" data-i18n="snake.action_turn">Turn</span>
+              <div class="key-combos">
+                <span class="key">↑</span><span class="key">↓</span><span class="key">←</span><span class="key">→</span>
+                <span class="key-sep">·</span>
+                <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span>
+              </div>
+            </div>
+            <div class="key-row">
+              <span class="action-name" data-i18n="tetris.action_pause">Pause</span>
+              <div class="key-combos">
+                <span class="key">P</span>
+                <span class="key-sep">·</span>
+                <span class="key">Esc</span>
+              </div>
+            </div>
+            <div class="key-row highlight-key-row">
+              <span class="action-name" data-i18n="tetris.action_restart">Restart</span>
+              <div class="key-combos">
+                <span class="key key-accent">Space</span>
+                <span class="key-sep">·</span>
+                <span class="key key-accent">R</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Touch Hints -->
+        <div class="card controls-card touch-only mobile-hints-card">
+          <div class="card-header">
+            <h3 data-i18n="tetris.touch_title">📱 Touch Hints</h3>
+          </div>
+          <p class="touch-hint-text" data-i18n="snake.touch_desc">Swipe on screen or use on-screen glowing virtual D-Pad to turn.</p>
+        </div>
+      </aside>
+
+      <!-- Center: Snake Neon Grid Canvas -->
+      <section class="game-center">
+        <div class="matrix-title-bar">
+          <span class="matrix-label" id="snake-title-label" data-i18n="snake.player_label">🟢 Player (YOU)</span>
+          <span id="target-score-badge" class="target-badge">Target: 800</span>
+        </div>
+        <div class="matrix-wrapper">
+          <canvas id="snake-canvas" width="600" height="600"></canvas>
+
+          <!-- Start Game Overlay -->
+          <div id="overlay-start" class="game-overlay">
+            <div class="overlay-content">
+              <h2 id="start-overlay-title" data-i18n="snake.start_title">CYBER SNAKE</h2>
+              <p class="subtext" data-i18n="snake.start_sub">NEON ARCADE ARENA</p>
+
+              <!-- Classic Mode Level Selector -->
+              <div id="classic-intro-box" class="level-selector-box">
+                <label for="start-level-slider">
+                  <span data-i18n="tetris.select_level">Starting Level:</span> <strong id="selected-level-val" class="highlight-level">Lv.1</strong>
+                </label>
+                <div class="slider-wrap">
+                  <input type="range" id="start-level-slider" min="1" max="10" value="1" step="1">
+                  <div class="slider-marks">
+                    <span>Lv.1</span>
+                    <span>Lv.3</span>
+                    <span>Lv.5</span>
+                    <span>Lv.7</span>
+                    <span>Lv.10</span>
+                  </div>
+                </div>
+                <div class="level-hints">
+                  <span>Speed: <b id="hint-speed">160ms</b></span>
+                  <span>Target: <b id="hint-target">800</b></span>
+                </div>
+              </div>
+
+              <!-- Battle Mode Intro -->
+              <div id="battle-intro-box" class="level-selector-box vs-intro-box hidden">
+                <p>⚔️ <strong data-i18n="snake.mode_battle">Dual Snake Arena</strong></p>
+                <small data-i18n="snake.battle_intro">Compete for energy items against an A* Pathfinding AI Snake!</small>
+              </div>
+
+              <button id="btn-game-start" class="btn btn-green btn-large" data-i18n="tetris.btn_start">START GAME</button>
+              <div class="start-btn-shortcut-hint desktop-only">
+                <span data-i18n="tetris.shortcut_hint">Press Enter or Space to quickly start</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pause Overlay -->
+          <div id="overlay-pause" class="game-overlay hidden">
+            <div class="overlay-content">
+              <h2 data-i18n="tetris.paused_title">GAME PAUSED</h2>
+              <p class="subtext" data-i18n="tetris.paused_sub">Press P or Esc to resume</p>
+              <div class="overlay-buttons">
+                <button id="btn-resume-game" class="btn btn-primary btn-large" data-i18n="tetris.btn_resume">Resume Game</button>
+                <button id="btn-restart-from-pause" class="btn btn-secondary" data-i18n="tetris.action_restart">Restart</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Over / Victory Overlay -->
+          <div id="overlay-game-over" class="game-overlay hidden">
+            <div class="overlay-content">
+              <h2 id="go-title" class="gameover-title" data-i18n="tetris.go_title">GAME OVER</h2>
+              <p id="go-subtitle" class="subtext" data-i18n="tetris.go_summary">Match Summary</p>
+              
+              <div class="gameover-score-box">
+                <div class="stat-row">
+                  <span data-i18n="common.score">Score:</span>
+                  <strong id="go-final-score" class="highlight-value">0</strong>
+                </div>
+                <div class="stat-row">
+                  <span data-i18n="common.length">Length:</span>
+                  <strong id="go-final-length">4</strong>
+                </div>
+                <div class="stat-row">
+                  <span data-i18n="common.level">Level:</span>
+                  <strong id="go-final-level">Lv.1</strong>
+                </div>
+                <div class="stat-row" id="go-rank-row">
+                  <span data-i18n="common.rank">Rank:</span>
+                  <strong id="go-final-rank" class="rank-badge">Top 50</strong>
+                </div>
+                <div class="stat-row hidden" id="go-clear-row">
+                  <span data-i18n="tetris.clear_bonus_label">Clear Bonus:</span>
+                  <strong class="clear-badge" data-i18n="snake.all_clear_achieved">🌟 ALL CLEAR ACHIEVED!</strong>
+                </div>
+              </div>
+
+              <div id="go-login-hint" class="login-hint-box hidden">
+                <p data-i18n="snake.login_hint">💡 Login to save your score to the Global Top 50 Leaderboard!</p>
+                <button id="btn-go-login" class="btn btn-primary btn-small" data-i18n="nav.login">Login</button>
+              </div>
+
+              <div class="overlay-buttons">
+                <button id="btn-restart-game" class="btn btn-green btn-large" data-i18n="tetris.btn_play_again">Play Again</button>
+                <a href="/" class="btn btn-secondary" data-i18n="tetris.btn_back_hub">Back to Arcade Hub</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Game Stats & Leaderboards -->
+      <aside class="panel panel-right">
+        <!-- Live Realtime Stats Card -->
+        <div class="card stats-card">
+          <div class="card-header">
+            <h3 data-i18n="tetris.realtime_title">📊 Realtime</h3>
+          </div>
+          <div class="stat-item highlight-stat">
+            <span class="stat-label" data-i18n="tetris.stat_score">SCORE</span>
+            <span class="stat-value" id="stat-score">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label" data-i18n="snake.stat_length">LENGTH</span>
+            <span class="stat-value" id="stat-length">4</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label" data-i18n="tetris.stat_level">LEVEL</span>
+            <span class="stat-value" id="stat-level">1</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label" data-i18n="tetris.stat_time">TIME</span>
+            <span class="stat-value" id="stat-time">00:00</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Mobile Virtual Touch D-Pad (Touch Devices Only) -->
+    <div id="touch-controller" class="touch-controller touch-only">
+      <div class="dpad-cross">
+        <button id="btn-touch-up" class="dpad-btn btn-up">▲</button>
+        <div class="dpad-middle-row">
+          <button id="btn-touch-left" class="dpad-btn btn-left">◀</button>
+          <div class="dpad-center-core"></div>
+          <button id="btn-touch-right" class="dpad-btn btn-right">▶</button>
+        </div>
+        <button id="btn-touch-down" class="dpad-btn btn-down">▼</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaderboard Modal -->
+  <div id="modal-leaderboard" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog modal-dialog-large">
+      <div class="modal-header">
+        <h3 data-i18n="lb.title">🏆 Global Top 50 Leaderboard</h3>
+        <button id="btn-close-leaderboard" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="leaderboard-tabs">
+          <button class="lb-game-tab active" id="lb-tab-classic" data-i18n="snake.mode_classic">10-Level Campaign</button>
+          <button class="lb-game-tab" id="lb-tab-battle" data-i18n="snake.mode_battle">Dual Snake Arena</button>
+        </div>
+        <div class="table-container">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th data-i18n="lb.col_rank">Rank</th>
+                <th data-i18n="lb.col_player">Player</th>
+                <th data-i18n="lb.col_score">Score</th>
+                <th data-i18n="snake.stat_length">Length</th>
+                <th data-i18n="lb.col_level">Level</th>
+                <th data-i18n="lb.col_status">Status</th>
+                <th data-i18n="lb.col_time">Time</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-tbody">
+              <tr>
+                <td colspan="7" class="loading-cell" data-i18n="lb.loading">Loading leaderboard data...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-refresh-leaderboard" class="btn btn-secondary btn-small" data-i18n="lb.refresh">🔄 Refresh</button>
+        <button id="btn-close-leaderboard-footer" class="btn btn-primary btn-small" data-i18n="lb.close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Login & Register Modal -->
+  <div id="modal-auth" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="auth-modal-title" data-i18n="auth.login_title">Player Login</h3>
+        <button id="btn-close-auth" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="tab-group auth-tab-group">
+          <button id="tab-login" class="tab-btn active" data-i18n="auth.tab_login">Login</button>
+          <button id="tab-register" class="tab-btn" data-i18n="auth.tab_register">Register</button>
+        </div>
+        <form id="auth-form" class="auth-form">
+          <div class="form-group">
+            <label for="auth-username" data-i18n="auth.username_label">Username</label>
+            <input type="text" id="auth-username" required placeholder="3-20 characters" data-i18n-placeholder="auth.username_ph">
+          </div>
+          <div class="form-group">
+            <label for="auth-password" data-i18n="auth.pwd_label">Password</label>
+            <input type="password" id="auth-password" required placeholder="At least 6 characters" data-i18n-placeholder="auth.pwd_ph">
+          </div>
+          <div id="auth-error-msg" class="error-msg hidden"></div>
+          <button type="submit" id="btn-auth-submit" class="btn btn-green btn-block" data-i18n="auth.btn_login">Login Now</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Snake Scripts -->
+  <script src="/snake_static/js/snake_config.js?v=1.1"></script>
+  <script src="/snake_static/js/snake_audio.js?v=1.1"></script>
+  <script src="/snake_static/js/i18n.js?v=1.1"></script>
+  <script src="/snake_static/js/snake_api.js?v=1.1"></script>
+  <script src="/snake_static/js/snake_engine.js?v=1.1"></script>
+  <script src="/snake_static/js/snake_ai.js?v=1.1"></script>
+  <script src="/snake_static/js/snake_app.js?v=1.1"></script>
+</body>
+</html>

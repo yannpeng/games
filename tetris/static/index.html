@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>TETRIS PRO - Adaptive Cyberpunk Arcade Edition</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=4.2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-background">
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <span class="block b-i"></span>
+          <span class="block b-t"></span>
+          <span class="block b-l"></span>
+        </div>
+        <h1 class="brand-title">TETRIS <span>PRO</span></h1>
+      </div>
+
+      <!-- Mode Switcher Tabs -->
+      <div class="mode-switch-group">
+        <button id="mode-btn-solo" class="mode-btn active" data-mode="solo">
+          <span class="icon">🚀</span>
+          <span data-i18n="tetris.mode_solo">50-Level Campaign</span>
+        </button>
+        <button id="mode-btn-vs" class="mode-btn" data-mode="vs_ai">
+          <span class="icon">⚔️</span>
+          <span data-i18n="tetris.mode_vs">VS AI Battle</span>
+        </button>
+      </div>
+
+      <div class="header-actions">
+        <!-- Language Selector -->
+        <div class="lang-selector-wrap">
+          <select id="lang-select-dropdown" class="lang-select" aria-label="Language">
+            <option value="en">🌐 English</option>
+            <option value="zh">🇨🇳 简体中文</option>
+            <option value="zh-TW">🇭🇰 繁體中文</option>
+            <option value="ja">🇯🇵 日本語</option>
+          </select>
+        </div>
+
+        <!-- Return to Arcade Game Hub Button -->
+        <a href="/" class="btn btn-secondary" title="Return to Arcade Hub">
+          <span class="icon">🏠</span>
+          <span data-i18n="nav.hub">Hub</span>
+        </a>
+
+        <!-- Mobile Quick Pause Toggle -->
+        <button id="btn-mobile-pause" class="icon-btn touch-only" title="Pause Game" aria-label="Pause Game">
+          ⏸
+        </button>
+
+        <!-- Audio Mute Toggle -->
+        <button id="btn-sound-toggle" class="icon-btn" title="Toggle Sound" aria-label="Toggle Sound">
+          <svg id="icon-sound-on" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+          <svg id="icon-sound-off" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27l4.73 4.73H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+          </svg>
+        </button>
+
+        <!-- Top 50 Leaderboard Button -->
+        <button id="btn-leaderboard" class="btn btn-secondary">
+          <span class="icon">🏆</span>
+          <span data-i18n="lb.title">Leaderboard</span>
+        </button>
+
+        <!-- User Authentication Section -->
+        <div id="user-auth-section" class="user-auth-section">
+          <button id="btn-open-login" class="btn btn-primary">
+            <span class="icon">👤</span>
+            <span data-i18n="nav.login">Login</span>
+          </button>
+          <div id="user-badge" class="user-badge hidden">
+            <div class="avatar" id="user-avatar">U</div>
+            <div class="user-info">
+              <span class="username" id="display-username">Player</span>
+              <span class="user-best" id="display-user-best">Best: 0</span>
+            </div>
+            <button id="btn-logout" class="icon-btn-small" title="Logout">✕</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Game Board Area -->
+    <main id="game-layout" class="game-layout mode-solo">
+      <!-- Left Panel: Hold Piece & Controls Info -->
+      <aside class="panel panel-left">
+        <div class="card hold-card">
+          <div class="card-header">
+            <h3 data-i18n="tetris.hold">HOLD</h3>
+            <span class="badge key-badge desktop-only">C / Shift</span>
+            <span class="badge key-badge touch-only">HOLD</span>
+          </div>
+          <div class="canvas-box">
+            <canvas id="hold-canvas" width="120" height="120"></canvas>
+          </div>
+        </div>
+
+        <!-- PC Keyboard Operation Hints (Desktop Only) -->
+        <div class="card controls-card desktop-only">
+          <div class="card-header">
+            <h3 data-i18n="tetris.keys_title">💻 Keyboard Guide</h3>
+          </div>
+          <div class="key-guide-grid">
+            <div class="key-row">
+              <span class="action-name" data-i18n="tetris.action_move">Move</span>
+              <div class="key-combos">
+                <span class="key">←</span><span class="key">→</span>
+                <span class="key-sep">·</span>
+                <span class="key">A</span><span class="key">D</span>
+              </div>
+            </div>
+            <div class="key-row">
+              <span class="action-name" data-i18n="tetris.action_rotate">Rotate</span>
+              <div class="key-combos">
+                <span class="key">↑</span><span class="key">W</span>
+                <span class="key-sep">·</span>
+                <span class="key">Z</span>
+              </div>
+            </div>
+            <div class="key-row">
+              <span class="action-name" data-i18n="tetris.action_soft_drop">Soft Drop</span>
+              <div class="key-combos">
+                <span class="key">↓</span>
+                <span class="key-sep">·</span>
+                <span class="key">S</span>
+              </div>
+            </div>
+            <div class="key-row highlight-key-row">
+              <span class="action-name" data-i18n="tetris.action_hard_drop">Hard Drop</span>
+              <div class="key-combos">
+                <span class="key key-accent">Space</span>
+              </div>
+            </div>
+            <div class="key-row">
+              <span class="action-name" data-i18n="tetris.action_hold">Hold</span>
+              <div class="key-combos">
+                <span class="key">C</span>
+                <span class="key-sep">·</span>
+                <span class="key">Shift</span>
+              </div>
+            </div>
+            <div class="key-row">
+              <span class="action-name" data-i18n="tetris.action_pause_restart">Pause/Reset</span>
+              <div class="key-combos">
+                <span class="key">P</span>
+                <span class="key-sep">·</span>
+                <span class="key">R</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Touch Operation Hints (Mobile Only) -->
+        <div class="card controls-card touch-only mobile-hints-card">
+          <div class="card-header">
+            <h3>📱 Touch Hints</h3>
+          </div>
+          <p class="touch-hint-text">Use on-screen glowing virtual buttons to move, rotate, soft drop, and hold.</p>
+        </div>
+      </aside>
+
+      <!-- Center: Player Tetris Matrix Grid Canvas -->
+      <section class="game-center player-section">
+        <div class="matrix-title-bar">
+          <span class="matrix-label" id="player-matrix-label">Player (YOU)</span>
+          <span id="player-attack-gauge" class="attack-gauge">Attack: 0</span>
+        </div>
+        <div class="matrix-wrapper">
+          <canvas id="matrix-canvas" width="300" height="600"></canvas>
+          
+          <!-- Countdown Overlay -->
+          <div id="overlay-countdown" class="game-overlay hidden">
+            <div class="countdown-num" id="countdown-text">3</div>
+          </div>
+
+          <!-- Start Game Overlay -->
+          <div id="overlay-start" class="game-overlay">
+            <div class="overlay-content">
+              <h2 id="start-overlay-title" data-i18n="tetris.start_title">TETRIS PRO</h2>
+              <p class="subtext" data-i18n="tetris.engine_sub">COMPETITIVE SRS ENGINE</p>
+              
+              <!-- Solo Mode Level Selector -->
+              <div id="solo-level-select-box" class="level-selector-box">
+                <label for="start-level-slider">
+                  <span data-i18n="tetris.select_level">Starting Level:</span> <strong id="selected-level-val" class="highlight-level">Lv.1</strong>
+                </label>
+                <div class="slider-wrap">
+                  <input type="range" id="start-level-slider" min="1" max="50" value="1" step="1">
+                  <div class="slider-marks">
+                    <span>Lv.1</span>
+                    <span>Lv.10</span>
+                    <span>Lv.20</span>
+                    <span>Lv.30</span>
+                    <span>Lv.40</span>
+                    <span>Lv.50</span>
+                  </div>
+                </div>
+                <div class="level-hints">
+                  <span>Gravity: <b id="hint-gravity">1000ms</b></span>
+                  <span>Target: <b id="hint-target">10 Lines</b></span>
+                </div>
+              </div>
+
+              <!-- VS Mode AI Difficulty Selector -->
+              <div id="vs-difficulty-select-box" class="level-selector-box vs-selector-box hidden">
+                <label for="ai-diff-slider">
+                  <span data-i18n="tetris.select_ai_diff">AI Difficulty:</span> <strong id="selected-ai-diff-val" class="highlight-level">Normal</strong>
+                </label>
+                <div class="slider-wrap">
+                  <input type="range" id="ai-diff-slider" min="1" max="4" value="2" step="1">
+                  <div class="slider-marks">
+                    <span data-i18n="tetris.diff_easy">Beginner</span>
+                    <span data-i18n="tetris.diff_med">Standard</span>
+                    <span data-i18n="tetris.diff_hard">Advanced</span>
+                    <span data-i18n="tetris.diff_master">Master</span>
+                  </div>
+                </div>
+                
+                <!-- Piece Sequence Mode Selector -->
+                <div class="vs-option-group">
+                  <div class="option-group-label" data-i18n="tetris.seq_title">🎲 Piece Sequence Mode:</div>
+                  <div class="vs-btn-grid">
+                    <button type="button" class="opt-btn active" id="btn-seq-sync">
+                      <strong data-i18n="tetris.seq_sync">Synchronized Fair (Recommended)</strong>
+                      <small data-i18n="tetris.seq_sync_sub">Same piece queue for both · Fair duel</small>
+                    </button>
+                    <button type="button" class="opt-btn" id="btn-seq-rand">
+                      <strong data-i18n="tetris.seq_rand">Independent 7-Bag</strong>
+                      <small data-i18n="tetris.seq_rand_sub">Independent shuffle per player</small>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Garbage Hole Alignment Mode Selector -->
+                <div class="vs-option-group">
+                  <div class="option-group-label" data-i18n="tetris.garbage_title">💥 Garbage Hole Alignment:</div>
+                  <div class="vs-btn-grid-3">
+                    <button type="button" class="opt-btn active" id="btn-garbage-standard">
+                      <strong data-i18n="tetris.garbage_std">Standard Competitive (Recommended)</strong>
+                      <small data-i18n="tetris.garbage_std_sub">Same burst aligned · Shift on new attack</small>
+                    </button>
+                    <button type="button" class="opt-btn" id="btn-garbage-cheesy">
+                      <strong data-i18n="tetris.garbage_cheesy">Cheesy Chaos</strong>
+                      <small data-i18n="tetris.garbage_cheesy_sub">Independent random hole per row</small>
+                    </button>
+                    <button type="button" class="opt-btn" id="btn-garbage-classic">
+                      <strong data-i18n="tetris.garbage_classic">Classic Fixed</strong>
+                      <small data-i18n="tetris.garbage_classic_sub">Fixed hole · Easy downstacking</small>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <button id="btn-game-start" class="btn btn-accent btn-large" data-i18n="tetris.btn_start">START GAME</button>
+              <div class="start-btn-shortcut-hint desktop-only">
+                <span data-i18n="tetris.shortcut_hint">Press Enter or Space to quickly start</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pause Game Overlay -->
+          <div id="overlay-pause" class="game-overlay hidden">
+            <div class="overlay-content">
+              <h2 data-i18n="tetris.paused_title">GAME PAUSED</h2>
+              <p class="subtext" data-i18n="tetris.paused_sub">Press P or Esc to resume</p>
+              <div class="overlay-buttons">
+                <button id="btn-resume-game" class="btn btn-primary btn-large" data-i18n="tetris.btn_resume">Resume Game</button>
+                <button id="btn-restart-from-pause" class="btn btn-secondary" data-i18n="tetris.action_restart">Restart</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Over / Victory Overlay -->
+          <div id="overlay-game-over" class="game-overlay hidden">
+            <div class="overlay-content">
+              <h2 id="go-title" class="gameover-title" data-i18n="tetris.go_title">GAME OVER</h2>
+              <p id="go-subtitle" class="subtext" data-i18n="tetris.go_summary">Match Summary</p>
+              
+              <div class="gameover-score-box">
+                <div class="stat-row">
+                  <span data-i18n="common.score">Score:</span>
+                  <strong id="go-final-score" class="highlight-value">0</strong>
+                </div>
+                <div class="stat-row">
+                  <span data-i18n="common.lines">Lines:</span>
+                  <strong id="go-final-lines">0</strong>
+                </div>
+                <div class="stat-row">
+                  <span data-i18n="common.level">Level:</span>
+                  <strong id="go-final-level">Lv.1</strong>
+                </div>
+                <div class="stat-row" id="go-rank-row">
+                  <span data-i18n="common.rank">Rank:</span>
+                  <strong id="go-final-rank" class="rank-badge">Top 50</strong>
+                </div>
+                <div class="stat-row hidden" id="go-clear-row">
+                  <span data-i18n="tetris.clear_bonus_label">Clear Bonus:</span>
+                  <strong class="clear-badge" data-i18n="tetris.all_clear_achieved">🌟 ALL CLEAR ACHIEVED!</strong>
+                </div>
+              </div>
+
+              <div id="go-login-hint" class="login-hint-box hidden">
+                <p data-i18n="tetris.login_save_hint">💡 Login to save your score to the Global Top 50 Leaderboard!</p>
+                <button id="btn-go-login" class="btn btn-primary btn-small" data-i18n="nav.login">Login</button>
+              </div>
+
+              <div class="overlay-buttons">
+                <button id="btn-restart-game" class="btn btn-accent btn-large" data-i18n="tetris.btn_play_again">Play Again</button>
+                <a href="/" class="btn btn-secondary" data-i18n="tetris.btn_back_hub">Back to Arcade Hub</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Center-Right: AI Rival Matrix Grid Canvas (VS Mode Only) -->
+      <section class="game-center ai-section" id="ai-section">
+        <div class="matrix-title-bar">
+          <span class="matrix-label">AI Rival</span>
+          <span id="ai-attack-gauge" class="attack-gauge">Attack: 0</span>
+        </div>
+        <div class="matrix-wrapper">
+          <canvas id="ai-matrix-canvas" width="300" height="600"></canvas>
+          <div class="ai-badge-overlay">
+            <span class="badge badge-cyan" id="ai-difficulty-badge">AI · Normal</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Next Piece Preview & Realtime Stats -->
+      <aside class="panel panel-right">
+        <!-- Next 3 Pieces Preview Card -->
+        <div class="card next-card">
+          <div class="card-header">
+            <h3 data-i18n="tetris.next">NEXT</h3>
+            <span class="badge next-count-badge">3</span>
+          </div>
+          <div class="canvas-box next-canvas-box">
+            <canvas id="next-canvas" width="120" height="240"></canvas>
+          </div>
+        </div>
+
+        <!-- Realtime Play Statistics Card -->
+        <div class="card stats-card">
+          <div class="card-header">
+            <h3>📊 Realtime</h3>
+          </div>
+          <div class="stat-item highlight-stat">
+            <span class="stat-label" data-i18n="tetris.stat_score">SCORE</span>
+            <span class="stat-value" id="stat-score">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label" data-i18n="tetris.stat_lines">LINES</span>
+            <span class="stat-value" id="stat-lines">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label" data-i18n="tetris.stat_level">LEVEL</span>
+            <span class="stat-value" id="stat-level">1</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label" data-i18n="tetris.stat_time">TIME</span>
+            <span class="stat-value" id="stat-time">00:00</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Mobile Virtual Gamepad (Touch Devices Only) -->
+    <div id="touch-controller" class="touch-controller touch-only">
+      <div class="touch-left-cluster">
+        <button id="btn-touch-hold" class="touch-btn touch-btn-hold" aria-label="Hold Piece">
+          <span class="touch-icon">🔄</span>
+          <span class="touch-sub">HOLD</span>
+        </button>
+        <button id="btn-touch-pause" class="touch-btn touch-btn-pause" aria-label="Pause Game">
+          <span class="touch-icon">⏸</span>
+          <span class="touch-sub">PAUSE</span>
+        </button>
+      </div>
+
+      <div class="touch-dpad-cluster">
+        <button id="btn-touch-left" class="touch-btn touch-btn-dpad" aria-label="Move Left">◀</button>
+        <button id="btn-touch-down" class="touch-btn touch-btn-dpad" aria-label="Soft Drop">▼</button>
+        <button id="btn-touch-right" class="touch-btn touch-btn-dpad" aria-label="Move Right">▶</button>
+      </div>
+
+      <div class="touch-action-cluster">
+        <button id="btn-touch-rot-ccw" class="touch-btn touch-btn-action" aria-label="Rotate CCW">
+          <span class="touch-icon">↺</span>
+          <span class="touch-sub">Z</span>
+        </button>
+        <button id="btn-touch-rot-cw" class="touch-btn touch-btn-action touch-btn-primary" aria-label="Rotate CW">
+          <span class="touch-icon">↻</span>
+          <span class="touch-sub">UP</span>
+        </button>
+        <button id="btn-touch-harddrop" class="touch-btn touch-btn-drop" aria-label="Hard Drop">
+          <span class="touch-icon">⤓</span>
+          <span class="touch-sub">DROP</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Authentication Modal -->
+  <div id="modal-auth" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <button class="modal-close" id="btn-close-auth">✕</button>
+      
+      <div class="modal-tabs">
+        <button id="tab-btn-login" class="tab-btn active" data-i18n="auth.tab_login">Login</button>
+        <button id="tab-btn-register" class="tab-btn" data-i18n="auth.tab_register">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="form-login" class="auth-form">
+        <div class="form-group">
+          <label for="login-username" data-i18n="auth.username_label">Username</label>
+          <input type="text" id="login-username" placeholder="Username (3-20 chars)" data-i18n-placeholder="auth.username_ph" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="login-password" data-i18n="auth.pwd_label">Password</label>
+          <input type="password" id="login-password" placeholder="Password (at least 6 chars)" data-i18n-placeholder="auth.pwd_ph" required autocomplete="current-password">
+        </div>
+        <div id="login-error" class="form-error hidden"></div>
+        <button type="submit" class="btn btn-accent btn-block" data-i18n="auth.btn_login">Login Now</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" class="auth-form hidden">
+        <div class="form-group">
+          <label for="reg-username" data-i18n="auth.username_label">Username</label>
+          <input type="text" id="reg-username" placeholder="Choose username (3-20 chars)" data-i18n-placeholder="auth.username_ph" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="reg-password" data-i18n="auth.pwd_label">Password</label>
+          <input type="password" id="reg-password" placeholder="Choose password (at least 6 chars)" data-i18n-placeholder="auth.pwd_ph" required autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label for="reg-password-confirm" data-i18n="auth.pwd_label">Confirm Password</label>
+          <input type="password" id="reg-password-confirm" placeholder="Re-enter password" data-i18n-placeholder="auth.pwd_ph" required autocomplete="new-password">
+        </div>
+        <div id="reg-error" class="form-error hidden"></div>
+        <button type="submit" class="btn btn-accent btn-block" data-i18n="auth.btn_reg">Register Now</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Top 50 Leaderboard Modal with Dual Mode Tabs -->
+  <div id="modal-leaderboard" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog modal-dialog-large">
+      <div class="modal-header">
+        <div class="title-wrap">
+          <span class="icon">🏆</span>
+          <h2 data-i18n="lb.title">Global Top 50 Leaderboards</h2>
+        </div>
+        <button class="modal-close" id="btn-close-leaderboard">✕</button>
+      </div>
+
+      <div class="modal-tabs">
+        <button id="tab-leaderboard-solo" class="tab-btn active" data-i18n="tetris.mode_solo">🚀 50-Level Campaign</button>
+        <button id="tab-leaderboard-vs" class="tab-btn" data-i18n="tetris.mode_vs">⚔️ VS AI Battle</button>
+      </div>
+
+      <div class="leaderboard-content">
+        <div class="table-container">
+          <table class="leaderboard-table">
+            <thead id="leaderboard-thead">
+              <tr>
+                <th class="col-rank" data-i18n="lb.col_rank">Rank</th>
+                <th class="col-user" data-i18n="lb.col_player">Player</th>
+                <th class="col-score" data-i18n="lb.col_score">Score</th>
+                <th class="col-lines" data-i18n="tetris.stat_lines">Lines</th>
+                <th class="col-level" data-i18n="lb.col_level">Level</th>
+                <th class="col-status" data-i18n="lb.col_status">Status</th>
+                <th class="col-time" data-i18n="lb.col_time">Time</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-tbody">
+              <tr><td colspan="7" class="loading-cell" data-i18n="lb.loading">Loading leaderboard data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="btn-refresh-leaderboard" class="btn btn-secondary btn-small" data-i18n="lb.refresh">🔄 Refresh</button>
+        <button id="btn-close-leaderboard-footer" class="btn btn-primary btn-small" data-i18n="lb.close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Scripts -->
+  <script src="/static/js/config.js?v=4.2"></script>
+  <script src="/static/js/audio.js?v=4.2"></script>
+  <script src="/static/js/i18n.js?v=1.1"></script>
+  <script src="/static/js/api.js?v=4.2"></script>
+  <script src="/static/js/tetris.js?v=4.2"></script>
+  <script src="/static/js/ai.js?v=4.2"></script>
+  <script src="/static/js/app.js?v=4.2"></script>
+</body>
+</html>

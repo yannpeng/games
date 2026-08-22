@@ -1,0 +1,21 @@
+[project]
+name = "cyberpunk-arcade-platform"
+version = "2.0.0"
+description = "Modular multi-game web arcade platform featuring Classic Tetris, Neon Snake, and expandable sub-games"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.22.0",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "httpx>=0.24.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

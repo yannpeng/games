@@ -1,0 +1,30 @@
+# Docs directory excluded per user request
+docs/
+
+# Python Virtual Environment
+.venv/
+env/
+venv/
+ENV/
+
+# Python Bytecode and Caches
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.pytest_cache/
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+arcade_games.db
+
+# IDE & OS temporary files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Agent & Gemini metadata
+.gemini/
