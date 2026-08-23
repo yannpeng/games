@@ -206,7 +206,15 @@
         lbGameTabs.forEach((t) => t.classList.remove('active'));
         tab.classList.add('active');
         activeLeaderboardGame = tab.dataset.game;
-        activeLeaderboardMode = tab.dataset.mode || (activeLeaderboardGame === 'tetris' ? 'solo' : 'classic');
+        activeLeaderboardMode = tab.dataset.mode || (activeLeaderboardGame === 'tetris' ? 'solo' : activeLeaderboardGame === 'defense' ? 'campaign' : 'classic');
+
+        const thExtra = document.getElementById('th-extra-metric');
+        if (thExtra) {
+          if (activeLeaderboardGame === 'defense') thExtra.textContent = ArcadeI18n.t('defense.wave') || 'Wave';
+          else if (activeLeaderboardGame === 'snake') thExtra.textContent = 'Length';
+          else thExtra.textContent = 'Lines';
+        }
+
         loadLeaderboardData();
       });
     });

@@ -17,6 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HUB_DIR = os.path.join(BASE_DIR, "hub")
 TETRIS_DIR = os.path.join(BASE_DIR, "tetris", "static")
 SNAKE_DIR = os.path.join(BASE_DIR, "snake", "static")
+DEFENSE_DIR = os.path.join(BASE_DIR, "defense", "static")
 
 app = FastAPI(
     title="Cyberpunk Arcade Platform",
@@ -55,6 +56,9 @@ if os.path.exists(TETRIS_DIR):
 if os.path.exists(SNAKE_DIR):
     app.mount("/snake_static", StaticFiles(directory=SNAKE_DIR), name="snake_static")
 
+if os.path.exists(DEFENSE_DIR):
+    app.mount("/defense_static", StaticFiles(directory=DEFENSE_DIR), name="defense_static")
+
 
 # Available games catalog API
 @app.get("/api/games")
@@ -78,9 +82,20 @@ def list_available_games():
             "subtitle": "霓虹粒子光效 · 道具能量变异 · 双蛇竞技竞技场",
             "icon": "🐍",
             "route": "/snake",
-            "badge": "全新上线",
+            "badge": "经典街机",
             "color": "#00ff88",
             "modes": ["classic", "battle"],
+            "status": "ready",
+        },
+        {
+            "id": "defense",
+            "title": "田园守卫战 (Wildwood Defenders)",
+            "subtitle": "8大动物守卫 · 30波森林入侵 · 策略塔防",
+            "icon": "🐾",
+            "route": "/defense",
+            "badge": "全新上线",
+            "color": "#ffd700",
+            "modes": ["campaign", "endless"],
             "status": "ready",
         },
         {
@@ -127,3 +142,15 @@ def serve_snake_game():
     if os.path.exists(index_file):
         return FileResponse(index_file)
     return HTMLResponse("<h1>Snake Game Not Found</h1>", status_code=404)
+
+
+# Wildwood Defenders Tower Defense Game Route
+@app.get("/defense", response_class=HTMLResponse)
+@app.get("/defense/", response_class=HTMLResponse)
+def serve_defense_game():
+    """Serve the Wildwood Defenders tower defense sub-game web page."""
+    index_file = os.path.join(DEFENSE_DIR, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return HTMLResponse("<h1>Wildwood Defenders Game Not Found</h1>", status_code=404)
+

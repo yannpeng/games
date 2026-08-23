@@ -24,7 +24,6 @@ const ArcadeI18n = (function () {
     return 'en';
   }
   
-  // Read existing preference from localStorage, default to 'en'
   let currentLang = 'en';
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -33,10 +32,8 @@ const ArcadeI18n = (function () {
     }
   } catch (e) {}
 
-  // Complete translation dictionary
   const TRANSLATIONS = {
     en: {
-      // Platform & Hub
       'hub.title': 'CYBERPUNK ARCADE',
       'hub.hero_tag': '⚡ NEXT-GEN RETRO ARCADE ⚡',
       'hub.hero_title': 'CHOOSE YOUR UNIVERSE',
@@ -47,8 +44,6 @@ const ArcadeI18n = (function () {
       'hub.play_snake': '🐍 Play Snake',
       'hub.coming_soon_btn': '⏳ Coming Soon',
       'hub.footer': 'CYBERPUNK ARCADE PLATFORM · Unified Account & Cross-Game Leaderboards · Powered by FastAPI',
-      
-      // Game Cards
       'tetris.title': 'TETRIS PRO',
       'tetris.tagline': '7-Bag SRS Competitive Engine · 50-Level Campaign · Real-time AI Duel',
       'tetris.engine_sub': 'COMPETITIVE SRS ENGINE',
@@ -56,21 +51,17 @@ const ArcadeI18n = (function () {
       'tetris.feat1': 'SRS Wall Kicks',
       'tetris.feat2': 'Dual Battle',
       'tetris.feat3': '50-Level Gravity',
-      
       'snake.title': 'NEON SNAKE',
       'snake.tagline': 'Dynamic Particle Light Burst · Mutated Energy Food Items · Dual Snake Battle Arena',
       'snake.badge': '✨ NEW GAME',
       'snake.feat1': 'Particle Effects',
       'snake.feat2': 'Energy Items',
       'snake.feat3': 'A* AI Duel',
-      
       'more.title': 'MORE GAMES',
       'more.tagline': 'Pacman, Minesweeper, and classic retro arcade games coming soon...',
       'more.badge': '🚀 EXPANDABLE',
       'more.feat1': 'Seamless Mount',
       'more.feat2': 'Unified Profile',
-
-      // Shared Navigation & Auth
       'nav.hub': 'Hub',
       'nav.login': 'Login',
       'nav.logout': 'Logout',
@@ -94,8 +85,6 @@ const ArcadeI18n = (function () {
       'auth.logged_out': '👋 Logged out successfully.',
       'auth.pwd_mismatch': 'Passwords do not match!',
       'auth.fill_fields': 'Please fill in username and password.',
-
-      // Leaderboard
       'lb.title': '🏆 Global Top 50 Leaderboard',
       'lb.tab_tetris': '🕹️ Tetris Pro',
       'lb.tab_snake': '🐍 Neon Snake',
@@ -116,8 +105,6 @@ const ArcadeI18n = (function () {
       'lb.empty': 'No records found yet. Be the first to set a high score!',
       'lb.loading': 'Loading leaderboard data...',
       'lb.login_required': 'Please login to view personal records.',
-
-      // Common Terms
       'common.score': 'Score',
       'common.lines': 'Lines',
       'common.length': 'Length',
@@ -137,8 +124,6 @@ const ArcadeI18n = (function () {
       'common.top50': 'Top 50',
       'common.recorded': 'Recorded',
       'common.guest': 'Guest',
-
-      // Tetris Sub-Game Specific
       'tetris.mode_solo': '50-Level Campaign',
       'tetris.mode_vs': 'VS AI Battle',
       'tetris.hold': 'HOLD',
@@ -199,8 +184,6 @@ const ArcadeI18n = (function () {
       'tetris.all_clear_achieved': '🌟 ALL 50 LEVELS CLEARED!',
       'tetris.login_save_hint': '💡 Login to save your score to the Global Top 50 Leaderboard!',
       'tetris.clear_bonus_label': 'Clear Bonus:',
-
-      // Snake Sub-Game Specific
       'snake.mode_classic': '10-Level Campaign',
       'snake.mode_battle': 'Dual Snake Arena',
       'snake.food_title': '⚡ Energy Items',
@@ -221,8 +204,6 @@ const ArcadeI18n = (function () {
       'snake.touch_desc': 'Swipe on screen or use on-screen glowing virtual D-Pad to turn.',
       'snake.start_title': 'NEON SNAKE',
       'snake.start_sub': 'CYBERPUNK ARENA',
-      
-      // Snake Death & Elimination Messages
       'snake.death_wall': 'Crashed into outer energy barrier!',
       'snake.death_obstacle': 'Crashed into laser barrier!',
       'snake.death_self': 'Collided with own snake body!',
@@ -230,14 +211,66 @@ const ArcadeI18n = (function () {
       'snake.ai_death_wall': 'AI crashed into energy barrier!',
       'snake.ai_death_self': 'AI collided with own body!',
       'snake.ai_death_player': 'AI crashed into player snake!',
-      
-      // Snake Dynamic Toasts
       'snake.toast_eat_bonus': '✨ Acquired [{name}]: +{score} pts!',
       'snake.toast_levelup': '⚡ Level Up to Lv.{level}! Speed increased!',
       'snake.toast_ai_defeated': '🏆 Defeated AI Rival! +5,000 pts! ({reason})',
       'snake.toast_victory': '🎉 Victory! Cleared all 10 Campaign Levels!',
       'snake.login_hint': '💡 Login to save your score to the Global Top 50 Leaderboard!',
-      'snake.all_clear_achieved': '🌟 ALL 10 LEVELS CLEARED!'
+      'snake.all_clear_achieved': '🌟 ALL 10 LEVELS CLEARED!',
+      'defense.title': 'Wildwood Defenders',
+      'defense.audio': 'Sound',
+      'defense.hub_btn': 'Lobby',
+      'defense.gold': 'Gold',
+      'defense.lives': 'Lives',
+      'defense.score': 'Score',
+      'defense.wave': 'Wave',
+      'defense.auto_wave': 'Auto Wave',
+      'defense.pause': 'Pause',
+      'defense.restart': 'Restart',
+      'defense.start_wave': 'Start Wave',
+      'defense.skill_carrot_rain': 'Carrot Rain',
+      'defense.skill_gold_airdrop': 'Egg Airdrop',
+      'defense.skill_frenzy': 'Animal Frenzy',
+      'defense.deck_title': 'Animal Defenders Deck (Click & Place on Grass)',
+      'defense.cancel_tip': '💡 Right-click to cancel placement',
+      'defense.damage': 'Damage',
+      'defense.range': 'Range',
+      'defense.speed': 'Speed',
+      'defense.upgrade': 'Upgrade',
+      'defense.sell': 'Sell',
+      'defense.game_over': 'Defense Breached!',
+      'defense.victory': 'Victory! Farmyard Defended!',
+      'defense.final_wave': 'Waves Survived',
+      'defense.final_score': 'Final Score',
+      'defense.play_again': 'Play Again',
+      'defense.victory_text': 'Successfully repelled all 30 waves of invaders!',
+      'tower_rooster_name': 'Rooster Guard',
+      'tower_rooster_desc': 'Close-range pecks and Dawn Cry aura.',
+      'tower_rooster_trait': 'Dawn Cry: +25% attack speed to nearby towers',
+      'tower_hen_name': 'Captain Hen',
+      'tower_hen_desc': 'Explosive egg bombs & periodic golden egg economy.',
+      'tower_hen_trait': 'Egg Bomb AOE & Golden Egg economy (+10G/10s)',
+      'tower_squirrel_name': 'Sniper Squirrel',
+      'tower_squirrel_desc': 'Long-range acorn sniper with linear piercing.',
+      'tower_squirrel_trait': 'Long-range sniper with 30% crit & pierce 2',
+      'tower_deer_name': 'Lord Deer',
+      'tower_deer_desc': 'Ground stomp shockwave that slows enemies.',
+      'tower_deer_trait': 'Ground Stomp: 45% slow to all nearby enemies',
+      'tower_raccoon_name': 'Clever Raccoon',
+      'tower_raccoon_desc': 'Poison smoke flask & bounty bonus on kills.',
+      'tower_raccoon_trait': 'Poison DOT & +25% extra gold on kills',
+      'tower_eagle_name': 'Sky Eagle',
+      'tower_eagle_desc': 'Global range dive claw, executes low HP enemies.',
+      'tower_eagle_trait': 'Global patrol: 3x execute damage under 30% HP',
+      'tower_owl_name': 'Wise Owl',
+      'tower_owl_desc': 'Chain lightning & True Sight revealing stealth.',
+      'tower_owl_trait': 'True Sight stealth reveal & 3-target chain lightning',
+      'tower_rabbit_name': 'Gatling Rabbit',
+      'tower_rabbit_desc': 'Ultra high-speed carrot bullets.',
+      'tower_rabbit_trait': 'Ultra rapid-fire carrot machine gun',
+      'hub.card_defense_title': 'Wildwood Defenders',
+      'hub.card_defense_desc': '8 Animal Defenders · 30 Waves · Strategic Tower Defense',
+      'hub.tab_defense': 'Wildwood Defenders',
     },
 
     zh: {
@@ -424,6 +457,60 @@ const ArcadeI18n = (function () {
       'snake.toast_victory': '🎉 恭喜通关 10 级巅峰贪吃蛇挑战！',
       'snake.login_hint': '💡 登录账号即可将本次高分录入全球 Top 50 排行榜！',
       'snake.all_clear_achieved': '🌟 全部 10 关通关达成！',
+      'defense.title': '田园守卫战',
+      'defense.audio': '音效',
+      'defense.hub_btn': '大厅',
+      'defense.gold': '金币',
+      'defense.lives': '生命',
+      'defense.score': '积分',
+      'defense.wave': '波次',
+      'defense.auto_wave': '自动出波',
+      'defense.pause': '暂停',
+      'defense.restart': '重开',
+      'defense.start_wave': '开始进攻',
+      'defense.skill_carrot_rain': '胡萝卜暴雨',
+      'defense.skill_gold_airdrop': '金蛋空投',
+      'defense.skill_frenzy': '动物狂暴',
+      'defense.deck_title': '动物守卫编队 (点击选择并部署到草地上)',
+      'defense.cancel_tip': '💡 右键点击可取消部署',
+      'defense.damage': '伤害',
+      'defense.range': '射程',
+      'defense.speed': '攻速',
+      'defense.upgrade': '升星强化',
+      'defense.sell': '回收变现',
+      'defense.game_over': '防线失守！',
+      'defense.victory': '庄园守护大获全胜！',
+      'defense.final_wave': '坚持波次',
+      'defense.final_score': '最终得分',
+      'defense.play_again': '再战一局',
+      'defense.victory_text': '成功击退全部 30 波入侵者！',
+      'tower_rooster_name': '雄鸡守卫',
+      'tower_rooster_desc': '近程高频啄击与晨曦破晓光环。',
+      'tower_rooster_trait': '晨曦破晓：提升周围防御塔 25% 攻击速度',
+      'tower_hen_name': '母鸡队长',
+      'tower_hen_desc': '投掷爆炸鸡蛋造成范围伤害并产出金蛋。',
+      'tower_hen_trait': '金蛋丰收：范围爆破与每10秒产出10金币',
+      'tower_squirrel_name': '神枪松鼠',
+      'tower_squirrel_desc': '树梢投掷超远坚果，穿透整排敌人。',
+      'tower_squirrel_trait': '超远狙击：穿透2名目标并有30%暴击',
+      'tower_deer_name': '黑尾鹿尊',
+      'tower_deer_desc': '重踏地面造成震荡波与范围减速。',
+      'tower_deer_trait': '森林震荡：周围范围45%群体减速',
+      'tower_raccoon_name': '巧手浣熊',
+      'tower_raccoon_desc': '投掷毒雾持续腐蚀并掠夺双倍赏金。',
+      'tower_raccoon_trait': '发财妙手：毒雾持续伤害并+25%击杀金币',
+      'tower_eagle_name': '苍穹猎鹰',
+      'tower_eagle_desc': '全图自动索敌，对残血精英怪致命斩杀。',
+      'tower_eagle_trait': '致命俯冲：全图索敌，对30%血以下3倍斩杀',
+      'tower_owl_name': '智者猫头鹰',
+      'tower_owl_desc': '连锁闪电法术与识破潜行真视光环。',
+      'tower_owl_trait': '睿智之眼：识破隐身怪并弹射3个目标',
+      'tower_rabbit_name': '急速机枪兔',
+      'tower_rabbit_desc': '双持胡萝卜速射机枪弹幕压制。',
+      'tower_rabbit_trait': '胡萝卜风暴：超高频机关枪速射压制',
+      'hub.card_defense_title': '田园守卫战 (Wildwood Defenders)',
+      'hub.card_defense_desc': '8大动物守卫 · 30波入侵 · 经典策略塔防',
+      'hub.tab_defense': '田园守卫战',
     },
 
     'zh-TW': {
@@ -610,10 +697,63 @@ const ArcadeI18n = (function () {
       'snake.toast_victory': '🎉 恭喜通關 10 級巔峰貪吃蛇挑戰！',
       'snake.login_hint': '💡 登入帳號即可將本次高分錄入全球 Top 50 排行榜！',
       'snake.all_clear_achieved': '🌟 全部 10 關通關達成！',
+      'defense.title': '田園守衛戰',
+      'defense.audio': '音效',
+      'defense.hub_btn': '大廳',
+      'defense.gold': '金幣',
+      'defense.lives': '生命',
+      'defense.score': '積分',
+      'defense.wave': '波次',
+      'defense.auto_wave': '自動出波',
+      'defense.pause': '暫停',
+      'defense.restart': '重開',
+      'defense.start_wave': '開始進攻',
+      'defense.skill_carrot_rain': '胡蘿蔔暴雨',
+      'defense.skill_gold_airdrop': '金蛋空投',
+      'defense.skill_frenzy': '動物狂暴',
+      'defense.deck_title': '動物守衛編隊 (點擊選擇並部署到草地上)',
+      'defense.cancel_tip': '💡 右鍵點擊可取消部署',
+      'defense.damage': '傷害',
+      'defense.range': '射程',
+      'defense.speed': '攻速',
+      'defense.upgrade': '升星強化',
+      'defense.sell': '回收變現',
+      'defense.game_over': '防線失守！',
+      'defense.victory': '莊園守護大獲全勝！',
+      'defense.final_wave': '堅持波次',
+      'defense.final_score': '最終得分',
+      'defense.play_again': '再戰一局',
+      'defense.victory_text': '成功擊退全部 30 波入侵者！',
+      'tower_rooster_name': '雄雞守衛',
+      'tower_rooster_desc': '近程高頻啄擊與晨曦破曉光環。',
+      'tower_rooster_trait': '晨曦破曉：提升周圍防禦塔 25% 攻擊速度',
+      'tower_hen_name': '母雞隊長',
+      'tower_hen_desc': '投擲爆炸雞蛋造成範圍傷害並產出金蛋。',
+      'tower_hen_trait': '金蛋豐收：範圍爆破與每10秒產出10金幣',
+      'tower_squirrel_name': '神槍松鼠',
+      'tower_squirrel_desc': '樹梢投擲超遠堅果，穿透整排敵人。',
+      'tower_squirrel_trait': '超遠狙擊：穿透2名目標並有30%暴擊',
+      'tower_deer_name': '黑尾鹿尊',
+      'tower_deer_desc': '重踏地面造成震盪波與範圍減速。',
+      'tower_deer_trait': '森林震盪：周圍範圍45%群體減速',
+      'tower_raccoon_name': '巧手浣熊',
+      'tower_raccoon_desc': '投擲毒霧持續腐蝕並掠奪雙倍賞金。',
+      'tower_raccoon_trait': '發財妙手：毒霧持續傷害並+25%擊殺金幣',
+      'tower_eagle_name': '蒼穹獵鷹',
+      'tower_eagle_desc': '全圖自動索敵，對殘血精英怪致命斬殺。',
+      'tower_eagle_trait': '致命俯衝：全圖索敵，對30%血以下3倍斬殺',
+      'tower_owl_name': '智者貓頭鷹',
+      'tower_owl_desc': '連鎖閃電法術與識破潛行真視光環。',
+      'tower_owl_trait': '睿智之眼：識破隱身怪並彈射3個目標',
+      'tower_rabbit_name': '急速機槍兔',
+      'tower_rabbit_desc': '雙持胡蘿蔔速射機槍彈幕壓制。',
+      'tower_rabbit_trait': '胡蘿蔔風暴：超高頻機關槍速射壓制',
+      'hub.card_defense_title': '田園守衛戰 (Wildwood Defenders)',
+      'hub.card_defense_desc': '8大動物守衛 · 30波入侵 · 經典策略塔防',
+      'hub.tab_defense': '田園守衛戰',
     },
 
     ja: {
-      // Platform & Hub
       'hub.title': 'サイバーアーケード',
       'hub.hero_tag': '⚡ 次世代レトロアーケード ⚡',
       'hub.hero_title': 'ゲームの世界を選択',
@@ -624,8 +764,6 @@ const ArcadeI18n = (function () {
       'hub.play_snake': '🐍 今すぐプレイ',
       'hub.coming_soon_btn': '⏳ まもなく公開',
       'hub.footer': 'サイバーアーケード · 統合アカウント＆クロスゲームランキング · Powered by FastAPI',
-
-      // Game Cards
       'tetris.title': 'テトリス PRO',
       'tetris.tagline': '7-Bag SRS公式競技エンジン · 50段階チャレンジ · リアルタイムAI対決',
       'tetris.engine_sub': 'SRS 公式競技エンジン',
@@ -633,21 +771,17 @@ const ArcadeI18n = (function () {
       'tetris.feat1': 'SRS回転キック',
       'tetris.feat2': 'AI対戦バトル',
       'tetris.feat3': '50段階スピード',
-
       'snake.title': 'ネオンスネーク',
       'snake.tagline': 'ネオンパーティクル光彩 · 変異エナジーアイテム · 二匹のヘビによる領土アリーナ',
       'snake.badge': '✨ 新登場',
       'snake.feat1': '光彩エフェクト',
       'snake.feat2': '変異アイテム',
       'snake.feat3': 'A* AI対戦',
-
       'more.title': 'その他のレトロゲーム',
       'more.tagline': 'パックマン (Pacman) やマインスイーパなど、続々追加予定...',
       'more.badge': '🚀 拡張中',
       'more.feat1': 'シームレス追加',
       'more.feat2': '共通アカウント',
-
-      // Shared Navigation & Auth
       'nav.hub': 'ロビー',
       'nav.login': 'ログイン',
       'nav.logout': 'ログアウト',
@@ -671,8 +805,6 @@ const ArcadeI18n = (function () {
       'auth.logged_out': '👋 ログアウトしました。',
       'auth.pwd_mismatch': 'パスワードが一致しません！',
       'auth.fill_fields': 'ユーザー名とパスワードを入力してください。',
-
-      // Leaderboard
       'lb.title': '🏆 世界Top 50ランキング',
       'lb.tab_tetris': '🕹️ テトリス',
       'lb.tab_snake': '🐍 スネーク',
@@ -693,8 +825,6 @@ const ArcadeI18n = (function () {
       'lb.empty': 'まだランキング記録がありません。ハイスコアを目指しましょう！',
       'lb.loading': 'ランキングを読み込み中...',
       'lb.login_required': '履歴を見るにはログインしてください。',
-
-      // Common Terms
       'common.score': 'スコア',
       'common.lines': 'ライン',
       'common.length': '体長',
@@ -714,8 +844,6 @@ const ArcadeI18n = (function () {
       'common.top50': 'Top 50',
       'common.recorded': '記録済み',
       'common.guest': 'ゲスト',
-
-      // Tetris Sub-Game Specific
       'tetris.mode_solo': '50段階チャレンジ',
       'tetris.mode_vs': 'AI対決バトル',
       'tetris.hold': 'ホールド',
@@ -776,8 +904,6 @@ const ArcadeI18n = (function () {
       'tetris.all_clear_achieved': '🌟 全50レベル完全クリア達成！',
       'tetris.login_save_hint': '💡 ログインしてスコアを世界Top50ランキングに記録しよう！',
       'tetris.clear_bonus_label': 'クリアボーナス：',
-
-      // Snake Sub-Game Specific
       'snake.mode_classic': '10段階チャレンジ',
       'snake.mode_battle': '二匹のヘビ対決',
       'snake.food_title': '⚡ エナジーアイテム',
@@ -798,8 +924,6 @@ const ArcadeI18n = (function () {
       'snake.touch_desc': '画面をスワイプするか仮想十字キーで方向転換します。',
       'snake.start_title': 'ネオンスネーク',
       'snake.start_sub': 'サイバーアリーナ',
-
-      // Snake Death & Elimination Messages
       'snake.death_wall': '外周のエナジーバリアに衝突！',
       'snake.death_obstacle': 'レーザー障害物に衝突！',
       'snake.death_self': '自身の身体に激突！',
@@ -807,14 +931,66 @@ const ArcadeI18n = (function () {
       'snake.ai_death_wall': 'AIがバリアに衝突して消滅！',
       'snake.ai_death_self': 'AIが自身の身体に激突して自爆！',
       'snake.ai_death_player': 'AIがプレイヤーに衝突して撃沈！',
-
-      // Snake Dynamic Toasts
       'snake.toast_eat_bonus': '✨ 【{name}】獲得：+{score}点！',
       'snake.toast_levelup': '⚡ Lv.{level} に昇格！スピードアップ！',
       'snake.toast_ai_defeated': '🏆 AIライバルを撃破！ボーナス+5,000点！({reason})',
       'snake.toast_victory': '🎉 祝・全10レベル完全制覇！',
       'snake.login_hint': '💡 ログインしてスコアを世界Top50ランキングに記録しよう！',
-      'snake.all_clear_achieved': '🌟 全10レベル完全クリア達成！'
+      'snake.all_clear_achieved': '🌟 全10レベル完全クリア達成！',
+      'defense.title': 'ワイルドウッド・ディフェンダーズ',
+      'defense.audio': '効果音',
+      'defense.hub_btn': 'ロビー',
+      'defense.gold': 'ゴールド',
+      'defense.lives': 'ライフ',
+      'defense.score': 'スコア',
+      'defense.wave': 'ウェーブ',
+      'defense.auto_wave': '自動出撃',
+      'defense.pause': '一時停止',
+      'defense.restart': 'リスタート',
+      'defense.start_wave': '進攻開始',
+      'defense.skill_carrot_rain': 'ニンジン爆撃',
+      'defense.skill_gold_airdrop': '金の卵補給',
+      'defense.skill_frenzy': 'アニマル暴走',
+      'defense.deck_title': '動物ガーディアン部隊 (クリックして草地に配置)',
+      'defense.cancel_tip': '💡 右クリックで配置キャンセル',
+      'defense.damage': 'ダメージ',
+      'defense.range': '射程',
+      'defense.speed': '攻撃速度',
+      'defense.upgrade': '強化アップグレード',
+      'defense.sell': '売却換金',
+      'defense.game_over': '防衛線突破！',
+      'defense.victory': '農園防衛完全勝利！',
+      'defense.final_wave': '到達ウェーブ',
+      'defense.final_score': '最終スコア',
+      'defense.play_again': 'もう一度挑戦',
+      'defense.victory_text': '全30ウェーブの侵略者をすべて撃退！',
+      'tower_rooster_name': 'オンドリ警備員',
+      'tower_rooster_desc': '近接連打と暁の鬨の声オーラ。',
+      'tower_rooster_trait': '暁の鬨の声：周囲タワーの攻撃速度+25%',
+      'tower_hen_name': 'キャプテン・ヘン',
+      'tower_hen_desc': '爆発卵と定期的な金の卵ゴールド生産。',
+      'tower_hen_trait': '金の卵：範囲爆破と10秒毎に10G生産',
+      'tower_squirrel_name': 'スナイパー・リス',
+      'tower_squirrel_desc': '樹上からの貫通ドングリスナイプ。',
+      'tower_squirrel_trait': '超長距離狙撃：2体貫通＆クリティカル率30%',
+      'tower_deer_name': 'シカの主',
+      'tower_deer_desc': '地響きストンプによる範囲減速。',
+      'tower_deer_trait': '森の震撼：周囲の敵を45%スローダウン',
+      'tower_raccoon_name': '器用なアライグマ',
+      'tower_raccoon_desc': '毒ガスビン投擲と討伐賞金ボーナス。',
+      'tower_raccoon_trait': '賞金稼ぎ：毒持続ダメージ＆討伐ゴールド+25%',
+      'tower_eagle_name': '天空のワシ',
+      'tower_eagle_desc': '全域索敵と瀕死エリートへの急降下処刑。',
+      'tower_eagle_trait': '必殺急降下：全域索敵、HP30%以下に3倍撃',
+      'tower_owl_name': '賢者フクロウ',
+      'tower_owl_desc': '連鎖稲妻とステルス看破の真実の目。',
+      'tower_owl_trait': '真実の目：ステルス看破＆3体連鎖稲妻',
+      'tower_rabbit_name': 'ガトリング・ラビット',
+      'tower_rabbit_desc': 'ニンジン弾薬の超高速ガトリング乱射。',
+      'tower_rabbit_trait': 'ニンジンストーム：超高速弾幕制圧',
+      'hub.card_defense_title': 'ワイルドウッド・ディフェンダーズ',
+      'hub.card_defense_desc': '8体の動物防衛隊 · 30ウェーブ · 本格タワーディフェンス',
+      'hub.tab_defense': 'ワイルドウッド・ディフェンダーズ',
     }
   };
 
@@ -840,15 +1016,12 @@ const ArcadeI18n = (function () {
       localStorage.setItem(STORAGE_KEY, validLang);
     } catch (e) {}
 
-    // 1. Update HTML lang tag
     if (document.documentElement) {
       document.documentElement.lang = validLang;
     }
 
-    // 2. Apply translations across DOM
     applyToDOM();
 
-    // 3. Sync to backend if logged in
     if (syncBackend) {
       const token = localStorage.getItem('arcade_token') || localStorage.getItem('tetris_token');
       if (token) {
@@ -861,46 +1034,38 @@ const ArcadeI18n = (function () {
             },
             body: JSON.stringify({ language: validLang }),
           });
-        } catch (e) {
-          // Ignore network errors
-        }
+        } catch (e) {}
       }
     }
 
-    // 4. Trigger custom event for dynamic components
     window.dispatchEvent(new CustomEvent('arcadeLanguageChanged', { detail: { lang: validLang } }));
   }
 
   function applyToDOM() {
-    // 1. Text content
     document.querySelectorAll('[data-i18n]').forEach((el) => {
       const key = el.getAttribute('data-i18n');
       const val = t(key);
       if (val) el.textContent = val;
     });
 
-    // 2. HTML content
     document.querySelectorAll('[data-i18n-html]').forEach((el) => {
       const key = el.getAttribute('data-i18n-html');
       const val = t(key);
       if (val) el.innerHTML = val;
     });
 
-    // 3. Placeholders
     document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
       const key = el.getAttribute('data-i18n-placeholder');
       const val = t(key);
       if (val) el.setAttribute('placeholder', val);
     });
 
-    // 4. Titles / Tooltips
     document.querySelectorAll('[data-i18n-title]').forEach((el) => {
       const key = el.getAttribute('data-i18n-title');
       const val = t(key);
       if (val) el.setAttribute('title', val);
     });
 
-    // 5. Update Language Switcher UI
     const langSelect = document.getElementById('lang-select-dropdown');
     if (langSelect) {
       langSelect.value = currentLang;
@@ -908,7 +1073,6 @@ const ArcadeI18n = (function () {
   }
 
   function initLanguageUI() {
-    // Read stored language or default to en
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -920,7 +1084,6 @@ const ArcadeI18n = (function () {
       document.documentElement.lang = currentLang;
     }
 
-    // Dropdown change listener
     const langSelect = document.getElementById('lang-select-dropdown');
     if (langSelect) {
       langSelect.value = currentLang;
@@ -929,11 +1092,9 @@ const ArcadeI18n = (function () {
       };
     }
 
-    // Apply translations on load
     applyToDOM();
   }
 
-  // Self-initialize on DOM readiness
   if (typeof document !== 'undefined') {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => initLanguageUI());

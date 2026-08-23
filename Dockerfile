@@ -27,6 +27,7 @@ COPY app/ app/
 COPY hub/ hub/
 COPY tetris/ tetris/
 COPY snake/ snake/
+COPY defense/ defense/
 COPY pyproject.toml .
 COPY entrypoint.sh .
 

@@ -40,10 +40,11 @@ def test_list_games_catalog(client):
     res = client.get("/api/games")
     assert res.status_code == 200
     games = res.json()
-    assert len(games) >= 2
+    assert len(games) >= 3
     game_ids = [g["id"] for g in games]
     assert "tetris" in game_ids
     assert "snake" in game_ids
+    assert "defense" in game_ids
 
 
 def test_hub_and_game_routes(client):
@@ -56,3 +57,6 @@ def test_hub_and_game_routes(client):
 
     res_snake = client.get("/snake")
     assert res_snake.status_code == 200
+
+    res_defense = client.get("/defense")
+    assert res_defense.status_code == 200

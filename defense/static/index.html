@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>田园守卫战 (Wildwood Defenders) - 赛博街机平台</title>
+  <link rel="stylesheet" href="/defense_static/css/defense.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐾</text></svg>">
+</head>
+<body>
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="brand-area">
+      <span class="brand-logo">🐾</span>
+      <div class="brand-title">
+        <span data-i18n="defense.title">田园守卫战</span> · <span>Wildwood Defenders</span>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Map Selection -->
+      <select id="map-select-dropdown" class="map-select" aria-label="Select Map">
+        <option value="0">🌾 麦浪庄园 (Farm Meadow)</option>
+        <option value="1">🌲 密林溪谷 (Whispering Woods)</option>
+        <option value="2">⛰️ 迷雾峡谷 (Misty Canyon)</option>
+      </select>
+
+      <!-- Language Selector -->
+      <select id="lang-select-dropdown" class="lang-select" aria-label="Language Selector">
+        <option value="en">🌐 English</option>
+        <option value="zh">🇨🇳 简体中文</option>
+        <option value="zh-TW">🇭🇰 繁體中文</option>
+        <option value="ja">🇯🇵 日本語</option>
+      </select>
+
+      <!-- Sound Toggle -->
+      <button type="button" id="btn-audio-toggle" class="btn-icon">🔊 <span data-i18n="defense.audio">音效</span></button>
+
+      <!-- Return to Arcade Hub -->
+      <a href="/" class="btn-icon" title="Return to Arcade Lobby">🏠 <span data-i18n="defense.hub_btn">大厅</span></a>
+    </div>
+  </header>
+
+  <!-- Main Game Workspace -->
+  <main class="main-layout">
+    <!-- Top HUD Stats Bar -->
+    <div class="hud-bar">
+      <div class="hud-stats">
+        <div class="stat-item stat-gold">💰 <span data-i18n="defense.gold">金币</span>: <span id="val-gold">350</span></div>
+        <div class="stat-item stat-lives">❤️ <span data-i18n="defense.lives">生命</span>: <span id="val-lives">20</span></div>
+        <div class="stat-item stat-score">🏆 <span data-i18n="defense.score">积分</span>: <span id="val-score">0</span></div>
+        <div class="stat-item stat-wave">🌊 <span data-i18n="defense.wave">波次</span>: <span id="val-wave">0</span> / <span id="val-max-wave">30</span></div>
+      </div>
+
+      <div class="hud-actions">
+        <!-- Speed Multipliers -->
+        <div class="btn-speed-group">
+          <button type="button" id="btn-speed-1x" class="btn-speed active">1X</button>
+          <button type="button" id="btn-speed-2x" class="btn-speed">2X</button>
+          <button type="button" id="btn-speed-4x" class="btn-speed">4X</button>
+        </div>
+
+        <!-- Auto Wave Toggle -->
+        <button type="button" id="btn-auto-wave" class="btn-toggle-auto">⚡ <span data-i18n="defense.auto_wave">自动出波</span></button>
+
+        <!-- Pause & Restart -->
+        <button type="button" id="btn-pause" class="btn-icon">⏸️ <span data-i18n="defense.pause">暂停</span></button>
+        <button type="button" id="btn-restart" class="btn-icon">🔄 <span data-i18n="defense.restart">重开</span></button>
+
+        <!-- Start Wave Button -->
+        <button type="button" id="btn-start-wave" class="btn-primary-action">⚔️ <span data-i18n="defense.start_wave">开始进攻</span></button>
+      </div>
+    </div>
+
+    <!-- Battle Arena Canvas & Skills -->
+    <div class="battle-workspace">
+      <!-- HTML5 Canvas -->
+      <div class="canvas-container">
+        <canvas id="defense-canvas" width="900" height="540"></canvas>
+      </div>
+
+      <!-- Commander Skills Sidebar -->
+      <aside class="skills-sidebar">
+        <button type="button" id="skill-carrot-rain" class="skill-btn" title="全屏胡萝卜轰炸">
+          <span class="skill-icon">🥕</span>
+          <span class="skill-name" data-i18n="defense.skill_carrot_rain">胡萝卜暴雨</span>
+          <span class="skill-cd"></span>
+        </button>
+
+        <button type="button" id="skill-gold-airdrop" class="skill-btn" title="紧急空投金蛋补给 +150G">
+          <span class="skill-icon">🥚</span>
+          <span class="skill-name" data-i18n="defense.skill_gold_airdrop">金蛋空投</span>
+          <span class="skill-cd"></span>
+        </button>
+
+        <button type="button" id="skill-animal-frenzy" class="skill-btn" title="8秒全员攻速翻倍">
+          <span class="skill-icon">⚡</span>
+          <span class="skill-name" data-i18n="defense.skill_frenzy">动物狂暴</span>
+          <span class="skill-cd"></span>
+        </button>
+      </aside>
+    </div>
+
+    <!-- Bottom Deck: Animal Defender Towers -->
+    <section class="bottom-deck-panel">
+      <div class="deck-header">
+        <div class="deck-title">🛡️ <span data-i18n="defense.deck_title">动物守卫编队 (点击选择并部署到草地上)</span></div>
+        <div style="font-size: 12px; color: var(--text-muted);" data-i18n="defense.cancel_tip">💡 右键点击可取消部署</div>
+      </div>
+
+      <div id="tower-deck" class="tower-cards-grid">
+        <!-- 8 Animal Defender Cards dynamically populated by defense_app.js -->
+      </div>
+
+      <!-- Tower Inspector (Appears when a placed tower is clicked) -->
+      <div id="tower-inspector" class="tower-inspector-panel">
+        <div class="inspector-info">
+          <div id="inspector-title" class="inspector-title">🐓 雄鸡守卫 <span class="badge-lvl">Lv.1</span></div>
+          <div id="inspector-desc" class="inspector-desc">晨曦破晓：提升周围防御塔 25% 攻击速度</div>
+        </div>
+
+        <div class="inspector-stats">
+          <div>💥 <span data-i18n="defense.damage">伤害</span>: <strong id="inspector-dmg" style="color:#00ff88">18</strong></div>
+          <div>🎯 <span data-i18n="defense.range">射程</span>: <strong id="inspector-rng" style="color:#00f0ff">120</strong></div>
+          <div>⚡ <span data-i18n="defense.speed">攻速</span>: <strong id="inspector-spd" style="color:#ffd700">3.0/s</strong></div>
+        </div>
+
+        <div class="inspector-actions">
+          <button type="button" id="btn-tower-upgrade" class="btn-upgrade">⭐ <span data-i18n="defense.upgrade">升星强化</span> (<span id="upgrade-cost-val">80G</span>)</button>
+          <button type="button" id="btn-tower-sell" class="btn-sell">💰 <span data-i18n="defense.sell">回收变现</span> (<span id="sell-refund-val">70G</span>)</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Game Over Modal -->
+  <div id="game-over-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-icon">💀</div>
+      <div class="modal-title" data-i18n="defense.game_over">防线失守！</div>
+      <div class="modal-stat"><span data-i18n="defense.final_wave">坚持波次</span>: <span id="final-wave-val">12</span></div>
+      <div class="modal-stat"><span data-i18n="defense.final_score">最终得分</span>: <span id="final-score-val">3400</span></div>
+      <button type="button" id="btn-retry-game" class="btn-primary-action">🔄 <span data-i18n="defense.play_again">再战一局</span></button>
+    </div>
+  </div>
+
+  <!-- Victory Modal -->
+  <div id="victory-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-icon">👑</div>
+      <div class="modal-title" data-i18n="defense.victory">庄园守护大获全胜！</div>
+      <div class="modal-stat"><span data-i18n="defense.victory_text">成功击退全部 30 波入侵者！</span></div>
+      <div class="modal-stat"><span data-i18n="defense.final_score">总积分</span>: <span id="victory-score-val">18500</span></div>
+      <button type="button" id="btn-victory-restart" class="btn-primary-action">🏆 <span data-i18n="defense.play_again">凯旋重开</span></button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/defense_static/js/defense_config.js"></script>
+  <script src="/defense_static/js/defense_audio.js"></script>
+  <script src="/defense_static/js/defense_engine.js"></script>
+  <script src="/defense_static/js/defense_api.js"></script>
+  <script src="/defense_static/js/defense_app.js"></script>
+  <script src="/defense_static/js/i18n.js"></script>
+</body>
+</html>
