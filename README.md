@@ -1,6 +1,6 @@
 # 赛博街机多游戏聚合平台 (Cyberpunk Multi-Game Arcade Platform)
 
-一个采用赛博朋克霓虹美学、统一 FastAPI 后端与 SQLite 账号战绩体系的现代化网页小游戏聚合平台。
+一个采用赛博朋克霓虹美学、全局统一导航架构、FastAPI 异步后端与 SQLite 账号战绩体系的现代化网页小游戏聚合平台（**v2.1.0 正式版**）。
 
 ---
 
@@ -8,13 +8,17 @@
 
 ### 1. 🕹️ [俄罗斯方块 (Tetris Pro)](file:///d:/_workspace/antigravity/Games/tetris/)
 - **路由路径**：`http://127.0.0.1:8000/tetris`
-- **核心机制**：7-Bag 随机器、SRS 超级旋转与踢墙、1:1 零延迟实时对战管道、50 级冲关与 Top 50 榜单。
+- **核心机制**：7-Bag 随机器、SRS 超级旋转与踢墙、1:1 零延迟实时对战管道、严格 10:20 正方形网格、50 级冲关与 Top 50 榜单。
 
 ### 2. 🐍 [赛博贪吃蛇 (Neon Snake)](file:///d:/_workspace/antigravity/Games/snake/)
 - **路由路径**：`http://127.0.0.1:8000/snake`
 - **核心机制**：动态发光蛇身、4种变异能量食物（普通红果、黄金星、疾风蓝核、缩短紫菌）、10级激光路障闯关、A* 寻路双蛇实时竞技。
 
-### 3. 🌐 四语言完整国际化 (i18n Localization)
+### 3. 🐾 [田园守卫战 (Wildwood Defenders)](file:///d:/_workspace/antigravity/Games/defense/)
+- **路由路径**：`http://127.0.0.1:8000/defense`
+- **核心机制**：策略塔防放置、猫咪萌犬元素、多地图关卡路线、实时弹道物理与波次排行榜。
+
+### 4. 🌐 四语言完整国际化 (i18n Localization)
 - 🌐 English (`en`)
 - 🇨🇳 简体中文 (`zh`)
 - 🇭🇰 繁體中文 (`zh-TW`)
@@ -58,9 +62,9 @@ docker compose down
 
 ---
 
-### 方式 3：WSL2 / 本地从源码构建与多架构发布 (Build & Publish)
+### 方式 3：WSL2 / 本地从源码构建与多架构发布 (Build & Publish v2.1.0)
 
-#### 1. 进入 WSL2 环境构建本地镜像
+#### 1. 进入 WSL2 / Linux 构建环境
 ```bash
 cd /mnt/d/_workspace/antigravity/Games
 docker build -t games:test .
@@ -80,11 +84,11 @@ docker login
 # 创建并启用 buildx 实例
 docker buildx create --use --name arcade-builder
 
-# 构建多平台镜像并直接发布
+# 构建多平台镜像并直接发布 v2.1.0 与 latest
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
   -t yannpeng/games:latest \
-  -t yannpeng/games:v2.0.0 \
+  -t yannpeng/games:v2.1.0 \
   --push .
 ```
 
