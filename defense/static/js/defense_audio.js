@@ -94,6 +94,14 @@ const DefenseAudio = (function () {
         case 'chain_lightning': // Owl electric zap
           playTone(1100 + Math.random() * 400, 'sawtooth', 0.1, 0.16);
           break;
+        case 'golden_paw': // Golden Shaded Cat shimmering chime
+          playTone(880, 'sine', 0.08, 0.2);
+          setTimeout(() => playTone(1320, 'sine', 0.12, 0.15), 40);
+          break;
+        case 'blizzard_storm': // British Longhair Blue Cat icy whistle
+          playTone(600, 'triangle', 0.2, 0.2);
+          setTimeout(() => playTone(300, 'triangle', 0.25, 0.25), 60);
+          break;
         default:
           playTone(500, 'sine', 0.1, 0.1);
       }

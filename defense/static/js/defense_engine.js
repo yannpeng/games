@@ -1,7 +1,7 @@
 /**
  * Wildwood Defenders - Core Game Engine & Simulation
  * 60 FPS HTML5 Canvas engine for Tower Defense simulation, pathfinding,
- * projectiles, particle effects, and combat calculations.
+ * projectiles, particle effects, combat calculations, and population limits.
  */
 
 class DefenseEngine {
@@ -20,6 +20,7 @@ class DefenseEngine {
     // Game State
     this.gold = config.INITIAL_GOLD;
     this.lives = config.INITIAL_LIVES;
+    this.maxTowers = config.MAX_TOWERS || 8;
     this.score = 0;
     this.wave = 0;
     this.maxWaves = 30;
@@ -46,7 +47,6 @@ class DefenseEngine {
     this.waveActive = false;
     this.waveSpawnQueue = [];
     this.spawnTimer = 0;
-    this.waveDelayTimer = 0;
 
     // Selected tower / build mode
     this.selectedTower = null;
@@ -196,15 +196,14 @@ class DefenseEngine {
 
   generateWaveEnemies(waveNum) {
     const queue = [];
-    const hpMultiplier = Math.pow(1.12, waveNum - 1);
-    const bountyMultiplier = Math.max(0.6, 1 - (waveNum * 0.01));
+    const hpMultiplier = Math.pow(1.11, waveNum - 1);
 
     // Boss Waves every 5 waves
     const isBossWave = waveNum % 5 === 0;
 
     if (isBossWave) {
       if (waveNum >= 20) {
-        queue.push({ type: 'harvester_boss', hpScale: hpMultiplier * 1.2, delay: 1.0 });
+        queue.push({ type: 'harvester_boss', hpScale: hpMultiplier * 1.25, delay: 1.0 });
       } else {
         queue.push({ type: 'bear_boss', hpScale: hpMultiplier, delay: 1.0 });
       }
@@ -216,15 +215,16 @@ class DefenseEngine {
       let type = 'fox';
       const rand = Math.random();
 
-      if (waveNum >= 2 && rand > 0.4) type = 'boar';
-      if (waveNum >= 4 && rand > 0.65) type = 'weasel';
-      if (waveNum >= 7 && rand > 0.8) type = 'wolf';
-      if (waveNum >= 10 && rand > 0.88) type = 'badger';
+      if (waveNum >= 2 && rand > 0.35) type = 'weasel';
+      if (waveNum >= 3 && rand > 0.55) type = 'raccoon'; // Thief raccoon starts appearing!
+      if (waveNum >= 5 && rand > 0.72) type = 'wolf';
+      if (waveNum >= 7 && rand > 0.82) type = 'boar';
+      if (waveNum >= 10 && rand > 0.9) type = 'badger';
 
       queue.push({
         type: type,
         hpScale: hpMultiplier,
-        delay: 0.45 + Math.random() * 0.4,
+        delay: 0.4 + Math.random() * 0.35,
       });
     }
 
@@ -238,7 +238,6 @@ class DefenseEngine {
     const dtRaw = (currentTime - this.lastTime) / 1000;
     this.lastTime = currentTime;
 
-    // Cap delta time to prevent massive jumps on tab blur
     const dt = Math.min(dtRaw, 0.1) * (this.isPaused ? 0 : this.gameSpeed);
 
     if (!this.isPaused) {
@@ -278,7 +277,7 @@ class DefenseEngine {
     // 4. Update Enemies
     for (let i = this.enemies.length - 1; i >= 0; i--) {
       const e = this.enemies[i];
-      e.update(dt, this.map.waypoints, this.tileSize);
+      e.update(dt, this.map.waypoints, this.tileSize, this);
 
       // Reached End of Path
       if (e.reachedEnd) {
@@ -296,9 +295,15 @@ class DefenseEngine {
         this.notifyState();
       } else if (e.isDead) {
         // Enemy Killed
-        this.gold += e.bounty;
+        let earnedGold = e.bounty;
+        if (e.stolenGoldTotal > 0) {
+          earnedGold += e.stolenGoldTotal; // Recover all stolen gold!
+          this.createFloatingText(e.x, e.y - 25, `RECOVERED +${e.stolenGoldTotal}G!`, '#00f0ff', 16);
+        }
+
+        this.gold += earnedGold;
         this.score += e.scoreValue;
-        this.createFloatingText(e.x, e.y - 10, `+${e.bounty}G`, '#ffd700', 16);
+        this.createFloatingText(e.x, e.y - 10, `+${earnedGold}G`, '#ffd700', 16);
         this.createParticleBurst(e.x, e.y, e.color, 12);
         this.audio.playExplode();
         this.enemies.splice(i, 1);
@@ -341,23 +346,21 @@ class DefenseEngine {
     // 9. Check Wave Completion
     if (this.waveActive && this.waveSpawnQueue.length === 0 && this.enemies.length === 0) {
       this.waveActive = false;
-      const waveBonus = 20 + this.wave * 5;
+      const waveBonus = 25 + this.wave * 6;
       this.gold += waveBonus;
-      this.score += this.wave * 100;
-      this.createFloatingText(this.width / 2, this.height / 2, `WAVE CLEARED! +${waveBonus}G`, '#00ff88', 24);
+      this.score += this.wave * 120;
+      this.createFloatingText(this.width / 2, this.height / 2, `WAVE CLEARED! +${waveBonus}G`, '#00ff88', 26);
       this.notifyState();
 
       if (this.onWaveComplete) {
         this.onWaveComplete(this.wave);
       }
 
-      // Check Victory
       if (this.wave >= this.maxWaves && !this.isEndless) {
         this.handleVictory();
         return;
       }
 
-      // Auto-Wave Trigger
       if (this.autoWave && !this.isGameOver && !this.isVictory) {
         setTimeout(() => {
           if (!this.waveActive && !this.isGameOver) {
@@ -385,15 +388,22 @@ class DefenseEngine {
   // --- Tower Construction & Management ---
   canBuildTower(col, row) {
     if (col < 0 || col >= this.cols || row < 0 || row >= this.rows) return false;
+    if (this.towers.length >= this.maxTowers) return false; // Enforce Max 8 Towers Limit!
     const cell = this.grid[row][col];
     return !cell.isPath && !cell.isObstacle && cell.tower === null;
   }
 
   buildTower(typeId, col, row) {
     const proto = this.config.TOWERS[typeId];
-    if (!proto || this.gold < proto.cost || !this.canBuildTower(col, row)) {
+    if (!proto || this.gold < proto.cost) return false;
+
+    if (this.towers.length >= this.maxTowers) {
+      this.createFloatingText(this.width / 2, this.height / 2, `MAX TOWERS LIMIT (${this.maxTowers}) REACHED! UPGRADE INSTEAD!`, '#ff0055', 20);
+      this.shake(0.2, 5);
       return false;
     }
+
+    if (!this.canBuildTower(col, row)) return false;
 
     this.gold -= proto.cost;
     const tower = new DefenseTower(typeId, col, row, proto, this.tileSize);
@@ -401,25 +411,30 @@ class DefenseEngine {
     this.towers.push(tower);
 
     this.audio.playPlace();
-    this.createParticleBurst(tower.x, tower.y, proto.color, 16);
+    this.createParticleBurst(tower.x, tower.y, proto.color, 18);
     this.notifyState();
     return true;
   }
 
   upgradeTower(tower) {
-    if (!tower || tower.level >= 3 || this.gold < tower.upgradeCost) {
+    if (!tower || tower.level >= 4 || this.gold < tower.upgradeCost) {
       return false;
     }
 
     this.gold -= tower.upgradeCost;
     tower.level++;
-    tower.damage = Math.round(tower.damage * 1.55);
+    
+    // Massive Power Surge on Evolution
+    tower.damage = Math.round(tower.damage * 1.7);
     tower.range = Math.round(tower.range * 1.15);
-    tower.upgradeCost = Math.round(tower.upgradeCost * 1.6);
+    tower.upgradeCost = Math.round(tower.upgradeCost * 1.65);
 
     this.audio.playUpgrade();
-    this.createParticleBurst(tower.x, tower.y, '#00f0ff', 24);
-    this.createFloatingText(tower.x, tower.y - 20, `LV.${tower.level} UP!`, '#00f0ff', 18);
+    const burstColor = tower.level === 4 ? '#ffd700' : '#00f0ff';
+    this.createParticleBurst(tower.x, tower.y, burstColor, tower.level === 4 ? 36 : 22);
+
+    const lvlName = tower.level === 4 ? '👑 AWAKENED SUPER FORM!' : `LV.${tower.level} UPGRADE!`;
+    this.createFloatingText(tower.x, tower.y - 20, lvlName, burstColor, tower.level === 4 ? 20 : 16);
     this.notifyState();
     return true;
   }
@@ -452,7 +467,6 @@ class DefenseEngine {
     this.audio.playSkill();
 
     if (skillId === 'carrot_rain') {
-      // Deal instant damage to all enemies on screen
       this.enemies.forEach((e) => {
         e.takeDamage(skill.damage, this);
         this.createParticleBurst(e.x, e.y, '#ff6600', 8);
@@ -479,9 +493,9 @@ class DefenseEngine {
   createParticleBurst(x, y, color, count = 10) {
     for (let i = 0; i < count; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = 40 + Math.random() * 90;
+      const speed = 40 + Math.random() * 100;
       this.particles.push(
-        new DefenseParticle(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed, color, 0.4 + Math.random() * 0.3)
+        new DefenseParticle(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed, color, 0.4 + Math.random() * 0.35)
       );
     }
   }
@@ -518,6 +532,8 @@ class DefenseEngine {
         score: this.score,
         wave: this.wave,
         maxWaves: this.maxWaves,
+        towerCount: this.towers.length,
+        maxTowers: this.maxTowers,
         isRunning: this.isRunning,
         isPaused: this.isPaused,
         isGameOver: this.isGameOver,
@@ -536,7 +552,6 @@ class DefenseEngine {
     const ctx = this.ctx;
     ctx.save();
 
-    // Screen Shake Offset
     if (this.shakeTimer > 0) {
       const dx = (Math.random() - 0.5) * this.shakeIntensity;
       const dy = (Math.random() - 0.5) * this.shakeIntensity;
@@ -552,23 +567,21 @@ class DefenseEngine {
 
     // 2. Draw Grid Pattern & Path
     this.renderGrid(ctx);
-
-    // 3. Draw Path Waypoints & Road
     this.renderPath(ctx);
 
-    // 4. Draw Towers
+    // 3. Draw Towers
     this.towers.forEach((t) => t.render(ctx, this.tileSize));
 
-    // 5. Draw Enemies
+    // 4. Draw Enemies
     this.enemies.forEach((e) => e.render(ctx));
 
-    // 6. Draw Projectiles
+    // 5. Draw Projectiles
     this.projectiles.forEach((p) => p.render(ctx));
 
-    // 7. Draw Placement & Range Overlays
+    // 6. Draw Placement & Range Overlays
     this.renderOverlays(ctx);
 
-    // 8. Draw Particles & Floating Text
+    // 7. Draw Particles & Floating Text
     this.particles.forEach((pt) => pt.render(ctx));
     this.floatingTexts.forEach((ft) => ft.render(ctx));
 
@@ -586,7 +599,6 @@ class DefenseEngine {
         const cell = this.grid[r][c];
 
         if (cell.isObstacle) {
-          // Draw Tree/Rock obstacle
           ctx.fillStyle = 'rgba(40, 60, 40, 0.6)';
           ctx.fillRect(x + 2, y + 2, this.tileSize - 4, this.tileSize - 4);
           ctx.font = '20px sans-serif';
@@ -617,12 +629,10 @@ class DefenseEngine {
     }
     ctx.stroke();
 
-    // Road Edge Border
     ctx.strokeStyle = this.map.borderColor;
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    // Spawn and Base Icons
     const startX = wp[0].x * this.tileSize + this.tileSize / 2;
     const startY = wp[0].y * this.tileSize + this.tileSize / 2;
     const endX = wp[wp.length - 1].x * this.tileSize + this.tileSize / 2;
@@ -668,7 +678,6 @@ class DefenseEngine {
       ctx.strokeRect(x, y, this.tileSize, this.tileSize);
 
       if (proto) {
-        // Draw Range Preview
         ctx.beginPath();
         ctx.arc(x + this.tileSize / 2, y + this.tileSize / 2, proto.range, 0, Math.PI * 2);
         ctx.fillStyle = canBuild ? 'rgba(0, 255, 136, 0.08)' : 'rgba(255, 0, 85, 0.08)';
@@ -677,7 +686,6 @@ class DefenseEngine {
         ctx.setLineDash([4, 4]);
         ctx.stroke();
 
-        // Tower Icon preview
         ctx.font = '24px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -697,13 +705,27 @@ class DefenseEnemy {
     this.isDead = false;
     this.slowTimer = 0;
     this.slowFactor = 1.0;
+    this.freezeTimer = 0;
     this.poisonTimer = 0;
     this.poisonDmg = 0;
     this.revealedTimer = 0;
+    this.stolenGoldTotal = 0;
+    this.stealCooldown = 0;
   }
 
-  update(dt, waypoints, tileSize) {
+  update(dt, waypoints, tileSize, engine) {
     if (this.isDead || this.reachedEnd) return;
+
+    // Freeze & Slow check
+    if (this.freezeTimer > 0) {
+      this.freezeTimer -= dt;
+      return; // Completely immobilized!
+    }
+
+    if (this.slowTimer > 0) {
+      this.slowTimer -= dt;
+      if (this.slowTimer <= 0) this.slowFactor = 1.0;
+    }
 
     // Poison DOT
     if (this.poisonTimer > 0) {
@@ -715,10 +737,22 @@ class DefenseEnemy {
       }
     }
 
-    // Slow decay
-    if (this.slowTimer > 0) {
-      this.slowTimer -= dt;
-      if (this.slowTimer <= 0) this.slowFactor = 1.0;
+    // Thief Raccoon Stealing Logic
+    if (this.stealsGold && this.stealCooldown > 0) {
+      this.stealCooldown -= dt;
+    }
+    if (this.stealsGold && this.stealCooldown <= 0 && engine.gold > 15) {
+      // Check proximity to towers
+      engine.towers.forEach((t) => {
+        if (Math.hypot(t.x - this.x, t.y - this.y) <= 120 && this.stealCooldown <= 0) {
+          const stolen = Math.min(engine.gold, 15);
+          engine.gold -= stolen;
+          this.stolenGoldTotal += stolen;
+          this.stealCooldown = 4.0;
+          engine.createFloatingText(this.x, this.y - 18, `-${stolen}G STOLEN!`, '#ff0055', 14);
+          engine.notifyState();
+        }
+      });
     }
 
     // Move towards next waypoint
@@ -766,6 +800,10 @@ class DefenseEnemy {
     }
   }
 
+  applyFreeze(duration) {
+    this.freezeTimer = Math.max(this.freezeTimer, duration);
+  }
+
   applySlow(factor, duration) {
     this.slowFactor = Math.min(this.slowFactor, 1 - factor);
     this.slowTimer = Math.max(this.slowTimer, duration);
@@ -778,13 +816,13 @@ class DefenseEnemy {
 
   render(ctx) {
     if (this.stealth && this.revealedTimer <= 0) {
-      ctx.globalAlpha = 0.35; // Translucent stealth
+      ctx.globalAlpha = 0.35;
     }
 
     ctx.save();
     ctx.translate(this.x, this.y);
 
-    // Enemy Base Glow
+    // Base Glow
     ctx.beginPath();
     ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
     ctx.fillStyle = this.color;
@@ -792,13 +830,12 @@ class DefenseEnemy {
     ctx.shadowBlur = this.isBoss ? 16 : 8;
     ctx.fill();
 
-    // Poison / Slow Aura Indicators
-    if (this.poisonTimer > 0) {
-      ctx.strokeStyle = '#39ff14';
-      ctx.lineWidth = 2;
+    // Freeze / Slow / Poison Rings
+    if (this.freezeTimer > 0) {
+      ctx.strokeStyle = '#87cefa';
+      ctx.lineWidth = 3;
       ctx.stroke();
-    }
-    if (this.slowTimer > 0) {
+    } else if (this.slowTimer > 0) {
       ctx.strokeStyle = '#00f0ff';
       ctx.lineWidth = 2;
       ctx.stroke();
@@ -839,14 +876,12 @@ class DefenseTower {
     Object.assign(this, proto);
     this.totalInvested = proto.cost;
     this.cooldownTimer = 0;
-    this.kills = 0;
-    this.totalDamage = 0;
     this.economyTimer = 0;
     this.angle = 0;
   }
 
   update(dt, enemies, allTowers, engine, hasFrenzy = false) {
-    // 1. Hen Periodic Economy Bonus
+    // 1. Hen Periodic Economy
     if (this.economyBonus) {
       this.economyTimer += dt;
       if (this.economyTimer >= 10) {
@@ -856,7 +891,7 @@ class DefenseTower {
       }
     }
 
-    // 2. Check Rooster Dawn Cry Aura from nearby towers
+    // 2. Rooster Aura
     let attackSpeedMultiplier = hasFrenzy ? 2.0 : 1.0;
     allTowers.forEach((other) => {
       if (other !== this && other.typeId === 'rooster') {
@@ -867,7 +902,6 @@ class DefenseTower {
       }
     });
 
-    // 3. Attack Cooldown
     if (this.cooldownTimer > 0) {
       this.cooldownTimer -= dt * attackSpeedMultiplier;
     }
@@ -891,14 +925,12 @@ class DefenseTower {
 
       const dist = Math.hypot(e.x - this.x, e.y - this.y);
       if (dist <= this.range) {
-        // Eagle targets highest HP boss/elite globally
         if (this.typeId === 'eagle') {
           if (e.hp > maxHp) {
             maxHp = e.hp;
             best = e;
           }
         } else {
-          // Standard: target closest to finish line
           if (e.waypointIndex > maxProgress) {
             maxProgress = e.waypointIndex;
             best = e;
@@ -914,28 +946,27 @@ class DefenseTower {
     engine.audio.playShoot(this.projectileType);
 
     if (this.typeId === 'deer') {
-      // Ground Stomp Wave AOE around deer
+      // Deer Ground Stomp AOE
       engine.enemies.forEach((e) => {
         if (Math.hypot(e.x - this.x, e.y - this.y) <= this.range) {
           e.takeDamage(this.damage, engine);
-          e.applySlow(this.slowPercent || 0.4, this.slowDuration || 2.0);
+          e.applySlow(this.slowPercent || 0.5, this.slowDuration || 2.5);
         }
       });
       engine.createParticleBurst(this.x, this.y, '#00e5ff', 18);
     } else if (this.typeId === 'owl') {
-      // Chain Lightning
+      // Chain Lightning + True sight
       let curr = target;
       let hitCount = 0;
       const hitList = [curr];
 
-      while (curr && hitCount < (this.chainTargets || 3)) {
+      while (curr && hitCount < (this.chainTargets || 4)) {
         curr.takeDamage(this.damage, engine);
-        curr.revealedTimer = 4.0; // Reveal stealth!
+        curr.revealedTimer = 4.0;
         hitCount++;
 
-        // Find next closest
         let nextTarget = null;
-        let minDist = 140;
+        let minDist = 160;
         engine.enemies.forEach((e) => {
           if (!hitList.includes(e) && !e.isDead) {
             const d = Math.hypot(e.x - curr.x, e.y - curr.y);
@@ -960,7 +991,7 @@ class DefenseTower {
           y: this.y,
           target: target,
           tower: this,
-          speed: this.projectileType === 'carrot_bullet' ? 650 : 400,
+          speed: this.projectileType === 'carrot_bullet' ? 700 : 450,
           color: this.projectileColor,
           type: this.projectileType,
         })
@@ -974,12 +1005,12 @@ class DefenseTower {
 
     // Tower Base Platform
     ctx.beginPath();
-    ctx.arc(0, 0, tileSize * 0.38, 0, Math.PI * 2);
+    ctx.arc(0, 0, tileSize * 0.4, 0, Math.PI * 2);
     ctx.fillStyle = '#1c2420';
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = 2;
-    ctx.shadowColor = this.color;
-    ctx.shadowBlur = 6 + this.level * 4;
+    ctx.strokeStyle = this.level === 4 ? '#ffd700' : this.color;
+    ctx.lineWidth = this.level === 4 ? 3.5 : 2;
+    ctx.shadowColor = this.level === 4 ? '#ffd700' : this.color;
+    ctx.shadowBlur = 6 + this.level * 5;
     ctx.fill();
     ctx.stroke();
 
@@ -989,12 +1020,14 @@ class DefenseTower {
     ctx.textBaseline = 'middle';
     ctx.fillText(this.icon, 0, 0);
 
-    // Level Badges
+    // Level Badges (⭐, ⭐⭐, ⭐⭐⭐, 👑)
     if (this.level > 1) {
-      ctx.font = '12px sans-serif';
+      ctx.font = this.level === 4 ? '15px sans-serif' : '12px sans-serif';
       ctx.fillStyle = '#ffd700';
-      const badge = this.level === 3 ? '👑' : '⭐';
-      ctx.fillText(badge, tileSize * 0.28, -tileSize * 0.28);
+      let badge = '⭐';
+      if (this.level === 3) badge = '⭐⭐';
+      if (this.level === 4) badge = '👑';
+      ctx.fillText(badge, tileSize * 0.26, -tileSize * 0.26);
     }
 
     ctx.restore();
@@ -1033,8 +1066,36 @@ class DefenseProjectile {
     this.isDestroyed = true;
     const t = this.tower;
 
-    if (t.splashRadius) {
-      // AOE Explosion (Hen)
+    if (t.projectileType === 'golden_paw') {
+      // Golden Shaded Cat AOE Explosion + Bonus Gold Drop!
+      engine.enemies.forEach((e) => {
+        if (Math.hypot(e.x - this.x, e.y - this.y) <= (t.splashRadius || 100)) {
+          const isCrit = Math.random() < (t.critChance || 0.4);
+          const dmg = isCrit ? t.damage * (t.critMultiplier || 2.8) : t.damage;
+          e.takeDamage(dmg, engine, isCrit);
+        }
+      });
+      // 30% chance to drop bonus coin
+      if (Math.random() < 0.3) {
+        engine.gold += 15;
+        engine.createFloatingText(this.x, this.y - 20, '+15G LUCKY COIN! 💰', '#ffd700', 16);
+      }
+      engine.createParticleBurst(this.x, this.y, '#ffd700', 22);
+      engine.audio.playExplode();
+    } else if (t.projectileType === 'blizzard_storm') {
+      // British Longhair Blue Cat Blizzard AOE + Freeze!
+      engine.enemies.forEach((e) => {
+        if (Math.hypot(e.x - this.x, e.y - this.y) <= (t.splashRadius || 130)) {
+          e.takeDamage(t.damage, engine);
+          if (Math.random() < (t.freezeChance || 0.5)) {
+            e.applyFreeze(t.freezeDuration || 2.0);
+          }
+        }
+      });
+      engine.createParticleBurst(this.x, this.y, '#87cefa', 24);
+      engine.audio.playExplode();
+    } else if (t.splashRadius) {
+      // Hen Egg Bomb
       engine.enemies.forEach((e) => {
         if (Math.hypot(e.x - this.x, e.y - this.y) <= t.splashRadius) {
           e.takeDamage(t.damage, engine);
@@ -1042,17 +1103,12 @@ class DefenseProjectile {
       });
       engine.createParticleBurst(this.x, this.y, t.projectileColor, 14);
       engine.audio.playExplode();
-    } else if (t.poisonDmg) {
-      // Raccoon Poison
-      this.target.takeDamage(t.damage, engine);
-      this.target.applyPoison(t.poisonDmg, t.poisonDuration || 3);
-      engine.createParticleBurst(this.x, this.y, '#39ff14', 8);
     } else if (t.typeId === 'eagle' && this.target.hp / this.target.maxHp < 0.3) {
       // Eagle 3x Execute
       this.target.takeDamage(t.damage * 3, engine, true);
       engine.createParticleBurst(this.x, this.y, '#bf00ff', 16);
     } else {
-      // Direct Hit (Rabbit, Squirrel, Rooster)
+      // Direct Hit
       const isCrit = Math.random() < (t.critChance || 0);
       const dmg = isCrit ? t.damage * (t.critMultiplier || 2) : t.damage;
       this.target.takeDamage(dmg, engine, isCrit);
@@ -1063,7 +1119,7 @@ class DefenseProjectile {
   render(ctx) {
     ctx.save();
     ctx.beginPath();
-    ctx.arc(this.x, this.y, 4.5, 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, 5, 0, Math.PI * 2);
     ctx.fillStyle = this.color;
     ctx.shadowColor = this.color;
     ctx.shadowBlur = 8;
@@ -1111,8 +1167,8 @@ class DefenseFloatingText {
     this.text = text;
     this.color = color;
     this.size = size;
-    this.life = 0.9;
-    this.maxLife = 0.9;
+    this.life = 0.95;
+    this.maxLife = 0.95;
   }
 
   update(dt) {

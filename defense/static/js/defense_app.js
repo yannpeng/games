@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreDisplay = document.getElementById('val-score');
   const waveDisplay = document.getElementById('val-wave');
   const maxWaveDisplay = document.getElementById('val-max-wave');
+  const towersDisplay = document.getElementById('val-towers');
+  const maxTowersDisplay = document.getElementById('val-max-towers');
 
   const btnStartWave = document.getElementById('btn-start-wave');
   const btnSpeed1x = document.getElementById('btn-speed-1x');
@@ -70,16 +72,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const nameStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.nameKey)) || t.nameKey;
       const traitStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.traitKey)) || t.traitKey;
 
+      const isLocked = engine.wave < (t.unlockWave || 1);
+
       card.innerHTML = `
         <div class="card-icon" style="background: ${t.color}22; border-color: ${t.color};">${t.icon}</div>
         <div class="card-info">
           <div class="card-title">${nameStr}</div>
-          <div class="card-trait">${traitStr}</div>
-          <div class="card-cost">💰 ${t.cost}G</div>
+          <div class="card-trait">${isLocked ? `🔒 第 ${t.unlockWave} 波解锁` : traitStr}</div>
+          <div class="card-cost">${isLocked ? `W${t.unlockWave}` : `💰 ${t.cost}G`}</div>
         </div>
+        ${isLocked ? `<div class="lock-overlay">🔒 W${t.unlockWave}</div>` : ''}
       `;
 
       card.addEventListener('click', () => {
+        if (engine.wave < (t.unlockWave || 1)) {
+          engine.createFloatingText(engine.width / 2, engine.height / 2, `第 ${t.unlockWave} 波后解锁该神兽！`, '#ffd700', 20);
+          return;
+        }
+
         if (engine.placingTowerType === key) {
           engine.placingTowerType = null; // Cancel
         } else {
@@ -95,11 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateDeckStates() {
+    const isMaxed = engine.towers.length >= engine.maxTowers;
+
     document.querySelectorAll('.tower-card').forEach((card) => {
       const type = card.dataset.towerType;
       const proto = DefenseConfig.TOWERS[type];
+      const isLocked = engine.wave < (proto.unlockWave || 1);
+
       card.classList.toggle('active', engine.placingTowerType === type);
-      card.classList.toggle('disabled', engine.gold < proto.cost);
+      card.classList.toggle('disabled', isLocked || engine.gold < proto.cost || isMaxed);
+      card.classList.toggle('locked', isLocked);
     });
   }
 
@@ -110,6 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (scoreDisplay) scoreDisplay.textContent = state.score;
     if (waveDisplay) waveDisplay.textContent = state.wave;
     if (maxWaveDisplay) maxWaveDisplay.textContent = state.maxWaves;
+    if (towersDisplay) towersDisplay.textContent = state.towerCount;
+    if (maxTowersDisplay) maxTowersDisplay.textContent = state.maxTowers;
+
+    if (towersDisplay && towersDisplay.parentElement) {
+      towersDisplay.parentElement.classList.toggle('limit-reached', state.towerCount >= state.maxTowers);
+    }
 
     if (btnStartWave) {
       btnStartWave.disabled = engine.waveActive || state.isGameOver || state.isVictory;
@@ -154,19 +175,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.nameKey)) || t.nameKey;
     const traitStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.traitKey)) || t.traitKey;
 
-    if (inspectorTitle) inspectorTitle.innerHTML = `${t.icon} ${nameStr} <span class="badge-lvl">Lv.${t.level}</span>`;
+    let badgeText = `Lv.${t.level}`;
+    if (t.level === 2) badgeText = '⭐⭐ 进阶';
+    if (t.level === 3) badgeText = '⭐⭐⭐ 大师';
+    if (t.level === 4) badgeText = '👑 终极觉醒';
+
+    if (inspectorTitle) inspectorTitle.innerHTML = `${t.icon} ${nameStr} <span class="badge-lvl lvl-${t.level}">${badgeText}</span>`;
     if (inspectorDesc) inspectorDesc.textContent = traitStr;
     if (inspectorDmg) inspectorDmg.textContent = t.damage;
-    if (inspectorRng) inspectorRng.textContent = t.range;
+    if (inspectorRng) inspectorRng.textContent = t.range >= 9000 ? '全图' : t.range;
     if (inspectorSpd) inspectorSpd.textContent = `${(1 / t.cooldown).toFixed(1)}/s`;
 
     if (btnUpgrade) {
-      if (t.level >= 3) {
+      if (t.level >= 4) {
         btnUpgrade.disabled = true;
         if (upgradeCostSpan) upgradeCostSpan.textContent = 'MAX';
       } else {
         btnUpgrade.disabled = engine.gold < t.upgradeCost;
-        if (upgradeCostSpan) upgradeCostSpan.textContent = `${t.upgradeCost}G`;
+        if (upgradeCostSpan) {
+          const nextLvlLabel = t.level === 3 ? '👑 觉醒' : '⭐ 强化';
+          upgradeCostSpan.textContent = `${nextLvlLabel} (${t.upgradeCost}G)`;
+        }
       }
     }
 
@@ -211,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Attempt building tower
       const success = engine.buildTower(engine.placingTowerType, col, row);
       if (success) {
-        // Keep placing if user holds shift, else deselect
         if (!e.shiftKey) {
           engine.placingTowerType = null;
         }
@@ -239,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnStartWave) {
     btnStartWave.addEventListener('click', () => {
       engine.startNextWave();
+      renderTowerDeck(); // Refresh unlocks
     });
   }
 
@@ -271,6 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnRestart.addEventListener('click', () => {
       if (confirm('确定要重新开始当前关卡吗？')) {
         engine.resetGame();
+        renderTowerDeck();
         engine.start();
       }
     });
@@ -317,6 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mapSelectDropdown.addEventListener('change', (e) => {
       const idx = parseInt(e.target.value, 10);
       engine.setMap(idx);
+      renderTowerDeck();
       engine.start();
     });
   }
@@ -324,6 +355,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Engine Callbacks ---
   engine.onStateChange = (state) => {
     updateHUD(state);
+  };
+
+  engine.onWaveComplete = (wave) => {
+    renderTowerDeck(); // Unlock cats when wave reaches threshold!
   };
 
   engine.onGameOver = (res) => {
@@ -343,6 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnRetry.addEventListener('click', () => {
       if (gameOverModal) gameOverModal.style.display = 'none';
       engine.resetGame();
+      renderTowerDeck();
       engine.start();
     });
   }
@@ -351,6 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnVictoryRestart.addEventListener('click', () => {
       if (victoryModal) victoryModal.style.display = 'none';
       engine.resetGame();
+      renderTowerDeck();
       engine.start();
     });
   }
