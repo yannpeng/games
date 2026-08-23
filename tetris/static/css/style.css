@@ -1920,7 +1920,7 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20;
   }
 
-  /* VS AI Mode on Mobile: Consistent Top HUD + 62% Player Board (Left) + 35% AI Board & Info (Right) */
+  /* VS AI Mode on Mobile: Consistent Top HUD + Strict 1:2 Ratio Dual Boards */
   .mode-vs_ai .game-boards-container {
     display: flex;
     flex-direction: row;
@@ -1934,12 +1934,11 @@ body.is-desktop-device .desktop-only {
     max-height: calc(100dvh - clamp(170px, 22vh, 205px));
   }
 
-  /* Big Main Player Board */
+  /* Big Main Player Board (Strict 1:2 Aspect Ratio) */
   .mode-vs_ai .player-section {
-    height: 100%;
+    height: auto;
     max-height: 100%;
-    width: auto;
-    max-width: 63%;
+    width: clamp(180px, 56vw, 230px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1947,28 +1946,37 @@ body.is-desktop-device .desktop-only {
     flex-shrink: 0;
   }
 
+  .mode-vs_ai .player-section .matrix-title-bar {
+    width: 100%;
+    padding: 0 2px;
+    margin-bottom: 2px;
+  }
+
   .mode-vs_ai .player-section .matrix-wrapper {
-    height: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: auto;
     aspect-ratio: 10 / 20 !important;
-    width: auto;
-    max-width: 100%;
     border-radius: var(--radius-md);
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
   }
 
   .mode-vs_ai #matrix-canvas {
     width: 100%;
     height: 100%;
     aspect-ratio: 10 / 20 !important;
+    object-fit: fill;
     display: block;
   }
 
-  /* Compact Right Column: Proportional Mini AI Board + Match Info */
+  /* Compact Right Column: Proportional 1:2 Mini AI Board + Match Info */
   .mode-vs_ai .ai-section {
-    height: 100%;
+    height: auto;
     max-height: 100%;
-    width: clamp(100px, 32vw, 135px);
+    width: clamp(90px, 28vw, 120px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1982,7 +1990,6 @@ body.is-desktop-device .desktop-only {
     margin-top: 0;
     margin-bottom: 1px;
     width: 100%;
-    max-width: 135px;
   }
 
   .mode-vs_ai .ai-section .matrix-label {
@@ -1995,10 +2002,8 @@ body.is-desktop-device .desktop-only {
   }
 
   .mode-vs_ai .ai-section .matrix-wrapper {
-    width: auto;
-    max-width: 100%;
+    width: 100%;
     height: auto;
-    max-height: clamp(180px, 26vh, 230px);
     aspect-ratio: 10 / 20 !important;
     border-radius: var(--radius-sm);
     border: 1.5px solid rgba(255, 0, 127, 0.45);
@@ -2008,12 +2013,14 @@ body.is-desktop-device .desktop-only {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    box-sizing: border-box;
   }
 
   .mode-vs_ai #ai-matrix-canvas {
     width: 100%;
     height: 100%;
     aspect-ratio: 10 / 20 !important;
+    object-fit: fill;
     display: block;
   }
 
@@ -2047,7 +2054,6 @@ body.is-desktop-device .desktop-only {
     flex-direction: column;
     gap: 2px;
     width: 100%;
-    max-width: 135px;
     box-sizing: border-box;
   }
 
