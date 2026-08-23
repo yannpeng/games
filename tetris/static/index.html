@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>TETRIS PRO - Adaptive Cyberpunk Arcade Edition</title>
-  <link rel="stylesheet" href="/static/css/style.css?v=5.0.0">
+  <link rel="stylesheet" href="/static/css/style.css?v=5.1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -366,15 +366,37 @@
               <span class="badge badge-cyan" id="ai-difficulty-badge">AI · Normal</span>
             </div>
           </div>
-          <!-- Mobile AI Match Info Card -->
-          <div class="card ai-match-card touch-only">
-            <div class="ai-match-row">
-              <span class="m-label" data-i18n="tetris.diff_title">Diff</span>
-              <strong id="ai-match-diff-val">Normal</strong>
+          <!-- Mobile VS Right Column Stack (NEXT 3, HOLD & MATCH INFO) -->
+          <div class="vs-right-column-extras touch-only">
+            <!-- Next 3 Pieces Card -->
+            <div class="card vs-mini-card vs-next-box">
+              <div class="vs-card-header">
+                <span class="vs-card-label" data-i18n="tetris.next">NEXT</span>
+                <span class="badge badge-mini">3</span>
+              </div>
+              <canvas id="vs-next-canvas-mobile" width="220" height="70"></canvas>
             </div>
-            <div class="ai-match-row">
-              <span class="m-label" data-i18n="tetris.seq_title_short">Seq</span>
-              <strong id="ai-match-seq-val">Sync</strong>
+
+            <!-- Hold & Match Info Row -->
+            <div class="vs-hold-info-row">
+              <div class="card vs-mini-card vs-hold-box">
+                <div class="vs-card-header">
+                  <span class="vs-card-label" data-i18n="tetris.hold">HOLD</span>
+                </div>
+                <canvas id="vs-hold-canvas-mobile" width="80" height="80"></canvas>
+              </div>
+
+              <!-- Mobile AI Match Info Card -->
+              <div class="card vs-mini-card ai-match-card">
+                <div class="ai-match-row">
+                  <span class="m-label" data-i18n="tetris.diff_title">Diff</span>
+                  <strong id="ai-match-diff-val">Normal</strong>
+                </div>
+                <div class="ai-match-row">
+                  <span class="m-label" data-i18n="tetris.seq_title_short">Seq</span>
+                  <strong id="ai-match-seq-val">Sync</strong>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -547,12 +569,12 @@
   <div id="toast" class="toast hidden"></div>
 
   <!-- Scripts -->
-  <script src="/static/js/config.js?v=5.0.0"></script>
-  <script src="/static/js/audio.js?v=5.0.0"></script>
-  <script src="/static/js/i18n.js?v=5.0.0"></script>
-  <script src="/static/js/api.js?v=5.0.0"></script>
-  <script src="/static/js/tetris.js?v=5.0.0"></script>
-  <script src="/static/js/ai.js?v=5.0.0"></script>
-  <script src="/static/js/app.js?v=5.0.0"></script>
+  <script src="/static/js/config.js?v=5.1.0"></script>
+  <script src="/static/js/audio.js?v=5.1.0"></script>
+  <script src="/static/js/i18n.js?v=5.1.0"></script>
+  <script src="/static/js/api.js?v=5.1.0"></script>
+  <script src="/static/js/tetris.js?v=5.1.0"></script>
+  <script src="/static/js/ai.js?v=5.1.0"></script>
+  <script src="/static/js/app.js?v=5.1.0"></script>
 </body>
 </html>

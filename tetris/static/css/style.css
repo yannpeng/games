@@ -1894,7 +1894,11 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20;
   }
 
-  /* VS AI Mode on Mobile: Proportional 60% Player Board + 36% AI Board & Info */
+  /* VS AI Mode on Mobile: 60% Player Board (Left) + 36% AI Column (Right) */
+  .mode-vs_ai .mobile-previews-row {
+    display: none !important;
+  }
+
   .mode-vs_ai .game-boards-container {
     display: flex;
     flex-direction: row;
@@ -1904,11 +1908,12 @@ body.is-desktop-device .desktop-only {
     width: 100%;
     max-width: 440px;
     margin: 0 auto;
+    max-height: calc(100dvh - clamp(140px, 18vh, 175px));
   }
 
   /* Big Main Player Board */
   .mode-vs_ai .player-section {
-    width: clamp(190px, 58vw, 240px);
+    width: clamp(200px, 60vw, 250px);
     height: auto;
     display: flex;
     flex-direction: column;
@@ -1921,7 +1926,7 @@ body.is-desktop-device .desktop-only {
     width: 100%;
     aspect-ratio: 10 / 20;
     height: auto;
-    max-height: calc(100dvh - clamp(170px, 22vh, 210px));
+    max-height: calc(100dvh - clamp(140px, 18vh, 175px));
     border-radius: var(--radius-md);
   }
 
@@ -1931,15 +1936,15 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20;
   }
 
-  /* Compact Right Column: Proportional Mini AI Board + Match Info */
+  /* Compact Right Column: Mini AI Board + NEXT 3 + HOLD & MATCH INFO */
   .mode-vs_ai .ai-section {
-    width: clamp(110px, 34vw, 140px);
+    width: clamp(115px, 35vw, 145px);
     height: auto;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    gap: 4px;
+    gap: 3px;
     flex-shrink: 0;
   }
 
@@ -1950,11 +1955,11 @@ body.is-desktop-device .desktop-only {
   }
 
   .mode-vs_ai .ai-section .matrix-label {
-    font-size: 0.64rem;
+    font-size: 0.62rem;
   }
 
   .mode-vs_ai .ai-section .attack-gauge {
-    font-size: 0.58rem;
+    font-size: 0.56rem;
     padding: 1px 3px;
   }
 
@@ -1962,7 +1967,7 @@ body.is-desktop-device .desktop-only {
     width: 100%;
     aspect-ratio: 10 / 20;
     height: auto;
-    max-height: calc((100dvh - clamp(170px, 22vh, 210px)) * 0.58);
+    max-height: clamp(160px, 24vh, 200px);
     border-radius: var(--radius-sm);
     border: 1.5px solid rgba(255, 0, 127, 0.45);
     box-shadow: 0 0 15px rgba(255, 0, 127, 0.18);
@@ -1975,27 +1980,98 @@ body.is-desktop-device .desktop-only {
   }
 
   .mode-vs_ai .ai-badge-overlay .badge {
-    font-size: 0.5rem;
+    font-size: 0.48rem;
     padding: 1px 3px;
   }
 
-  .ai-match-card {
-    padding: 4px 6px;
-    border-radius: 6px;
-    background: rgba(10, 14, 28, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Right Column Extras on Mobile (Next, Hold, Match Info) */
+  .vs-right-column-extras {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
     width: 100%;
+  }
+
+  .vs-mini-card {
+    background: rgba(10, 14, 28, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: var(--radius-sm);
     box-sizing: border-box;
+  }
+
+  .vs-next-box {
+    padding: 2px 4px 1px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .vs-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    line-height: 1;
+    margin-bottom: 1px;
+  }
+
+  .vs-card-label {
+    font-family: var(--font-digital);
+    font-size: 0.5rem;
+    color: var(--color-primary);
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  #vs-next-canvas-mobile {
+    width: 100%;
+    height: 26px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .vs-hold-info-row {
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    width: 100%;
+  }
+
+  .vs-hold-box {
+    flex: 1;
+    padding: 2px 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #vs-hold-canvas-mobile {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .ai-match-card {
+    flex: 1.3;
+    padding: 2px 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
+    border-color: rgba(255, 255, 255, 0.12);
   }
 
   .ai-match-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.6rem;
+    font-size: 0.52rem;
+    line-height: 1.1;
   }
 
   .ai-match-row .m-label {
@@ -2005,7 +2081,7 @@ body.is-desktop-device .desktop-only {
   .ai-match-row strong {
     color: var(--color-primary);
     font-family: var(--font-digital);
-    font-size: 0.68rem;
+    font-size: 0.58rem;
   }
 
   /* Overlays on Mobile */
