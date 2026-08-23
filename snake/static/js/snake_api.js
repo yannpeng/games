@@ -7,17 +7,24 @@ const SnakeAPI = {
   GAME_ID: 'snake',
 
   getToken() {
-    return localStorage.getItem('arcade_token') || localStorage.getItem('tetris_token') || null;
+    return localStorage.getItem('arcade_token') || 
+           localStorage.getItem('tetris_auth_token') || 
+           localStorage.getItem('tetris_token') || 
+           localStorage.getItem('snake_token') || null;
   },
 
   setToken(token) {
     localStorage.setItem('arcade_token', token);
+    localStorage.setItem('tetris_auth_token', token);
     localStorage.setItem('tetris_token', token);
+    localStorage.setItem('snake_token', token);
   },
 
   clearToken() {
     localStorage.removeItem('arcade_token');
+    localStorage.removeItem('tetris_auth_token');
     localStorage.removeItem('tetris_token');
+    localStorage.removeItem('snake_token');
   },
 
   async register(username, password) {

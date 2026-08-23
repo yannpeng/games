@@ -7,16 +7,25 @@ const API = {
   USER_KEY: 'tetris_auth_user',
 
   getToken() {
-    return localStorage.getItem(this.TOKEN_KEY);
+    return localStorage.getItem('arcade_token') || 
+           localStorage.getItem('tetris_auth_token') || 
+           localStorage.getItem('tetris_token') || 
+           localStorage.getItem('snake_token') || null;
   },
 
   setAuth(token, user) {
-    localStorage.setItem(this.TOKEN_KEY, token);
+    localStorage.setItem('arcade_token', token);
+    localStorage.setItem('tetris_auth_token', token);
+    localStorage.setItem('tetris_token', token);
+    localStorage.setItem('snake_token', token);
     localStorage.setItem(this.USER_KEY, JSON.stringify(user));
   },
 
   clearAuth() {
-    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem('arcade_token');
+    localStorage.removeItem('tetris_auth_token');
+    localStorage.removeItem('tetris_token');
+    localStorage.removeItem('snake_token');
     localStorage.removeItem(this.USER_KEY);
   },
 

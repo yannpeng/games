@@ -1,6 +1,6 @@
 /**
  * Wildwood Defenders - UI Controller & Application Bridge
- * Handles user interactions, canvas clicks, tower placement, skills, and HUD.
+ * Handles user interactions, canvas clicks, tower placement, skills, HUD, auth, and leaderboards.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,9 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const maxTowersDisplay = document.getElementById('val-max-towers');
 
   const btnStartWave = document.getElementById('btn-start-wave');
-  const btnSpeed1x = document.getElementById('btn-speed-1x');
-  const btnSpeed2x = document.getElementById('btn-speed-2x');
-  const btnSpeed4x = document.getElementById('btn-speed-4x');
+  const speedButtons = document.querySelectorAll('.btn-speed');
   const btnAutoWave = document.getElementById('btn-auto-wave');
   const btnPause = document.getElementById('btn-pause');
   const btnRestart = document.getElementById('btn-restart');
@@ -48,14 +46,51 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnGoldAirdrop = document.getElementById('skill-gold-airdrop');
   const btnAnimalFrenzy = document.getElementById('skill-animal-frenzy');
 
-  // Modals
+  // Game End Modals
   const gameOverModal = document.getElementById('game-over-modal');
   const victoryModal = document.getElementById('victory-modal');
-  const finalScoreSpan = document.getElementById('final-score-val');
-  const finalWaveSpan = document.getElementById('final-wave-val');
-  const victoryScoreSpan = document.getElementById('victory-score-val');
-  const btnRetry = document.getElementById('btn-retry-game');
-  const btnVictoryRestart = document.getElementById('btn-victory-restart');
+  const goWave = document.getElementById('go-wave');
+  const goScore = document.getElementById('go-score');
+  const vicScore = document.getElementById('vic-score');
+  const btnModalRestart = document.getElementById('btn-modal-restart');
+  const btnModalVicRestart = document.getElementById('btn-modal-vic-restart');
+
+  // Auth & Leaderboard Elements
+  const btnOpenLogin = document.getElementById('btn-open-login');
+  const userBadge = document.getElementById('user-badge');
+  const userAvatar = document.getElementById('user-avatar');
+  const displayUsername = document.getElementById('display-username');
+  const btnLogout = document.getElementById('btn-logout');
+  const modalAuth = document.getElementById('modal-auth');
+  const btnCloseAuth = document.getElementById('btn-close-auth');
+  const authTitle = document.getElementById('auth-modal-title');
+  const tabLogin = document.getElementById('tab-login');
+  const tabRegister = document.getElementById('tab-register');
+  const authForm = document.getElementById('auth-form');
+  const authUsername = document.getElementById('auth-username');
+  const authPassword = document.getElementById('auth-password');
+  const authError = document.getElementById('auth-error-msg');
+  const btnAuthSubmit = document.getElementById('btn-auth-submit');
+
+  const btnLeaderboard = document.getElementById('btn-leaderboard');
+  const modalLeaderboard = document.getElementById('modal-leaderboard');
+  const btnCloseLeaderboard = document.getElementById('btn-close-leaderboard');
+  const btnCloseLeaderboardFooter = document.getElementById('btn-close-leaderboard-footer');
+  const btnRefreshLeaderboard = document.getElementById('btn-refresh-leaderboard');
+  const leaderboardTbody = document.getElementById('leaderboard-tbody');
+  const toast = document.getElementById('toast');
+
+  let currentUser = null;
+  let isRegistering = false;
+
+  function showToast(msg, duration = 2500) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.style.display = 'block';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, duration);
+  }
 
   // --- Render Tower Deck ---
   function renderTowerDeck() {
@@ -69,32 +104,39 @@ document.addEventListener('DOMContentLoaded', () => {
       card.className = `tower-card ${engine.placingTowerType === key ? 'active' : ''}`;
       card.dataset.towerType = key;
 
+      const isLocked = engine.wave < t.unlockWave;
+      if (isLocked) {
+        card.classList.add('locked');
+      }
+
       const nameStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.nameKey)) || t.nameKey;
       const traitStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.traitKey)) || t.traitKey;
 
-      const isLocked = (t.unlockWave && t.unlockWave > 0) ? engine.wave < t.unlockWave : false;
-
       card.innerHTML = `
-        <div class="card-icon" style="background: ${t.color}22; border-color: ${t.color};">${t.icon}</div>
+        <div class="card-icon" style="background: ${t.color}22; border-color: ${t.color}">${t.icon}</div>
         <div class="card-info">
           <div class="card-title">${nameStr}</div>
-          <div class="card-trait">${isLocked ? `🔒 第 ${t.unlockWave} 波解锁` : traitStr}</div>
-          <div class="card-cost">${isLocked ? `W${t.unlockWave}` : `💰 ${t.cost}G`}</div>
+          <div class="card-trait">${traitStr}</div>
+          <div class="card-cost">💰 ${t.cost}G</div>
         </div>
-        ${isLocked ? `<div class="lock-overlay">🔒 W${t.unlockWave}</div>` : ''}
+        ${isLocked ? `<div class="lock-overlay">🔒 第${t.unlockWave}波解锁</div>` : ''}
       `;
 
-      card.addEventListener('click', () => {
-        if ((t.unlockWave && t.unlockWave > 0) && engine.wave < t.unlockWave) {
-          engine.createFloatingText(engine.width / 2, engine.height / 2, `第 ${t.unlockWave} 波后解锁该神兽！`, '#ffd700', 20);
+      card.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (isLocked) return;
+
+        if (engine.towers.length >= engine.maxTowers) {
+          engine.createFloatingText(engine.width / 2, engine.height / 2, `MAX TOWERS LIMIT (${engine.maxTowers}) REACHED!`, '#ff0055', 20);
+          engine.shake(0.2, 5);
           return;
         }
 
         if (engine.placingTowerType === key) {
-          engine.placingTowerType = null; // Cancel
+          engine.placingTowerType = null;
         } else {
           engine.placingTowerType = key;
-          engine.selectedTower = null; // Deselect inspector
+          engine.selectedTower = null;
         }
         updateDeckStates();
         updateInspector();
@@ -102,42 +144,71 @@ document.addEventListener('DOMContentLoaded', () => {
 
       towerDeckContainer.appendChild(card);
     });
+
+    updateDeckStates();
   }
 
   function updateDeckStates() {
-    const isMaxed = engine.towers.length >= engine.maxTowers;
+    const cards = towerDeckContainer.querySelectorAll('.tower-card');
+    cards.forEach((card) => {
+      const typeKey = card.dataset.towerType;
+      const t = DefenseConfig.TOWERS[typeKey];
+      const isLocked = engine.wave < t.unlockWave;
 
-    document.querySelectorAll('.tower-card').forEach((card) => {
-      const type = card.dataset.towerType;
-      const proto = DefenseConfig.TOWERS[type];
-      const isLocked = (proto.unlockWave && proto.unlockWave > 0) ? engine.wave < proto.unlockWave : false;
+      if (isLocked) {
+        card.classList.add('disabled');
+        return;
+      }
 
-      card.classList.toggle('active', engine.placingTowerType === type);
-      card.classList.toggle('disabled', isLocked || engine.gold < proto.cost || isMaxed);
-      card.classList.toggle('locked', isLocked);
+      if (engine.placingTowerType === typeKey) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+
+      const isMaxTowers = engine.towers.length >= engine.maxTowers;
+      if (engine.gold < t.cost || isMaxTowers) {
+        card.classList.add('disabled');
+      } else {
+        card.classList.remove('disabled');
+      }
     });
   }
 
-  // --- Update HUD & Inspector ---
+  // --- HUD Updates ---
   function updateHUD(state) {
     if (goldDisplay) goldDisplay.textContent = state.gold;
     if (livesDisplay) livesDisplay.textContent = state.lives;
     if (scoreDisplay) scoreDisplay.textContent = state.score;
     if (waveDisplay) waveDisplay.textContent = state.wave;
-    if (maxWaveDisplay) maxWaveDisplay.textContent = state.maxWaves;
-    if (towersDisplay) towersDisplay.textContent = state.towerCount;
+    if (maxWaveDisplay) maxWaveDisplay.textContent = state.maxWave;
+    if (towersDisplay) {
+      towersDisplay.textContent = state.towers.length;
+      const statTowersContainer = towersDisplay.closest('.stat-towers');
+      if (statTowersContainer) {
+        if (state.towers.length >= state.maxTowers) {
+          statTowersContainer.classList.add('limit-reached');
+        } else {
+          statTowersContainer.classList.remove('limit-reached');
+        }
+      }
+    }
     if (maxTowersDisplay) maxTowersDisplay.textContent = state.maxTowers;
 
-    if (towersDisplay && towersDisplay.parentElement) {
-      towersDisplay.parentElement.classList.toggle('limit-reached', state.towerCount >= state.maxTowers);
+    if (btnStartWave) {
+      btnStartWave.disabled = state.waveActive || state.isGameOver || state.isVictory;
     }
 
-    if (btnStartWave) {
-      btnStartWave.disabled = engine.waveActive || state.isGameOver || state.isVictory;
+    if (btnAutoWave) {
+      if (state.autoWave) {
+        btnAutoWave.classList.add('active');
+      } else {
+        btnAutoWave.classList.remove('active');
+      }
     }
 
     if (btnPause) {
-      btnPause.textContent = state.isPaused ? '▶️ 继续' : '⏸️ 暂停';
+      btnPause.innerHTML = state.isPaused ? '▶️ <span data-i18n="defense.pause">继续</span>' : '⏸️ <span data-i18n="defense.pause">暂停</span>';
     }
 
     // Update Skill Cooldowns
@@ -239,7 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (col < 0 || col >= engine.cols || row < 0 || row >= engine.rows) return;
 
     if (engine.placingTowerType) {
-      // Attempt building tower
       const success = engine.buildTower(engine.placingTowerType, col, row);
       if (success) {
         if (!isShift) {
@@ -247,7 +317,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     } else {
-      // Select clicked tower if present
       const cell = engine.grid[row][col];
       engine.selectedTower = cell.tower || null;
     }
@@ -261,7 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
     handlePlacementClick(col, row, e.shiftKey);
   });
 
-  // Mobile Touchscreen Support
   canvas.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) {
       const { col, row } = getCanvasTileCoords(e);
@@ -280,51 +348,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: false });
 
-  // Right-click to cancel placement
   canvas.addEventListener('contextmenu', (e) => {
     e.preventDefault();
     engine.placingTowerType = null;
-    engine.selectedTower = null;
     updateDeckStates();
-    updateInspector();
   });
 
-  // --- Controls & Speed ---
+  // --- Controls Button Listeners ---
   if (btnStartWave) {
     btnStartWave.addEventListener('click', () => {
       engine.startNextWave();
-      renderTowerDeck(); // Refresh unlocks
     });
   }
 
-  function setSpeedUI(speed) {
-    engine.setSpeed(speed);
-    [btnSpeed1x, btnSpeed2x, btnSpeed4x].forEach((btn) => {
-      if (btn) btn.classList.remove('active');
+  speedButtons.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      speedButtons.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const spd = parseInt(btn.dataset.speed, 10) || 1;
+      engine.setSpeed(spd);
     });
-    if (speed === 1 && btnSpeed1x) btnSpeed1x.classList.add('active');
-    if (speed === 2 && btnSpeed2x) btnSpeed2x.classList.add('active');
-    if (speed === 4 && btnSpeed4x) btnSpeed4x.classList.add('active');
-  }
-
-  if (btnSpeed1x) btnSpeed1x.addEventListener('click', () => setSpeedUI(1));
-  if (btnSpeed2x) btnSpeed2x.addEventListener('click', () => setSpeedUI(2));
-  if (btnSpeed4x) btnSpeed4x.addEventListener('click', () => setSpeedUI(4));
+  });
 
   if (btnAutoWave) {
     btnAutoWave.addEventListener('click', () => {
-      const active = engine.toggleAutoWave();
-      btnAutoWave.classList.toggle('active', active);
+      engine.toggleAutoWave();
+      updateHUD(engine);
     });
   }
 
   if (btnPause) {
-    btnPause.addEventListener('click', () => engine.pause());
+    btnPause.addEventListener('click', () => {
+      engine.togglePause();
+      updateHUD(engine);
+    });
   }
 
   if (btnRestart) {
     btnRestart.addEventListener('click', () => {
-      if (confirm('确定要重新开始当前关卡吗？')) {
+      if (confirm('确定要重置当前防线吗？')) {
         engine.resetGame();
         renderTowerDeck();
         engine.start();
@@ -334,12 +396,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnAudioToggle) {
     btnAudioToggle.addEventListener('click', () => {
-      const muted = DefenseAudio.toggleMute();
-      btnAudioToggle.textContent = muted ? '🔇 静音' : '🔊 音效';
+      const isMuted = engine.audio.toggleMute();
+      btnAudioToggle.innerHTML = isMuted ? '🔇 <span data-i18n="defense.audio">静音</span>' : '🔊 <span data-i18n="defense.audio">音效</span>';
     });
   }
 
-  // --- Upgrade & Sell Handlers ---
   if (btnUpgrade) {
     btnUpgrade.addEventListener('click', () => {
       if (engine.selectedTower) {
@@ -378,30 +439,189 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // --- Auth Handlers ---
+  async function checkAuthStatus() {
+    try {
+      const user = await DefenseAPI.getCurrentUser();
+      if (user) {
+        currentUser = user;
+        if (displayUsername) displayUsername.textContent = user.username;
+        if (btnOpenLogin) btnOpenLogin.style.display = 'none';
+        if (userBadge) userBadge.classList.remove('hidden');
+
+        if (user.language && user.language !== ArcadeI18n.getLanguage()) {
+          ArcadeI18n.setLanguage(user.language, false);
+        }
+      } else {
+        currentUser = null;
+        if (btnOpenLogin) btnOpenLogin.style.display = 'inline-flex';
+        if (userBadge) userBadge.classList.add('hidden');
+      }
+    } catch {
+      currentUser = null;
+      if (btnOpenLogin) btnOpenLogin.style.display = 'inline-flex';
+      if (userBadge) userBadge.classList.add('hidden');
+    }
+  }
+
+  function setupAuthListeners() {
+    if (btnOpenLogin) {
+      btnOpenLogin.addEventListener('click', () => openAuthModal(false));
+    }
+    if (btnCloseAuth) {
+      btnCloseAuth.addEventListener('click', () => {
+        if (modalAuth) modalAuth.style.display = 'none';
+      });
+    }
+    if (tabLogin) {
+      tabLogin.addEventListener('click', () => openAuthModal(false));
+    }
+    if (tabRegister) {
+      tabRegister.addEventListener('click', () => openAuthModal(true));
+    }
+    if (btnLogout) {
+      btnLogout.addEventListener('click', () => {
+        if (confirm(ArcadeI18n.t('auth.confirm_logout'))) {
+          DefenseAPI.clearToken();
+          currentUser = null;
+          checkAuthStatus();
+          showToast('👋 Logged out successfully');
+        }
+      });
+    }
+    if (authForm) {
+      authForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        authError.style.display = 'none';
+        const uname = authUsername.value.trim();
+        const pwd = authPassword.value;
+
+        btnAuthSubmit.disabled = true;
+        try {
+          if (isRegistering) {
+            await DefenseAPI.register(uname, pwd);
+            showToast(`🎉 Welcome ${uname}!`);
+          } else {
+            await DefenseAPI.login(uname, pwd);
+            showToast(`👋 Welcome back, ${uname}!`);
+          }
+          await checkAuthStatus();
+          if (modalAuth) modalAuth.style.display = 'none';
+        } catch (err) {
+          authError.textContent = err.message;
+          authError.style.display = 'block';
+        } finally {
+          btnAuthSubmit.disabled = false;
+        }
+      });
+    }
+  }
+
+  function openAuthModal(registerMode) {
+    isRegistering = registerMode;
+    if (authError) authError.style.display = 'none';
+    if (authUsername) authUsername.value = '';
+    if (authPassword) authPassword.value = '';
+
+    if (registerMode) {
+      if (authTitle) authTitle.textContent = ArcadeI18n.t('auth.reg_title');
+      if (tabRegister) tabRegister.classList.add('active');
+      if (tabLogin) tabLogin.classList.remove('active');
+      if (btnAuthSubmit) btnAuthSubmit.textContent = ArcadeI18n.t('auth.btn_reg');
+    } else {
+      if (authTitle) authTitle.textContent = ArcadeI18n.t('auth.login_title');
+      if (tabLogin) tabLogin.classList.add('active');
+      if (tabRegister) tabRegister.classList.remove('active');
+      if (btnAuthSubmit) btnAuthSubmit.textContent = ArcadeI18n.t('auth.btn_login');
+    }
+    if (modalAuth) modalAuth.style.display = 'flex';
+  }
+
+  // --- Leaderboard Modal ---
+  function setupLeaderboardListeners() {
+    if (btnLeaderboard) {
+      btnLeaderboard.addEventListener('click', () => {
+        if (modalLeaderboard) modalLeaderboard.style.display = 'flex';
+        loadLeaderboardData();
+      });
+    }
+    if (btnCloseLeaderboard) {
+      btnCloseLeaderboard.addEventListener('click', () => {
+        if (modalLeaderboard) modalLeaderboard.style.display = 'none';
+      });
+    }
+    if (btnCloseLeaderboardFooter) {
+      btnCloseLeaderboardFooter.addEventListener('click', () => {
+        if (modalLeaderboard) modalLeaderboard.style.display = 'none';
+      });
+    }
+    if (btnRefreshLeaderboard) {
+      btnRefreshLeaderboard.addEventListener('click', loadLeaderboardData);
+    }
+  }
+
+  async function loadLeaderboardData() {
+    if (!leaderboardTbody) return;
+    leaderboardTbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:16px;">${ArcadeI18n.t('lb.loading')}</td></tr>`;
+
+    try {
+      const data = await DefenseAPI.getTop50();
+      const scores = data.scores || [];
+
+      if (scores.length === 0) {
+        leaderboardTbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:#81c784;">${ArcadeI18n.t('lb.empty')}</td></tr>`;
+        return;
+      }
+
+      leaderboardTbody.innerHTML = scores
+        .map((item, idx) => {
+          let rankBadge = `${idx + 1}`;
+          if (idx === 0) rankBadge = '🥇 1';
+          else if (idx === 1) rankBadge = '🥈 2';
+          else if (idx === 2) rankBadge = '🥉 3';
+
+          const timeFormatted = item.played_at ? item.played_at.replace('T', ' ').substring(0, 16) : '-';
+
+          return `
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+              <td style="padding: 8px 10px;"><strong style="color:var(--accent-green);font-family:monospace;">${rankBadge}</strong></td>
+              <td style="padding: 8px 10px;"><strong>${item.username}</strong></td>
+              <td style="padding: 8px 10px;"><span style="color:var(--accent-gold);font-weight:bold;font-family:monospace;">${item.score.toLocaleString()}</span></td>
+              <td style="padding: 8px 10px;">Wave ${item.level}</td>
+              <td style="padding: 8px 10px;color:#81c784;font-size:12px;">${timeFormatted}</td>
+            </tr>
+          `;
+        })
+        .join('');
+    } catch (e) {
+      leaderboardTbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:16px;color:#ff0055;">Failed to load leaderboard data.</td></tr>`;
+    }
+  }
+
   // --- Engine Callbacks ---
   engine.onStateChange = (state) => {
     updateHUD(state);
   };
 
   engine.onWaveComplete = (wave) => {
-    renderTowerDeck(); // Unlock cats when wave reaches threshold!
+    renderTowerDeck();
   };
 
   engine.onGameOver = (res) => {
-    if (finalScoreSpan) finalScoreSpan.textContent = res.score;
-    if (finalWaveSpan) finalWaveSpan.textContent = res.wave;
+    if (goScore) goScore.textContent = res.score;
+    if (goWave) goWave.textContent = res.wave;
     if (gameOverModal) gameOverModal.style.display = 'flex';
     DefenseAPI.submitScore(res.score, res.wave, engine.map.id);
   };
 
   engine.onVictory = (res) => {
-    if (victoryScoreSpan) victoryScoreSpan.textContent = res.score;
+    if (vicScore) vicScore.textContent = res.score;
     if (victoryModal) victoryModal.style.display = 'flex';
     DefenseAPI.submitScore(res.score, res.wave, engine.map.id);
   };
 
-  if (btnRetry) {
-    btnRetry.addEventListener('click', () => {
+  if (btnModalRestart) {
+    btnModalRestart.addEventListener('click', () => {
       if (gameOverModal) gameOverModal.style.display = 'none';
       engine.resetGame();
       renderTowerDeck();
@@ -409,8 +629,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (btnVictoryRestart) {
-    btnVictoryRestart.addEventListener('click', () => {
+  if (btnModalVicRestart) {
+    btnModalVicRestart.addEventListener('click', () => {
       if (victoryModal) victoryModal.style.display = 'none';
       engine.resetGame();
       renderTowerDeck();
@@ -423,6 +643,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTowerDeck();
     updateHUD(engine);
   });
+
+  // Setup Auth & Leaderboards
+  setupAuthListeners();
+  setupLeaderboardListeners();
+  checkAuthStatus();
 
   // Start initial game loop
   renderTowerDeck();

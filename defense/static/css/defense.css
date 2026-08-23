@@ -125,6 +125,60 @@ html, body {
   cursor: pointer;
 }
 
+/* User Auth Badge in Header */
+.user-auth-section {
+  display: flex;
+  align-items: center;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 255, 136, 0.12);
+  border: 1px solid var(--accent-green);
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+.user-badge .avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  color: #000;
+  font-weight: 800;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-badge .username {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.icon-btn-small {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
+}
+
+.icon-btn-small:hover {
+  color: #ff0055;
+}
+
+.hidden {
+  display: none !important;
+}
+
 /* Main Layout Container */
 .main-layout {
   width: 100%;

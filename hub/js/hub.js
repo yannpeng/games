@@ -7,7 +7,10 @@
   'use strict';
 
   let currentUser = null;
-  let authToken = localStorage.getItem('arcade_token') || localStorage.getItem('tetris_token') || null;
+  let authToken = localStorage.getItem('arcade_token') || 
+                  localStorage.getItem('tetris_auth_token') || 
+                  localStorage.getItem('tetris_token') || 
+                  localStorage.getItem('snake_token') || null;
   let activeLeaderboardGame = 'tetris';
   let activeLeaderboardMode = 'solo';
 
@@ -70,7 +73,9 @@
         userDisplayName.textContent = `👤 ${currentUser.username}`;
         // Sync token
         localStorage.setItem('arcade_token', authToken);
+        localStorage.setItem('tetris_auth_token', authToken);
         localStorage.setItem('tetris_token', authToken);
+        localStorage.setItem('snake_token', authToken);
 
         // Sync user preferred language if set on account
         if (currentUser.language && currentUser.language !== ArcadeI18n.getLanguage()) {
@@ -78,7 +83,9 @@
         }
       } else {
         localStorage.removeItem('arcade_token');
+        localStorage.removeItem('tetris_auth_token');
         localStorage.removeItem('tetris_token');
+        localStorage.removeItem('snake_token');
         authToken = null;
         userDisplayName.textContent = ArcadeI18n.t('hub.login_btn');
       }
@@ -92,7 +99,9 @@
       if (currentUser) {
         if (confirm(ArcadeI18n.t('auth.confirm_logout'))) {
           localStorage.removeItem('arcade_token');
+          localStorage.removeItem('tetris_auth_token');
           localStorage.removeItem('tetris_token');
+          localStorage.removeItem('snake_token');
           authToken = null;
           currentUser = null;
           userDisplayName.textContent = ArcadeI18n.t('hub.login_btn');
@@ -140,7 +149,9 @@
           authToken = data.token;
           currentUser = data.user;
           localStorage.setItem('arcade_token', authToken);
+          localStorage.setItem('tetris_auth_token', authToken);
           localStorage.setItem('tetris_token', authToken);
+          localStorage.setItem('snake_token', authToken);
           userDisplayName.textContent = `👤 ${currentUser.username}`;
           modalAuth.classList.add('hidden');
 
