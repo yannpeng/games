@@ -1509,7 +1509,7 @@ body.is-desktop-device .desktop-only {
     font-size: 0.8rem;
   }
 
-  /* Responsive Game Board */
+  /* Responsive Game Board (Solo Mode) */
   .game-layout {
     display: flex;
     flex-direction: row;
@@ -1523,7 +1523,7 @@ body.is-desktop-device .desktop-only {
 
   .panel-left {
     order: 1;
-    width: 68px;
+    width: 64px;
     height: auto;
     max-height: none;
     display: flex;
@@ -1560,7 +1560,7 @@ body.is-desktop-device .desktop-only {
 
   .panel-right {
     order: 3;
-    width: 68px;
+    width: 64px;
     height: auto;
     max-height: none;
     display: flex;
@@ -1569,22 +1569,61 @@ body.is-desktop-device .desktop-only {
     align-self: flex-start;
   }
 
+  /* Responsive Game Board (VS AI Duel Mode on Mobile) */
+  .game-layout.mode-vs_ai {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .mode-vs_ai .panel-left,
+  .mode-vs_ai .panel-right {
+    display: none !important;
+  }
+
+  .mode-vs_ai .player-section,
+  .mode-vs_ai .ai-section {
+    flex: 1;
+    max-width: 48%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .mode-vs_ai .matrix-wrapper {
+    max-height: min(48vh, 400px);
+    width: 100%;
+    aspect-ratio: 10 / 20;
+  }
+
+  .mode-vs_ai #matrix-canvas,
+  .mode-vs_ai #ai-matrix-canvas {
+    height: 100%;
+    width: auto;
+    max-height: min(48vh, 400px);
+  }
+
   .panel .card {
     padding: 4px;
   }
 
   .panel .card-header h3 {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
   }
 
   #hold-canvas {
-    width: 54px;
-    height: 54px;
+    width: 52px;
+    height: 52px;
   }
 
   #next-canvas {
-    width: 54px;
-    height: 108px;
+    width: 52px;
+    height: 104px;
   }
 
   .stat-item {
@@ -1592,22 +1631,55 @@ body.is-desktop-device .desktop-only {
   }
 
   .stat-label {
-    font-size: 0.55rem;
+    font-size: 0.52rem;
   }
 
   .stat-value {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
   }
 
+  /* Start & Game Over Overlays */
   .overlay-content {
-    max-width: 290px;
-    padding: 14px 10px;
+    max-width: 310px;
+    max-height: 88vh;
+    padding: 10px 8px;
+    gap: 6px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .overlay-content h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0;
   }
 
   .slider-marks {
     display: flex;
     justify-content: space-between;
     font-size: 0.72rem;
+  }
+
+  .vs-option-group {
+    padding-top: 4px;
+    gap: 4px;
+  }
+
+  .vs-btn-grid,
+  .vs-btn-grid-3 {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .opt-btn {
+    padding: 5px 8px;
+  }
+
+  .opt-btn strong {
+    font-size: 0.76rem;
+  }
+
+  .opt-btn small {
+    display: none;
   }
 
   .touch-controller {
@@ -1617,4 +1689,19 @@ body.is-desktop-device .desktop-only {
     padding: 6px 8px 10px;
   }
 }
+
+@media (max-width: 520px) {
+  .header-actions .btn .icon {
+    margin-right: 0;
+  }
+  .header-actions .btn {
+    padding: 4px 6px;
+    font-size: 0.75rem;
+  }
+  .lang-select {
+    padding: 3px 4px;
+    font-size: 0.75rem;
+  }
+}
+
 

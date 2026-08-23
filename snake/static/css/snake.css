@@ -1122,4 +1122,19 @@ body {
   }
 }
 
+@media (max-width: 520px) {
+  .header-actions .btn .icon {
+    margin-right: 0;
+  }
+  .header-actions .btn {
+    padding: 4px 6px;
+    font-size: 0.75rem;
+  }
+  .lang-select {
+    padding: 3px 4px;
+    font-size: 0.75rem;
+  }
+}
+
+
 
