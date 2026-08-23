@@ -692,10 +692,10 @@ class DefenseEngine {
         ctx.setLineDash([4, 4]);
         ctx.stroke();
 
-        ctx.font = '24px sans-serif';
+        ctx.font = `${Math.floor(this.tileSize * 0.55)}px "Segoe UI Emoji", "Apple Color Emoji", sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(proto.icon, x + this.tileSize / 2, y + this.tileSize / 2);
+        ctx.fillText(proto.icon || '🐾', x + this.tileSize / 2, y + this.tileSize / 2 + 1);
       }
       ctx.restore();
     }
@@ -1011,7 +1011,7 @@ class DefenseTower {
 
     // Tower Base Platform
     ctx.beginPath();
-    ctx.arc(0, 0, tileSize * 0.4, 0, Math.PI * 2);
+    ctx.arc(0, 0, tileSize * 0.38, 0, Math.PI * 2);
     ctx.fillStyle = '#1c2420';
     ctx.strokeStyle = this.level === 4 ? '#ffd700' : this.color;
     ctx.lineWidth = this.level === 4 ? 3.5 : 2;
@@ -1020,9 +1020,13 @@ class DefenseTower {
     ctx.fill();
     ctx.stroke();
 
-    // Tower Animal Icon
-    ctx.font = '26px sans-serif';
+    // Tower Animal Icon (Emoji)
+    ctx.shadowBlur = 0;
+    ctx.font = `${Math.floor(tileSize * 0.52)}px "Segoe UI Emoji", "Apple Color Emoji", sans-serif`;
     ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(this.icon || '🐾', 0, 1);
+
     // Level Badges (v1, v2, v3, v4)
     ctx.font = 'bold 11px sans-serif';
     let badgeText = `v${this.level}`;
