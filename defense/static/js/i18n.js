@@ -1068,31 +1068,15 @@ const ArcadeI18n = (function () {
       'enemy_badger_name': 'アナグマ',
       'enemy_bear_name': '暴走グマ',
       'enemy_harvester_name': '伐採ロボ',
-    },
-    'defense.map_meadow': '🌾 Farm Meadow',
-    'defense.map_woods': '🌲 Whispering Woods',
-    'defense.map_canyon': '⛰️ Misty Canyon',
-    'defense.mute': 'Mute',
-    'defense.confirm_restart': 'Are you sure you want to reset the current defense?',
-    'defense.unlock_wave_prefix': 'Unlocks at Wave ',
-    'defense.unlock_wave_suffix': '',
-    'defense.lvl_2': 'v2 Advanced',
-    'defense.lvl_3': 'v3 Master',
-    'defense.lvl_4': 'v4 Ultimate (MAX)',
-    'defense.global_range': 'Global',
-    'defense.max_level': 'MAX (Fully Upgraded)',
-    'defense.upgrade_to_max': 'Upgrade to v4 (MAX)',
-    'defense.upgrade_to': 'Upgrade to v',
-    'defense.upgrade_success': 'Enhanced!',
-    'defense.ultimate_awakening': 'Ultimate Awakening!',
       'hub.play_defense': '🐾 今すぐ防衛',
       'defense.badge': '✨ 新作リリース',
       'defense.feat1': '9種の動物防衛隊',
       'defense.feat2': '3大コマンダースキル',
       'defense.feat3': '30ウェーブ&ボス戦',
+    },
   };
 
-  function t(key, params = {}) {
+function t(key, params = {}) {
     const langDict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
     let str = langDict[key] || (TRANSLATIONS.en && TRANSLATIONS.en[key]) || key;
     if (params && typeof params === 'object') {
