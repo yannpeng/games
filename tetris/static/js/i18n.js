@@ -1085,6 +1085,11 @@ const ArcadeI18n = (function () {
     'defense.upgrade_to': 'Upgrade to v',
     'defense.upgrade_success': 'Enhanced!',
     'defense.ultimate_awakening': 'Ultimate Awakening!',
+      'hub.play_defense': '🐾 今すぐ防衛',
+      'defense.badge': '✨ 新作リリース',
+      'defense.feat1': '9種の動物防衛隊',
+      'defense.feat2': '3大コマンダースキル',
+      'defense.feat3': '30ウェーブ&ボス戦',
   };
 
   function t(key, params = {}) {
