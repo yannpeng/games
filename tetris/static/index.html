@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>TETRIS PRO - Adaptive Cyberpunk Arcade Edition</title>
-  <link rel="stylesheet" href="/static/css/style.css?v=4.4.0">
+  <link rel="stylesheet" href="/static/css/style.css?v=4.5.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -94,6 +94,18 @@
           </div>
           <div class="canvas-box">
             <canvas id="hold-canvas" width="120" height="120"></canvas>
+          </div>
+        </div>
+
+        <!-- Mobile Solo Stats Card (Score & Lines) -->
+        <div class="card solo-stats-card touch-only">
+          <div class="stat-item highlight-stat">
+            <span class="stat-label" data-i18n="tetris.stat_score">SCORE</span>
+            <span class="stat-value" id="stat-score-mobile">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label" data-i18n="tetris.stat_lines">LINES</span>
+            <span class="stat-value" id="stat-lines-mobile">0</span>
           </div>
         </div>
 
@@ -332,14 +344,14 @@
 
         <!-- Realtime Play Statistics Card -->
         <div class="card stats-card">
-          <div class="card-header">
+          <div class="card-header desktop-only">
             <h3>📊 Realtime</h3>
           </div>
-          <div class="stat-item highlight-stat">
+          <div class="stat-item highlight-stat desktop-only">
             <span class="stat-label" data-i18n="tetris.stat_score">SCORE</span>
             <span class="stat-value" id="stat-score">0</span>
           </div>
-          <div class="stat-item">
+          <div class="stat-item desktop-only">
             <span class="stat-label" data-i18n="tetris.stat_lines">LINES</span>
             <span class="stat-value" id="stat-lines">0</span>
           </div>
@@ -484,12 +496,12 @@
   <div id="toast" class="toast hidden"></div>
 
   <!-- Scripts -->
-  <script src="/static/js/config.js?v=4.4.0"></script>
-  <script src="/static/js/audio.js?v=4.4.0"></script>
-  <script src="/static/js/i18n.js?v=4.4.0"></script>
-  <script src="/static/js/api.js?v=4.4.0"></script>
-  <script src="/static/js/tetris.js?v=4.4.0"></script>
-  <script src="/static/js/ai.js?v=4.4.0"></script>
-  <script src="/static/js/app.js?v=4.4.0"></script>
+  <script src="/static/js/config.js?v=4.5.0"></script>
+  <script src="/static/js/audio.js?v=4.5.0"></script>
+  <script src="/static/js/i18n.js?v=4.5.0"></script>
+  <script src="/static/js/api.js?v=4.5.0"></script>
+  <script src="/static/js/tetris.js?v=4.5.0"></script>
+  <script src="/static/js/ai.js?v=4.5.0"></script>
+  <script src="/static/js/app.js?v=4.5.0"></script>
 </body>
 </html>

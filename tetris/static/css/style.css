@@ -1546,57 +1546,92 @@ body.is-desktop-device .desktop-only {
 
 @media (max-width: 768px) {
   html, body {
-    overflow-y: auto;
+    overflow: hidden;
+    height: 100%;
+    height: 100dvh;
+    touch-action: none;
     overscroll-behavior: none;
   }
 
   .app-container {
-    height: auto;
-    min-height: 100dvh;
-    max-height: none;
-    padding: 4px 6px 8px;
-    gap: 4px;
+    height: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(3px, 0.6vh, 6px) clamp(4px, 1vw, 8px);
+    overflow: hidden;
+    gap: 3px;
   }
 
-  /* Responsive 2-Row Header on Mobile */
+  /* Responsive Header on Mobile */
   .app-header {
     flex-wrap: wrap;
-    padding: 5px 8px;
-    gap: 4px;
-    margin-bottom: 2px;
+    padding: 3px 6px;
+    gap: 3px;
+    margin-bottom: 0;
+    flex-shrink: 0;
   }
 
   .brand {
     order: 1;
-    gap: 6px;
+    gap: 5px;
   }
 
   .brand-title {
-    font-size: 1.05rem;
+    font-size: 0.98rem;
   }
 
   .header-actions {
     order: 2;
-    gap: 4px;
+    gap: 3px;
   }
 
   .header-actions .btn-secondary,
   .header-actions .btn-small {
     padding: 0 6px !important;
-    font-size: 12px !important;
+    font-size: 11.5px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+  }
+
+  .header-actions .btn-nav-icon,
+  .header-actions .lang-select {
+    width: 30px !important;
+    min-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    font-size: 13px !important;
+  }
+
+  .header-actions .user-badge {
+    height: 30px !important;
+    min-height: 30px !important;
   }
 
   .mode-switch-group {
     order: 3;
     width: 100%;
-    margin-top: 2px;
+    margin-top: 1px;
   }
 
   .mode-btn {
     flex: 1;
     justify-content: center;
-    padding: 5px 6px;
-    font-size: 0.8rem;
+    padding: 4px 6px;
+    font-size: 0.76rem;
+  }
+
+  /* Game Layout */
+  .game-layout {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
   }
 
   /* Responsive Game Board (Solo Mode) */
@@ -1605,61 +1640,46 @@ body.is-desktop-device .desktop-only {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: clamp(4px, 1.5vw, 10px);
-    flex: 1;
+    gap: clamp(4px, 1.2vw, 10px);
     width: 100%;
-    min-height: 0;
   }
 
-  .mode-solo .panel-left {
-    order: 1;
-    width: clamp(52px, 14vw, 68px);
-    height: auto;
-    max-height: none;
-    display: flex;
+  .mode-solo .panel-left,
+  .mode-solo .panel-right {
+    display: flex !important;
     flex-direction: column;
-    gap: 6px;
-    align-self: flex-start;
-    margin-top: 18px;
+    justify-content: space-between;
+    width: clamp(56px, 15vw, 74px);
+    height: 100%;
+    max-height: calc(100dvh - clamp(155px, 21vh, 195px));
+    flex-shrink: 0;
   }
 
   .mode-solo .player-section {
-    order: 2;
-    flex: 1;
-    max-width: min(58vw, 240px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100%;
+    max-height: calc(100dvh - clamp(155px, 21vh, 195px));
+    flex-shrink: 0;
     min-width: 0;
   }
 
   .mode-solo .matrix-wrapper {
-    height: auto;
-    max-height: min(48vh, 420px);
-    width: 100%;
+    height: 100%;
+    max-height: 100%;
     aspect-ratio: 10 / 20;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: auto;
+    position: relative;
+    border-radius: var(--radius-md);
   }
 
   .mode-solo #matrix-canvas {
     height: 100%;
     width: auto;
-    max-height: min(48vh, 420px);
-  }
-
-  .mode-solo .panel-right {
-    order: 3;
-    width: clamp(52px, 14vw, 68px);
-    height: auto;
-    max-height: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    align-self: flex-start;
-    margin-top: 18px;
+    aspect-ratio: 10 / 20;
+    max-height: 100%;
   }
 
   /* Responsive Game Board (VS AI Duel Mode on Mobile) */
@@ -1670,95 +1690,77 @@ body.is-desktop-device .desktop-only {
     justify-content: center;
     gap: clamp(2px, 0.8vw, 6px);
     width: 100%;
-    flex: 1;
-    min-height: 0;
   }
 
-  .mode-vs_ai .panel-left {
-    order: 1;
-    display: flex !important;
-    width: clamp(40px, 10.5vw, 52px);
-    height: auto;
-    max-height: none;
-    flex-direction: column;
-    gap: 4px;
-    align-self: flex-start;
-    margin-top: 18px;
-    flex-shrink: 0;
-  }
-
-  .mode-vs_ai .player-section {
-    order: 2;
-    flex: 1;
-    max-width: 41%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-  }
-
-  .mode-vs_ai .ai-section {
-    order: 3;
-    flex: 1;
-    max-width: 41%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-  }
-
+  .mode-vs_ai .panel-left,
   .mode-vs_ai .panel-right {
-    order: 4;
     display: flex !important;
-    width: clamp(40px, 10.5vw, 52px);
-    height: auto;
-    max-height: none;
     flex-direction: column;
-    gap: 4px;
-    align-self: flex-start;
-    margin-top: 18px;
+    justify-content: flex-start;
+    width: clamp(40px, 10.5vw, 50px);
+    height: 100%;
+    max-height: calc(100dvh - clamp(155px, 21vh, 195px));
     flex-shrink: 0;
   }
 
-  .mode-vs_ai .panel-right .stats-card {
+  .mode-vs_ai .solo-stats-card,
+  .mode-vs_ai .stats-card {
     display: none !important;
   }
 
+  .mode-vs_ai .player-section,
+  .mode-vs_ai .ai-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    max-height: calc(100dvh - clamp(155px, 21vh, 195px));
+    flex: 1;
+    max-width: calc((100% - clamp(88px, 23vw, 108px)) / 2);
+    min-width: 0;
+  }
+
   .mode-vs_ai .matrix-wrapper {
-    max-height: min(44vh, 380px);
-    width: 100%;
+    height: 100%;
+    max-height: 100%;
     aspect-ratio: 10 / 20;
+    width: auto;
+    max-width: 100%;
+    position: relative;
+    border-radius: var(--radius-md);
   }
 
   .mode-vs_ai #matrix-canvas,
   .mode-vs_ai #ai-matrix-canvas {
     height: 100%;
     width: auto;
-    max-height: min(44vh, 380px);
+    max-width: 100%;
+    aspect-ratio: 10 / 20;
   }
 
   /* Matrix labels & Attack gauges */
   .matrix-title-bar {
-    padding: 1px 4px;
+    padding: 1px 3px;
     margin-bottom: 2px;
+    width: 100%;
   }
 
   .matrix-label {
-    font-size: clamp(0.68rem, 2vw, 0.78rem);
+    font-size: clamp(0.65rem, 1.9vw, 0.76rem);
   }
 
   .attack-gauge {
-    font-size: clamp(0.62rem, 1.8vw, 0.72rem);
+    font-size: clamp(0.6rem, 1.7vw, 0.7rem);
     padding: 1px 4px;
   }
 
   /* Side Panels Cards & Canvases on Mobile */
   .panel .card {
-    padding: 4px 2px;
+    padding: 3px 2px;
     border-radius: 8px;
     text-align: center;
+    background: rgba(10, 14, 28, 0.85);
   }
 
   .panel .card-header {
@@ -1767,7 +1769,7 @@ body.is-desktop-device .desktop-only {
   }
 
   .panel .card-header h3 {
-    font-size: clamp(0.58rem, 1.8vw, 0.68rem);
+    font-size: 0.62rem;
     letter-spacing: 0.5px;
   }
 
@@ -1777,53 +1779,67 @@ body.is-desktop-device .desktop-only {
   }
 
   #hold-canvas {
-    width: clamp(36px, 9.5vw, 50px);
-    height: clamp(36px, 9.5vw, 50px);
-    max-height: clamp(36px, 9.5vw, 50px);
+    width: clamp(36px, 9.5vw, 48px);
+    height: clamp(36px, 9.5vw, 48px);
+    max-height: clamp(36px, 9.5vw, 48px);
   }
 
   #next-canvas {
-    width: clamp(36px, 9.5vw, 50px);
-    height: clamp(72px, 19vw, 100px);
-    max-height: clamp(72px, 19vw, 100px);
+    width: clamp(36px, 9.5vw, 48px);
+    height: clamp(72px, 19vw, 96px);
+    max-height: clamp(72px, 19vw, 96px);
   }
 
+  .solo-stats-card,
   .stats-card {
-    padding: 3px 2px;
+    padding: 2px 2px;
   }
 
   .stat-item {
     margin-bottom: 1px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
   }
 
   .stat-label {
     font-size: 0.5rem;
+    color: var(--text-dim);
   }
 
   .stat-value {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
+    font-weight: 700;
   }
 
-  /* Overlays on Mobile Screen: Centered Modal Dialogs */
+  /* Overlays on Mobile */
   .game-overlay {
-    position: fixed !important;
+    position: absolute !important;
     top: 0 !important;
     left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    z-index: 150 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 40 !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    background: rgba(5, 6, 12, 0.88) !important;
+    background: rgba(6, 8, 18, 0.88) !important;
     backdrop-filter: blur(8px) !important;
     -webkit-backdrop-filter: blur(8px) !important;
-    padding: 12px !important;
+    border-radius: var(--radius-md) !important;
   }
 
   .game-overlay.hidden {
     display: none !important;
+  }
+
+  .mode-vs_ai .game-overlay {
+    width: min(300px, 92vw) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    border: 1px solid var(--border-glow) !important;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9) !important;
   }
 
   #overlay-countdown.game-overlay {
@@ -1832,64 +1848,70 @@ body.is-desktop-device .desktop-only {
   }
 
   #overlay-countdown .countdown-num {
-    font-size: clamp(3.5rem, 14vw, 5.5rem);
-    text-shadow: 0 0 30px var(--color-primary);
+    font-size: clamp(3rem, 12vw, 4.5rem);
+    text-shadow: 0 0 25px var(--color-primary);
   }
 
   .overlay-content {
-    width: 100% !important;
-    max-width: 330px !important;
-    max-height: 86vh !important;
-    max-height: 86dvh !important;
-    background: #111528 !important;
-    border: 1.5px solid var(--border-glow, rgba(0, 240, 255, 0.4)) !important;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 240, 255, 0.25) !important;
-    border-radius: var(--radius-lg, 16px) !important;
-    padding: 14px 16px !important;
-    gap: 8px !important;
+    width: 96% !important;
+    max-width: 290px !important;
+    max-height: 94% !important;
+    padding: 6px !important;
+    gap: 4px !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
 
   .overlay-content h2 {
-    font-size: 1.25rem !important;
+    font-size: 1.1rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .overlay-content .subtext {
+    font-size: 0.58rem !important;
     margin-bottom: 0 !important;
   }
 
   .level-selector-box {
-    padding: 8px 10px !important;
-    gap: 6px !important;
-  }
-
-  .slider-marks {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.72rem;
-  }
-
-  .vs-option-group {
-    padding-top: 2px !important;
+    padding: 4px 6px !important;
     gap: 3px !important;
   }
 
+  .level-selector-box label {
+    font-size: 0.76rem !important;
+  }
+
+  .slider-marks {
+    font-size: 0.64rem !important;
+  }
+
+  .level-hints {
+    font-size: 0.64rem !important;
+  }
+
+  .vs-option-group {
+    padding-top: 1px !important;
+    gap: 2px !important;
+  }
+
   .option-group-label {
-    font-size: 0.75rem !important;
-    margin-bottom: 2px !important;
+    font-size: 0.68rem !important;
+    margin-bottom: 1px !important;
   }
 
   .vs-btn-grid,
   .vs-btn-grid-3 {
     grid-template-columns: 1fr !important;
-    gap: 4px !important;
+    gap: 3px !important;
   }
 
   .opt-btn {
-    padding: 6px 10px !important;
+    padding: 4px 6px !important;
     text-align: left !important;
   }
 
   .opt-btn strong {
-    font-size: 0.78rem !important;
+    font-size: 0.72rem !important;
     display: block !important;
   }
 
@@ -1898,18 +1920,25 @@ body.is-desktop-device .desktop-only {
   }
 
   #btn-game-start {
-    padding: 10px 20px !important;
-    font-size: 1rem !important;
+    padding: 7px 14px !important;
+    font-size: 0.88rem !important;
     font-weight: 800 !important;
-    margin-top: 4px !important;
+    margin-top: 2px !important;
   }
 
+  /* Touch Virtual Controller */
   .touch-controller {
-    order: 4;
+    flex-shrink: 0;
     width: 100%;
     max-width: 480px;
-    padding: 4px 6px 8px;
-    margin: 2px auto 0;
+    padding: 2px 4px 4px;
+    margin: 0 auto;
+    gap: 4px;
+  }
+
+  .touch-btn {
+    width: clamp(36px, 9.5vw, 44px);
+    height: clamp(36px, 9.5vw, 44px);
   }
 }
 

@@ -26,7 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const aiDifficultyBadge = document.getElementById('ai-difficulty-badge');
 
   const statScore = document.getElementById('stat-score');
+  const statScoreMobile = document.getElementById('stat-score-mobile');
   const statLines = document.getElementById('stat-lines');
+  const statLinesMobile = document.getElementById('stat-lines-mobile');
   const statLevel = document.getElementById('stat-level');
   const statTime = document.getElementById('stat-time');
 
@@ -688,8 +690,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function updateScoreDisplays() {
-    if (statScore) statScore.textContent = playerGame.score.toLocaleString();
+    const scoreStr = playerGame.score.toLocaleString();
+    if (statScore) statScore.textContent = scoreStr;
+    if (statScoreMobile) statScoreMobile.textContent = scoreStr;
     if (statLines) statLines.textContent = playerGame.lines;
+    if (statLinesMobile) statLinesMobile.textContent = playerGame.lines;
     if (statLevel) {
       statLevel.textContent = currentMode === 'solo' ? `${playerGame.level}/50` : `Round ${vsRound}`;
     }
