@@ -430,10 +430,10 @@ class DefenseEngine {
     tower.upgradeCost = Math.round(tower.upgradeCost * 1.65);
 
     this.audio.playUpgrade();
-    const burstColor = tower.level === 4 ? '#ffd700' : '#00f0ff';
+    const burstColor = tower.level === 4 ? '#ffd700' : tower.level === 3 ? '#bf00ff' : '#00f0ff';
     this.createParticleBurst(tower.x, tower.y, burstColor, tower.level === 4 ? 36 : 22);
 
-    const lvlName = tower.level === 4 ? '👑 AWAKENED SUPER FORM!' : `LV.${tower.level} UPGRADE!`;
+    const lvlName = tower.level === 4 ? '👑 v4 (MAX) 终极觉醒!' : `v${tower.level} 强化成功!`;
     this.createFloatingText(tower.x, tower.y - 20, lvlName, burstColor, tower.level === 4 ? 20 : 16);
     this.notifyState();
     return true;
@@ -1017,18 +1017,27 @@ class DefenseTower {
     // Tower Animal Icon
     ctx.font = '26px sans-serif';
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(this.icon, 0, 0);
+    // Level Badges (v1, v2, v3, v4)
+    ctx.font = 'bold 11px sans-serif';
+    let badgeText = `v${this.level}`;
+    let badgeBg = this.level === 4 ? '#ffd700' : this.level === 3 ? '#bf00ff' : this.level === 2 ? '#00f0ff' : '#00ff88';
+    let badgeColor = (this.level === 4 || this.level === 2 || this.level === 1) ? '#000' : '#fff';
 
-    // Level Badges (⭐, ⭐⭐, ⭐⭐⭐, 👑)
-    if (this.level > 1) {
-      ctx.font = this.level === 4 ? '15px sans-serif' : '12px sans-serif';
-      ctx.fillStyle = '#ffd700';
-      let badge = '⭐';
-      if (this.level === 3) badge = '⭐⭐';
-      if (this.level === 4) badge = '👑';
-      ctx.fillText(badge, tileSize * 0.26, -tileSize * 0.26);
+    const bx = tileSize * 0.24;
+    const by = -tileSize * 0.28;
+    ctx.fillStyle = badgeBg;
+    if (ctx.roundRect) {
+      ctx.beginPath();
+      ctx.roundRect(bx - 11, by - 7, 22, 14, 4);
+      ctx.fill();
+    } else {
+      ctx.fillRect(bx - 11, by - 7, 22, 14);
     }
+
+    ctx.fillStyle = badgeColor;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(badgeText, bx, by);
 
     ctx.restore();
   }

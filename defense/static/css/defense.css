@@ -1,5 +1,6 @@
 /* ==========================================================================
    Wildwood Defenders (田园守卫战) - Modern Emerald Cyberpunk Theme
+   Full Responsive Layout for Mobile, Tablet & High-Resolution Desktop
    ========================================================================== */
 
 :root {
@@ -15,24 +16,28 @@
   --accent-purple: #bf00ff;
   --text-main: #e8f5e9;
   --text-muted: #81c784;
-  --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body {
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: radial-gradient(circle at 50% 20%, #112419 0%, #060c08 100%);
   color: var(--text-main);
   font-family: var(--font-family);
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
+  touch-action: manipulation;
 }
 
 /* Header */
@@ -42,34 +47,37 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 10px 16px;
   background: var(--bg-panel);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-glow);
   box-shadow: 0 4px 20px rgba(0, 255, 136, 0.1);
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .brand-area {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .brand-logo {
-  font-size: 28px;
+  font-size: 26px;
   animation: floatBounce 3s ease-in-out infinite;
 }
 
 @keyframes floatBounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  50% { transform: translateY(-3px); }
 }
 
 .brand-title {
-  font-size: 20px;
+  font-size: clamp(16px, 2vw, 20px);
   font-weight: 800;
   color: #fff;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
 }
 
@@ -80,14 +88,15 @@ body {
 .header-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .btn-icon {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border-glow);
   color: var(--text-main);
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 13px;
@@ -109,7 +118,7 @@ body {
   background: rgba(10, 25, 18, 0.9);
   border: 1px solid var(--border-glow);
   color: var(--text-main);
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: 8px;
   outline: none;
   font-size: 13px;
@@ -123,7 +132,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px 20px;
+  padding: 12px 16px;
 }
 
 /* Top HUD Stats Bar */
@@ -133,22 +142,26 @@ body {
   align-items: center;
   background: var(--bg-panel);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border-glow);
   border-radius: 12px;
-  padding: 10px 20px;
+  padding: 10px 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .hud-stats {
   display: flex;
-  gap: 20px;
+  gap: clamp(10px, 1.8vw, 20px);
+  flex-wrap: wrap;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 15px;
+  gap: 5px;
+  font-size: clamp(13px, 1.2vw, 15px);
   font-weight: 700;
 }
 
@@ -168,6 +181,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .btn-speed-group {
@@ -182,7 +196,7 @@ body {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  padding: 5px 10px;
+  padding: 5px 9px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
@@ -201,7 +215,7 @@ body {
   color: #000;
   border: none;
   font-weight: 800;
-  padding: 8px 18px;
+  padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
@@ -226,7 +240,7 @@ body {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border-glow);
   color: var(--text-muted);
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 12px;
@@ -244,8 +258,9 @@ body {
 /* Battle Arena Workspace */
 .battle-workspace {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   width: 100%;
+  align-items: stretch;
 }
 
 .canvas-container {
@@ -256,32 +271,39 @@ body {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 255, 136, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 900 / 540;
+  touch-action: none;
 }
 
 #defense-canvas {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   cursor: crosshair;
+  touch-action: none;
 }
 
 /* Commander Skills Sidebar */
 .skills-sidebar {
-  width: 140px;
+  width: 130px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  justify-content: center;
 }
 
 .skill-btn {
   background: var(--bg-panel);
   border: 1px solid var(--border-glow);
   border-radius: 10px;
-  padding: 12px 8px;
+  padding: 10px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   cursor: pointer;
   color: var(--text-main);
   transition: all 0.2s;
@@ -300,7 +322,7 @@ body {
   cursor: not-allowed;
 }
 
-.skill-icon { font-size: 26px; }
+.skill-icon { font-size: 24px; }
 .skill-name { font-size: 11px; font-weight: 700; text-align: center; }
 .skill-cd { font-size: 11px; color: var(--accent-gold); font-weight: 800; }
 
@@ -309,10 +331,10 @@ body {
   background: var(--bg-panel);
   border: 1px solid var(--border-glow);
   border-radius: 12px;
-  padding: 12px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
@@ -320,10 +342,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .deck-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   color: var(--accent-green);
   display: flex;
@@ -334,18 +358,18 @@ body {
 .tower-cards-grid {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  gap: 8px;
+  gap: 6px;
 }
 
 .tower-card {
-  background: rgba(15, 30, 22, 0.8);
+  background: rgba(15, 30, 22, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  padding: 8px;
+  padding: 6px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -356,7 +380,7 @@ body {
 .tower-card:hover:not(.disabled) {
   background: rgba(0, 255, 136, 0.15);
   border-color: var(--accent-green);
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0, 255, 136, 0.3);
 }
 
@@ -364,7 +388,7 @@ body {
   background: rgba(0, 240, 255, 0.25);
   border-color: var(--accent-cyan);
   box-shadow: 0 0 16px rgba(0, 240, 255, 0.6);
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
 
 .tower-card.disabled {
@@ -386,6 +410,7 @@ body {
   height: 100%;
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -397,13 +422,13 @@ body {
 }
 
 .card-icon {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
   border: 2px solid transparent;
 }
 
@@ -415,7 +440,7 @@ body {
 }
 
 .card-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
@@ -424,7 +449,7 @@ body {
 }
 
 .card-trait {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -443,30 +468,32 @@ body {
   background: rgba(12, 28, 19, 0.95);
   border: 1px solid var(--accent-cyan);
   border-radius: 10px;
-  padding: 12px 16px;
+  padding: 10px 14px;
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
   margin-top: 4px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .inspector-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .inspector-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
   color: #fff;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .badge-lvl {
-  background: var(--accent-cyan);
+  background: var(--accent-green);
   color: #000;
   font-size: 11px;
   font-weight: 800;
@@ -475,7 +502,7 @@ body {
 }
 
 .badge-lvl.lvl-2 {
-  background: #00ff88;
+  background: #00f0ff;
   color: #000;
 }
 
@@ -498,30 +525,30 @@ body {
 }
 
 .inspector-desc {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
 }
 
 .inspector-stats {
   display: flex;
-  gap: 16px;
-  font-size: 13px;
+  gap: 14px;
+  font-size: 12px;
   color: #e0f2f1;
 }
 
 .inspector-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .btn-upgrade {
   background: linear-gradient(135deg, #00f0ff, #0088ff);
   color: #000;
   border: none;
-  padding: 8px 16px;
+  padding: 7px 14px;
   border-radius: 8px;
   font-weight: 800;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -535,10 +562,10 @@ body {
   background: rgba(255, 0, 85, 0.2);
   border: 1px solid var(--accent-red);
   color: #ff3366;
-  padding: 8px 14px;
+  padding: 7px 12px;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -558,22 +585,24 @@ body {
   height: 100vh;
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 1000;
   align-items: center;
   justify-content: center;
+  padding: 16px;
 }
 
 .modal-card {
   background: radial-gradient(circle at 50% 30%, #1b3827, #0b1710);
   border: 2px solid var(--accent-green);
   border-radius: 16px;
-  padding: 30px 40px;
-  max-width: 440px;
-  width: 90%;
+  padding: 24px 30px;
+  max-width: 420px;
+  width: 100%;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   box-shadow: 0 0 40px rgba(0, 255, 136, 0.4);
   animation: modalPop 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
@@ -583,15 +612,15 @@ body {
   100% { transform: scale(1); opacity: 1; }
 }
 
-.modal-icon { font-size: 48px; }
-.modal-title { font-size: 24px; font-weight: 800; color: #fff; }
-.modal-stat { font-size: 16px; color: var(--text-muted); }
-.modal-stat span { color: var(--accent-gold); font-weight: 800; font-size: 20px; }
+.modal-icon { font-size: 42px; }
+.modal-title { font-size: 20px; font-weight: 800; color: #fff; }
+.modal-stat { font-size: 14px; color: var(--text-muted); }
+.modal-stat span { color: var(--accent-gold); font-weight: 800; font-size: 18px; }
 
 /* Responsive adjustments */
 @media (max-width: 960px) {
   .tower-cards-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
   .battle-workspace {
     flex-direction: column;
@@ -600,5 +629,53 @@ body {
     width: 100%;
     flex-direction: row;
     justify-content: space-around;
+  }
+  .skill-btn {
+    flex: 1;
+    padding: 8px 4px;
+  }
+}
+
+@media (max-width: 600px) {
+  .game-header {
+    padding: 8px 12px;
+  }
+  .main-layout {
+    padding: 8px;
+    gap: 8px;
+  }
+  .hud-bar {
+    padding: 8px 12px;
+  }
+  .hud-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    gap: 6px;
+  }
+  .hud-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .tower-cards-grid {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    gap: 6px;
+    padding-bottom: 4px;
+  }
+  .tower-card {
+    min-width: 85px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+  .tower-inspector-panel {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .inspector-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 }

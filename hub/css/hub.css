@@ -662,3 +662,52 @@ html, body {
 }
 
 .toast.hidden { display: none; }
+
+/* Responsive Media Queries for Mobile & Tablet */
+@media (max-width: 768px) {
+  .hub-container {
+    padding: 10px 12px;
+  }
+  
+  .hub-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .header-controls {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .games-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .modal-dialog {
+    max-width: 96vw;
+    width: 100%;
+    margin: 8px;
+    padding: 16px;
+  }
+
+  .leaderboard-tabs {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .table-container {
+    max-height: 50vh;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .leaderboard-table th, 
+  .leaderboard-table td {
+    padding: 8px 6px;
+    font-size: 0.78rem;
+  }
+}
+

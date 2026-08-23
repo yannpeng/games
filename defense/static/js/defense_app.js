@@ -175,10 +175,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.nameKey)) || t.nameKey;
     const traitStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.traitKey)) || t.traitKey;
 
-    let badgeText = `Lv.${t.level}`;
-    if (t.level === 2) badgeText = '⭐⭐ 进阶';
-    if (t.level === 3) badgeText = '⭐⭐⭐ 大师';
-    if (t.level === 4) badgeText = '👑 终极觉醒';
+    let badgeText = `v${t.level}`;
+    if (t.level === 2) badgeText = 'v2 进阶';
+    if (t.level === 3) badgeText = 'v3 大师';
+    if (t.level === 4) badgeText = 'v4 终极 (MAX)';
 
     if (inspectorTitle) inspectorTitle.innerHTML = `${t.icon} ${nameStr} <span class="badge-lvl lvl-${t.level}">${badgeText}</span>`;
     if (inspectorDesc) inspectorDesc.textContent = traitStr;
@@ -189,11 +189,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnUpgrade) {
       if (t.level >= 4) {
         btnUpgrade.disabled = true;
-        if (upgradeCostSpan) upgradeCostSpan.textContent = 'MAX';
+        if (upgradeCostSpan) upgradeCostSpan.textContent = 'MAX (已满级)';
       } else {
         btnUpgrade.disabled = engine.gold < t.upgradeCost;
         if (upgradeCostSpan) {
-          const nextLvlLabel = t.level === 3 ? '👑 觉醒' : '⭐ 强化';
+          const nextLvlLabel = t.level === 3 ? '升级至 v4 (MAX)' : `升级至 v${t.level + 1}`;
           upgradeCostSpan.textContent = `${nextLvlLabel} (${t.upgradeCost}G)`;
         }
       }
@@ -211,8 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
 
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
+    const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+    const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+
+    const x = (clientX - rect.left) * scaleX;
+    const y = (clientY - rect.top) * scaleY;
 
     const col = Math.floor(x / engine.tileSize);
     const row = Math.floor(y / engine.tileSize);
@@ -232,15 +235,14 @@ document.addEventListener('DOMContentLoaded', () => {
     engine.hoverTile = null;
   });
 
-  canvas.addEventListener('click', (e) => {
-    const { col, row } = getCanvasTileCoords(e);
+  function handlePlacementClick(col, row, isShift = false) {
     if (col < 0 || col >= engine.cols || row < 0 || row >= engine.rows) return;
 
     if (engine.placingTowerType) {
       // Attempt building tower
       const success = engine.buildTower(engine.placingTowerType, col, row);
       if (success) {
-        if (!e.shiftKey) {
+        if (!isShift) {
           engine.placingTowerType = null;
         }
       }
@@ -252,7 +254,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateDeckStates();
     updateInspector();
+  }
+
+  canvas.addEventListener('click', (e) => {
+    const { col, row } = getCanvasTileCoords(e);
+    handlePlacementClick(col, row, e.shiftKey);
   });
+
+  // Mobile Touchscreen Support
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      const { col, row } = getCanvasTileCoords(e);
+      handlePlacementClick(col, row, false);
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 1) {
+      const { col, row } = getCanvasTileCoords(e);
+      if (col >= 0 && col < engine.cols && row >= 0 && row < engine.rows) {
+        engine.hoverTile = { col, row };
+      }
+      e.preventDefault();
+    }
+  }, { passive: false });
 
   // Right-click to cancel placement
   canvas.addEventListener('contextmenu', (e) => {
