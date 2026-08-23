@@ -582,12 +582,12 @@ body {
   position: relative;
   height: 100%;
   max-height: 100%;
-  aspect-ratio: 10 / 20;
+  aspect-ratio: 10 / 20 !important;
   background: rgba(5, 6, 12, 0.85);
   border: 2px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 240, 255, 0.15);
-  padding: 2px;
+  padding: 0;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -599,8 +599,8 @@ body {
   width: 100%;
   height: 100%;
   max-height: 100%;
-  aspect-ratio: 10 / 20;
-  object-fit: contain;
+  aspect-ratio: 10 / 20 !important;
+  object-fit: fill;
   background: #060812;
   border-radius: calc(var(--radius-md) - 4px);
 }
@@ -1950,26 +1950,28 @@ body.is-desktop-device .desktop-only {
   .mode-vs_ai .player-section .matrix-wrapper {
     height: 100%;
     max-height: 100%;
-    aspect-ratio: 10 / 20;
+    aspect-ratio: 10 / 20 !important;
     width: auto;
     max-width: 100%;
     border-radius: var(--radius-md);
+    overflow: hidden;
   }
 
   .mode-vs_ai #matrix-canvas {
     width: 100%;
     height: 100%;
-    aspect-ratio: 10 / 20;
+    aspect-ratio: 10 / 20 !important;
+    display: block;
   }
 
   /* Compact Right Column: Proportional Mini AI Board + Match Info */
   .mode-vs_ai .ai-section {
     height: 100%;
     max-height: 100%;
-    width: clamp(110px, 34vw, 140px);
+    width: clamp(100px, 32vw, 135px);
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
     gap: 4px;
     flex-shrink: 0;
@@ -1980,6 +1982,7 @@ body.is-desktop-device .desktop-only {
     margin-top: 0;
     margin-bottom: 1px;
     width: 100%;
+    max-width: 135px;
   }
 
   .mode-vs_ai .ai-section .matrix-label {
@@ -1992,10 +1995,11 @@ body.is-desktop-device .desktop-only {
   }
 
   .mode-vs_ai .ai-section .matrix-wrapper {
-    width: 100%;
-    aspect-ratio: 10 / 20;
+    width: auto;
+    max-width: 100%;
     height: auto;
-    max-height: clamp(170px, 26vh, 220px);
+    max-height: clamp(180px, 26vh, 230px);
+    aspect-ratio: 10 / 20 !important;
     border-radius: var(--radius-sm);
     border: 1.5px solid rgba(255, 0, 127, 0.45);
     box-shadow: 0 0 15px rgba(255, 0, 127, 0.18);
@@ -2003,12 +2007,14 @@ body.is-desktop-device .desktop-only {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
   }
 
   .mode-vs_ai #ai-matrix-canvas {
     width: 100%;
     height: 100%;
-    aspect-ratio: 10 / 20;
+    aspect-ratio: 10 / 20 !important;
+    display: block;
   }
 
   .mode-vs_ai .ai-badge-overlay {
@@ -2041,6 +2047,7 @@ body.is-desktop-device .desktop-only {
     flex-direction: column;
     gap: 2px;
     width: 100%;
+    max-width: 135px;
     box-sizing: border-box;
   }
 

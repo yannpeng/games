@@ -147,14 +147,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (currentMode === 'vs_ai') {
       aiGame.receiveGarbage(lines);
       sound.playHardDrop();
-      showToast(`⚔️ Attack +${lines}!`, 1200);
+      showToast(ArcadeI18n.t('tetris.toast_attack', { lines }), 1200);
     }
   };
 
   aiGame.onAttackCallback = (lines) => {
     if (currentMode === 'vs_ai') {
       playerGame.receiveGarbage(lines);
-      showToast(`⚠️ Incoming +${lines} garbage lines!`, 1200);
+      showToast(ArcadeI18n.t('tetris.toast_incoming_garbage', { lines }), 1200);
     }
   };
 
@@ -482,7 +482,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (playerGame.linesInLevel === 0) {
           sound.playLevelUp();
-          showToast(`⚡ Lv.${playerGame.level}!`, 1800);
+          showToast(ArcadeI18n.t('tetris.toast_level', { level: playerGame.level }), 1800);
         }
       }
     }
@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       aiGame.spawnPiece();
       isRoundTransitioning = false;
       updateScoreDisplays();
-      showToast(`⚡ Round ${vsRound}!`, 1800);
+      showToast(ArcadeI18n.t('tetris.toast_round', { round: vsRound }), 1800);
     }, 1500);
   }
 
@@ -554,7 +554,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (goRankRow) goRankRow.classList.remove('hidden');
           if (goFinalRank) goFinalRank.textContent = `Top ${result.rank}`;
           if (result.is_top_50) {
-            showToast(`🏆 Top ${result.rank}!`);
+            showToast(ArcadeI18n.t('tetris.toast_top_rank', { rank: result.rank }));
           }
         }
         await checkAuthStatus();
