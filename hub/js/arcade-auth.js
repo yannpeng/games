@@ -204,12 +204,18 @@ const ArcadeAuth = (function () {
       if (userBadge) {
         userBadge.classList.remove('hidden');
         userBadge.style.display = 'inline-flex';
+        const bestScoreStr = currentUser.best_score ? currentUser.best_score.toLocaleString() : '0';
+        userBadge.title = `Player: ${currentUser.username} | High Score: ${bestScoreStr}`;
       }
       if (displayUsername) {
         displayUsername.textContent = currentUser.username;
       }
       if (userAvatar) {
         userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+      }
+      const displayUserBest = document.getElementById('display-user-best');
+      if (displayUserBest) {
+        displayUserBest.textContent = `Best: ${(currentUser.best_score || 0).toLocaleString()}`;
       }
     } else {
       if (btnOpenLogin) {

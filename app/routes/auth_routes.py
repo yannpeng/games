@@ -2,7 +2,8 @@
 FastAPI Router for User Authentication endpoints (register, login, me, logout).
 """
 
-from fastapi import APIRouter, HTTPException, Depends, status
+from typing import Optional
+from fastapi import APIRouter, HTTPException, Depends, Query, status
 from app.database import get_db_cursor
 from app.auth import hash_password, verify_password, create_access_token, get_current_user
 from app.models import (
@@ -96,7 +97,10 @@ def login_user(req: UserLoginRequest):
 
 
 @router.get("/me", response_model=UserProfileResponse)
-def get_user_profile(current_user: dict = Depends(get_current_user)):
+def get_user_profile(
+    game_id: Optional[str] = Query(None, description="Optional Game ID for game-specific best score"),
+    current_user: dict = Depends(get_current_user),
+):
     """Retrieve profile and aggregated play statistics for authenticated user."""
     user_id = current_user["user_id"]
 
@@ -106,10 +110,17 @@ def get_user_profile(current_user: dict = Depends(get_current_user)):
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
 
-        cur.execute("SELECT MAX(score) as best_score, COUNT(*) as total_games FROM scores WHERE user_id = ?", (user_id,))
-        stats = cur.fetchone()
-        best_score = stats["best_score"] or 0
-        total_games = stats["total_games"] or 0
+        if game_id:
+            target_game = game_id.lower().strip()
+            cur.execute("SELECT MAX(score) as best_score, COUNT(*) as total_games FROM scores WHERE user_id = ? AND game_id = ?", (user_id, target_game))
+            stats = cur.fetchone()
+            best_score = stats["best_score"] or 0
+            total_games = stats["total_games"] or 0
+        else:
+            cur.execute("SELECT MAX(score) as best_score, COUNT(*) as total_games FROM scores WHERE user_id = ?", (user_id,))
+            stats = cur.fetchone()
+            best_score = stats["best_score"] or 0
+            total_games = stats["total_games"] or 0
 
     return {
         "id": user["id"],
