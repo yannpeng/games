@@ -32,7 +32,7 @@ const DefenseConfig = {
       upgradeCost: 80,
       maxLevel: 4,
       traitKey: 'tower_rabbit_trait',
-      unlockWave: 1,
+      unlockWave: 0,
     },
     rooster: {
       id: 'rooster',
@@ -49,7 +49,7 @@ const DefenseConfig = {
       upgradeCost: 90,
       maxLevel: 4,
       traitKey: 'tower_rooster_trait',
-      unlockWave: 1,
+      unlockWave: 0,
     },
     hen: {
       id: 'hen',
@@ -68,7 +68,7 @@ const DefenseConfig = {
       maxLevel: 4,
       economyBonus: 12,
       traitKey: 'tower_hen_trait',
-      unlockWave: 1,
+      unlockWave: 0,
     },
     deer: {
       id: 'deer',
@@ -87,7 +87,7 @@ const DefenseConfig = {
       upgradeCost: 110,
       maxLevel: 4,
       traitKey: 'tower_deer_trait',
-      unlockWave: 2,
+      unlockWave: 0,
     },
     squirrel: {
       id: 'squirrel',
@@ -107,7 +107,7 @@ const DefenseConfig = {
       upgradeCost: 130,
       maxLevel: 4,
       traitKey: 'tower_squirrel_trait',
-      unlockWave: 3,
+      unlockWave: 0,
     },
     owl: {
       id: 'owl',
@@ -126,7 +126,7 @@ const DefenseConfig = {
       upgradeCost: 140,
       maxLevel: 4,
       traitKey: 'tower_owl_trait',
-      unlockWave: 4,
+      unlockWave: 0,
     },
     eagle: {
       id: 'eagle',
@@ -143,7 +143,7 @@ const DefenseConfig = {
       upgradeCost: 180,
       maxLevel: 4,
       traitKey: 'tower_eagle_trait',
-      unlockWave: 5,
+      unlockWave: 0,
     },
     // ULTIMATE CAT 1: Golden Shaded Cat (金渐层战神)
     cat_golden: {

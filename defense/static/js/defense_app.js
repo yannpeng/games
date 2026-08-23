@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const nameStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.nameKey)) || t.nameKey;
       const traitStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.traitKey)) || t.traitKey;
 
-      const isLocked = engine.wave < (t.unlockWave || 1);
+      const isLocked = (t.unlockWave && t.unlockWave > 0) ? engine.wave < t.unlockWave : false;
 
       card.innerHTML = `
         <div class="card-icon" style="background: ${t.color}22; border-color: ${t.color};">${t.icon}</div>
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       card.addEventListener('click', () => {
-        if (engine.wave < (t.unlockWave || 1)) {
+        if ((t.unlockWave && t.unlockWave > 0) && engine.wave < t.unlockWave) {
           engine.createFloatingText(engine.width / 2, engine.height / 2, `第 ${t.unlockWave} 波后解锁该神兽！`, '#ffd700', 20);
           return;
         }
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.tower-card').forEach((card) => {
       const type = card.dataset.towerType;
       const proto = DefenseConfig.TOWERS[type];
-      const isLocked = engine.wave < (proto.unlockWave || 1);
+      const isLocked = (proto.unlockWave && proto.unlockWave > 0) ? engine.wave < proto.unlockWave : false;
 
       card.classList.toggle('active', engine.placingTowerType === type);
       card.classList.toggle('disabled', isLocked || engine.gold < proto.cost || isMaxed);
