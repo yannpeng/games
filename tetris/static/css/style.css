@@ -585,7 +585,7 @@ body {
   aspect-ratio: 10 / 20 !important;
   background: rgba(5, 6, 12, 0.85);
   border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: 4px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 240, 255, 0.15);
   padding: 0;
   overflow: hidden;
@@ -602,7 +602,7 @@ body {
   aspect-ratio: 10 / 20 !important;
   object-fit: fill;
   background: #060812;
-  border-radius: calc(var(--radius-md) - 4px);
+  border-radius: 2px;
 }
 
 /* AI KO Overlay */
@@ -1884,7 +1884,7 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20;
     width: auto;
     max-width: 100%;
-    border-radius: var(--radius-md);
+    border-radius: 4px;
   }
 
   .mode-solo #matrix-canvas {
@@ -1892,6 +1892,7 @@ body.is-desktop-device .desktop-only {
     width: auto;
     max-width: 100%;
     aspect-ratio: 10 / 20;
+    border-radius: 2px;
   }
 
   /* VS AI Mode on Mobile: Consistent Top HUD + Strict 1:2 Ratio Dual Boards */
@@ -1930,7 +1931,7 @@ body.is-desktop-device .desktop-only {
     width: 100%;
     height: auto;
     aspect-ratio: 10 / 20 !important;
-    border-radius: var(--radius-md);
+    border-radius: 4px;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -1944,6 +1945,7 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20 !important;
     object-fit: fill;
     display: block;
+    border-radius: 2px;
   }
 
   /* Compact Right Column: Proportional 1:2 Mini AI Board + Match Info */
@@ -1979,7 +1981,7 @@ body.is-desktop-device .desktop-only {
     width: 100%;
     height: auto;
     aspect-ratio: 10 / 20 !important;
-    border-radius: var(--radius-sm);
+    border-radius: 3px;
     border: 1.5px solid rgba(255, 0, 127, 0.45);
     box-shadow: 0 0 15px rgba(255, 0, 127, 0.18);
     position: relative;
@@ -1996,6 +1998,7 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20 !important;
     object-fit: fill;
     display: block;
+    border-radius: 1px;
   }
 
   .ai-match-card {
