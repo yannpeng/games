@@ -60,6 +60,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const aiDiffSlider = document.getElementById('ai-diff-slider');
   const selectedAiDiffVal = document.getElementById('selected-ai-diff-val');
+  const aiMatchDiffVal = document.getElementById('ai-match-diff-val');
+  const aiMatchSeqVal = document.getElementById('ai-match-seq-val');
   const btnGameStart = document.getElementById('btn-game-start');
 
   // Button Options for VS Mode
@@ -233,6 +235,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       selectedAiDiffVal.textContent = diffLabel;
       if (aiDifficultyBadge) {
         aiDifficultyBadge.textContent = `AI · ${diffLabel}`;
+      }
+      if (aiMatchDiffVal) {
+        aiMatchDiffVal.textContent = diffLabel;
+      }
+      if (aiMatchSeqVal) {
+        aiMatchSeqVal.textContent = selectedSequenceMode === 'sync' ? 'Sync' : '7-Bag';
       }
     }
   }
