@@ -76,26 +76,30 @@
   }
 
   function updateUserAuthUI() {
-    if (currentUser) {
+    if (currentUser && currentUser.username) {
       if (btnUserAuth) {
         btnUserAuth.classList.add('hidden');
-        btnUserAuth.style.display = 'none';
+        btnUserAuth.setAttribute('hidden', '');
+        btnUserAuth.style.setProperty('display', 'none', 'important');
       }
       if (userBadge) {
         userBadge.classList.remove('hidden');
-        userBadge.style.display = 'inline-flex';
+        userBadge.removeAttribute('hidden');
+        userBadge.style.setProperty('display', 'inline-flex', 'important');
         if (displayUsername) displayUsername.textContent = currentUser.username;
         if (userAvatar) userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
       }
     } else {
       if (btnUserAuth) {
         btnUserAuth.classList.remove('hidden');
-        btnUserAuth.style.display = 'inline-flex';
+        btnUserAuth.removeAttribute('hidden');
+        btnUserAuth.style.setProperty('display', 'inline-flex', 'important');
         if (userDisplayName) userDisplayName.textContent = ArcadeI18n.t('hub.login_btn');
       }
       if (userBadge) {
         userBadge.classList.add('hidden');
-        userBadge.style.display = 'none';
+        userBadge.setAttribute('hidden', '');
+        userBadge.style.setProperty('display', 'none', 'important');
       }
     }
   }

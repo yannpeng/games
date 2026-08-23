@@ -41,7 +41,11 @@ a, a:hover, a:visited, a:active, a:focus {
 
 .hidden, [hidden],
 .header-right .hidden,
-.header-right [hidden] {
+.header-right [hidden],
+.user-auth-section .hidden,
+.user-auth-section [hidden],
+#btn-user-auth.hidden,
+#user-badge.hidden {
   display: none !important;
 }
 

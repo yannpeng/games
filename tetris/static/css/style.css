@@ -47,7 +47,9 @@ a, a:hover, a:visited, a:active, a:focus {
 .header-actions .hidden,
 .header-actions [hidden],
 .user-auth-section .hidden,
-.user-auth-section [hidden] {
+.user-auth-section [hidden],
+#btn-open-login.hidden,
+#user-badge.hidden {
   display: none !important;
 }
 

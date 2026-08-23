@@ -483,25 +483,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Auth Handlers ---
   function updateUserAuthUI() {
-    if (currentUser) {
+    if (currentUser && currentUser.username) {
       if (displayUsername) displayUsername.textContent = currentUser.username;
       if (userAvatar) userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
       if (btnOpenLogin) {
         btnOpenLogin.classList.add('hidden');
-        btnOpenLogin.style.display = 'none';
+        btnOpenLogin.setAttribute('hidden', '');
+        btnOpenLogin.style.setProperty('display', 'none', 'important');
       }
       if (userBadge) {
         userBadge.classList.remove('hidden');
-        userBadge.style.display = 'inline-flex';
+        userBadge.removeAttribute('hidden');
+        userBadge.style.setProperty('display', 'inline-flex', 'important');
       }
     } else {
       if (btnOpenLogin) {
         btnOpenLogin.classList.remove('hidden');
-        btnOpenLogin.style.display = 'inline-flex';
+        btnOpenLogin.removeAttribute('hidden');
+        btnOpenLogin.style.setProperty('display', 'inline-flex', 'important');
       }
       if (userBadge) {
         userBadge.classList.add('hidden');
-        userBadge.style.display = 'none';
+        userBadge.setAttribute('hidden', '');
+        userBadge.style.setProperty('display', 'none', 'important');
       }
     }
   }
