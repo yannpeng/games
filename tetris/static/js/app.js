@@ -16,15 +16,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const holdCtx = holdCanvas ? holdCanvas.getContext('2d') : null;
   const holdCanvasMobile = document.getElementById('hold-canvas-mobile');
   const holdCtxMobile = holdCanvasMobile ? holdCanvasMobile.getContext('2d') : null;
-  const vsHoldCanvasMobile = document.getElementById('vs-hold-canvas-mobile');
-  const vsHoldCtxMobile = vsHoldCanvasMobile ? vsHoldCanvasMobile.getContext('2d') : null;
 
   const nextCanvas = document.getElementById('next-canvas');
   const nextCtx = nextCanvas ? nextCanvas.getContext('2d') : null;
   const nextCanvasMobile = document.getElementById('next-canvas-mobile');
   const nextCtxMobile = nextCanvasMobile ? nextCanvasMobile.getContext('2d') : null;
-  const vsNextCanvasMobile = document.getElementById('vs-next-canvas-mobile');
-  const vsNextCtxMobile = vsNextCanvasMobile ? vsNextCanvasMobile.getContext('2d') : null;
 
   // 2. DOM Elements - Layout & HUD
   const gameLayout = document.getElementById('game-layout');
@@ -713,12 +709,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         drawPieceInBox(holdCtxMobile, playerGame.holdPiece, holdCanvasMobile.width, holdCanvasMobile.height, 20);
       }
     }
-    if (vsHoldCtxMobile && vsHoldCanvasMobile) {
-      vsHoldCtxMobile.clearRect(0, 0, vsHoldCanvasMobile.width, vsHoldCanvasMobile.height);
-      if (playerGame.holdPiece) {
-        drawPieceInBox(vsHoldCtxMobile, playerGame.holdPiece, vsHoldCanvasMobile.width, vsHoldCanvasMobile.height, 16);
-      }
-    }
 
     if (nextCtx && nextCanvas) {
       nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
@@ -734,14 +724,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       const slotWidth = nextCanvasMobile.width / 3;
       queue.forEach((type, idx) => {
         drawPieceInBox(nextCtxMobile, type, slotWidth, nextCanvasMobile.height, 18, 0, idx * slotWidth);
-      });
-    }
-    if (vsNextCtxMobile && vsNextCanvasMobile) {
-      vsNextCtxMobile.clearRect(0, 0, vsNextCanvasMobile.width, vsNextCanvasMobile.height);
-      const queue = playerGame.nextQueue.slice(0, 3);
-      const slotWidth = vsNextCanvasMobile.width / 3;
-      queue.forEach((type, idx) => {
-        drawPieceInBox(vsNextCtxMobile, type, slotWidth, vsNextCanvasMobile.height, 15, 0, idx * slotWidth);
       });
     }
   }
