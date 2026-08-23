@@ -628,6 +628,32 @@ body {
   letter-spacing: 4px;
 }
 
+/* AI Difficulty Badge Overlay */
+.ai-badge-overlay {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 6;
+  white-space: nowrap;
+}
+
+.ai-badge-overlay .badge {
+  background: rgba(10, 14, 28, 0.85);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  font-family: var(--font-digital);
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+}
+
 /* Level Selector in Solo Start Overlay */
 .level-selector-box {
   background: rgba(255, 255, 255, 0.05);
@@ -1585,59 +1611,59 @@ body.is-desktop-device .desktop-only {
   /* Compact Header on Mobile */
   .app-header {
     flex-wrap: wrap;
-    padding: 3px 6px;
-    gap: 3px;
+    padding: 2px 4px;
+    gap: 2px;
     margin-bottom: 0;
     flex-shrink: 0;
   }
 
   .brand {
     order: 1;
-    gap: 5px;
+    gap: 4px;
   }
 
   .brand-title {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
   }
 
   .header-actions {
     order: 2;
-    gap: 3px;
+    gap: 2px;
   }
 
   .header-actions .btn-secondary,
   .header-actions .btn-small {
-    padding: 0 6px !important;
-    font-size: 11px !important;
-    height: 28px !important;
-    min-height: 28px !important;
+    padding: 0 5px !important;
+    font-size: 10.5px !important;
+    height: 26px !important;
+    min-height: 26px !important;
   }
 
   .header-actions .btn-nav-icon,
   .header-actions .lang-select {
-    width: 28px !important;
-    min-width: 28px !important;
-    height: 28px !important;
-    min-height: 28px !important;
-    font-size: 12px !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    font-size: 11px !important;
   }
 
   .header-actions .user-badge {
-    height: 28px !important;
-    min-height: 28px !important;
+    height: 26px !important;
+    min-height: 26px !important;
   }
 
   .mode-switch-group {
     order: 3;
     width: 100%;
-    margin-top: 1px;
+    margin-top: 0;
   }
 
   .mode-btn {
     flex: 1;
     justify-content: center;
-    padding: 4px 6px;
-    font-size: 0.74rem;
+    padding: 3px 5px;
+    font-size: 0.72rem;
   }
 
   /* Game Layout */
@@ -1645,11 +1671,11 @@ body.is-desktop-device .desktop-only {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     flex: 1;
     min-height: 0;
-    gap: 3px;
+    gap: 2px;
     position: relative;
   }
 
@@ -1660,25 +1686,25 @@ body.is-desktop-device .desktop-only {
     width: 100%;
     max-width: 440px;
     margin: 0 auto;
-    gap: 3px;
+    gap: 2px;
     flex-shrink: 0;
   }
 
   /* Row 1: Realtime Stats Bar (Full Width) */
   .mobile-stats-row {
     width: 100%;
-    height: 28px;
+    height: 24px;
     background: rgba(12, 16, 32, 0.92);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--border-glow);
     border-radius: var(--radius-sm);
-    padding: 2px 8px;
+    padding: 1px 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
 
   /* Row 2: Previews Bar (Hold on Left | Next 3 on Right) */
@@ -1688,7 +1714,7 @@ body.is-desktop-device .desktop-only {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .mobile-hold-box {
@@ -1697,13 +1723,13 @@ body.is-desktop-device .desktop-only {
     align-items: center;
     justify-content: space-between;
     width: clamp(72px, 22vw, 88px);
-    height: 50px;
+    height: 48px;
     background: rgba(10, 14, 28, 0.88);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(0, 240, 255, 0.3);
     border-radius: var(--radius-sm);
-    padding: 3px 4px 2px;
+    padding: 2px 4px 1px;
     box-sizing: border-box;
     flex-shrink: 0;
   }
@@ -1715,13 +1741,13 @@ body.is-desktop-device .desktop-only {
     justify-content: space-between;
     flex: 1;
     max-width: 200px;
-    height: 50px;
+    height: 48px;
     background: rgba(10, 14, 28, 0.88);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(0, 240, 255, 0.3);
     border-radius: var(--radius-sm);
-    padding: 3px 6px 2px;
+    padding: 2px 6px 1px;
     box-sizing: border-box;
     flex-shrink: 0;
   }
@@ -1796,14 +1822,14 @@ body.is-desktop-device .desktop-only {
   }
 
   .m-stat-lbl {
-    font-size: 0.48rem;
+    font-size: 0.46rem;
     color: var(--text-dim);
     letter-spacing: 0.5px;
   }
 
   .m-stat-val {
     font-family: var(--font-digital);
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: var(--text-main);
   }
@@ -1823,8 +1849,8 @@ body.is-desktop-device .desktop-only {
 
   .m-vs-badge {
     font-family: var(--font-digital);
-    font-size: 0.6rem;
-    padding: 2px 6px;
+    font-size: 0.58rem;
+    padding: 1px 5px;
     border-radius: 4px;
     background: rgba(0, 240, 255, 0.15);
     border: 1px solid var(--color-primary);
@@ -1841,7 +1867,7 @@ body.is-desktop-device .desktop-only {
 
   .m-vs-round {
     font-family: var(--font-digital);
-    font-size: 0.66rem;
+    font-size: 0.64rem;
     color: var(--text-muted);
     font-weight: 700;
     white-space: nowrap;
@@ -1857,7 +1883,7 @@ body.is-desktop-device .desktop-only {
     align-items: center;
     justify-content: center;
     position: relative;
-    max-height: calc(100dvh - clamp(185px, 24vh, 230px));
+    max-height: calc(100dvh - clamp(130px, 16vh, 160px));
   }
 
   /* Solo Mode on Mobile: Full-Width Player Matrix! */
@@ -1894,7 +1920,7 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20;
   }
 
-  /* VS AI Mode on Mobile: 60% Player Board (Left) + 36% AI Column (Right) */
+  /* VS AI Mode on Mobile: 62% Player Board (Left) + 35% AI Column (Right) */
   .mode-vs_ai .mobile-previews-row {
     display: none !important;
   }
@@ -1902,31 +1928,35 @@ body.is-desktop-device .desktop-only {
   .mode-vs_ai .game-boards-container {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     gap: clamp(6px, 2vw, 12px);
     width: 100%;
-    max-width: 440px;
+    max-width: 480px;
     margin: 0 auto;
-    max-height: calc(100dvh - clamp(140px, 18vh, 175px));
+    height: 100%;
+    max-height: calc(100dvh - clamp(130px, 16vh, 160px));
   }
 
   /* Big Main Player Board */
   .mode-vs_ai .player-section {
-    width: clamp(200px, 60vw, 250px);
-    height: auto;
+    height: 100%;
+    max-height: 100%;
+    width: auto;
+    max-width: 63%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     flex-shrink: 0;
   }
 
   .mode-vs_ai .player-section .matrix-wrapper {
-    width: 100%;
+    height: 100%;
+    max-height: 100%;
     aspect-ratio: 10 / 20;
-    height: auto;
-    max-height: calc(100dvh - clamp(140px, 18vh, 175px));
+    width: auto;
+    max-width: 100%;
     border-radius: var(--radius-md);
   }
 
@@ -1936,10 +1966,11 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20;
   }
 
-  /* Compact Right Column: Mini AI Board + NEXT 3 + HOLD & MATCH INFO */
+  /* Compact Right Column: Top Previews (NEXT 3 + HOLD & INFO) + Bottom AI Board */
   .mode-vs_ai .ai-section {
-    width: clamp(115px, 35vw, 145px);
-    height: auto;
+    height: 100%;
+    max-height: 100%;
+    width: clamp(115px, 35vw, 150px);
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -1950,6 +1981,7 @@ body.is-desktop-device .desktop-only {
 
   .mode-vs_ai .ai-section .matrix-title-bar {
     padding: 0 2px;
+    margin-top: 2px;
     margin-bottom: 1px;
     width: 100%;
   }
@@ -1971,6 +2003,10 @@ body.is-desktop-device .desktop-only {
     border-radius: var(--radius-sm);
     border: 1.5px solid rgba(255, 0, 127, 0.45);
     box-shadow: 0 0 15px rgba(255, 0, 127, 0.18);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .mode-vs_ai #ai-matrix-canvas {
@@ -1979,9 +2015,25 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20;
   }
 
+  .mode-vs_ai .ai-badge-overlay {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    z-index: 6;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
   .mode-vs_ai .ai-badge-overlay .badge {
-    font-size: 0.48rem;
-    padding: 1px 3px;
+    font-size: 0.52rem;
+    padding: 1px 6px;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
   }
 
   /* Right Column Extras on Mobile (Next, Hold, Match Info) */
