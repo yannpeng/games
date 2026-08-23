@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         aiMatchDiffVal.textContent = diffLabel;
       }
       if (aiMatchSeqVal) {
-        aiMatchSeqVal.textContent = selectedSequenceMode === 'sync' ? 'Sync' : '7-Bag';
+        aiMatchSeqVal.textContent = selectedSequenceMode === 'sync' ? ArcadeI18n.t('tetris.seq_sync_short') : ArcadeI18n.t('tetris.seq_rand_short');
       }
     }
   }
