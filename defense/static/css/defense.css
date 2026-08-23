@@ -266,6 +266,30 @@ html, body {
   box-shadow: none;
 }
 
+.btn-action,
+.btn-restart {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glow);
+  color: var(--text-main);
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-action:hover,
+.btn-restart:hover {
+  background: rgba(0, 255, 136, 0.2);
+  border-color: var(--accent-green);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+}
+
 .btn-toggle-auto {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border-glow);

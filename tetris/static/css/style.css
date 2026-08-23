@@ -1786,41 +1786,48 @@ body.is-desktop-device .desktop-only {
     border-radius: 2px;
   }
 
-  /* VS AI Mode on Mobile: Consistent Top HUD + Strict 1:2 Ratio Dual Boards */
+  /* VS AI Mode on Mobile: Spacious Dual Boards (Strict 1:2 Ratio) with Generous Breathing Room */
   .mode-vs_ai .game-boards-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: clamp(6px, 2vw, 12px);
+    gap: clamp(8px, 2.5vw, 16px);
     width: 100%;
-    max-width: 480px;
+    max-width: 500px;
     margin: 0 auto;
+    flex: 1;
+    min-height: 0;
     height: 100%;
-    max-height: calc(100dvh - clamp(170px, 22vh, 205px));
+    max-height: calc(100dvh - clamp(130px, 16vh, 160px));
   }
 
-  /* Big Main Player Board (Strict 1:2 Aspect Ratio) */
+  /* Main Player Board (Expands to Available Height, Strict 1:2 Ratio) */
   .mode-vs_ai .player-section {
-    height: auto;
+    height: 100%;
     max-height: 100%;
-    width: clamp(180px, 56vw, 230px);
+    width: auto;
+    max-width: 60%;
+    aspect-ratio: 10 / 20;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-width: 0;
     flex-shrink: 0;
   }
 
   .mode-vs_ai .player-section .matrix-title-bar {
     width: 100%;
-    padding: 0 2px;
+    padding: 0 4px;
     margin-bottom: 2px;
+    box-sizing: border-box;
   }
 
   .mode-vs_ai .player-section .matrix-wrapper {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 100%;
+    max-height: 100%;
     aspect-ratio: 10 / 20 !important;
     border-radius: 4px;
     overflow: hidden;
@@ -1839,43 +1846,46 @@ body.is-desktop-device .desktop-only {
     border-radius: 2px;
   }
 
-  /* Compact Right Column: Proportional 1:2 Mini AI Board + Match Info */
+  /* Compact Right Column: Proportional Mini AI Board + Match Info */
   .mode-vs_ai .ai-section {
-    height: auto;
+    height: 100%;
     max-height: 100%;
-    width: clamp(90px, 28vw, 120px);
+    width: auto;
+    max-width: 38%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 4px;
+    min-width: 0;
     flex-shrink: 0;
   }
 
   .mode-vs_ai .ai-section .matrix-title-bar {
-    padding: 0 2px;
+    padding: 0 4px;
     margin-top: 0;
     margin-bottom: 1px;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .mode-vs_ai .ai-section .matrix-label {
-    font-size: 0.62rem;
+    font-size: clamp(0.68rem, 0.76vw, 0.78rem);
   }
 
   .mode-vs_ai .ai-section .attack-gauge {
-    font-size: 0.56rem;
-    padding: 1px 3px;
+    font-size: clamp(0.62rem, 0.7vw, 0.72rem);
+    padding: 1px 4px;
   }
 
   .mode-vs_ai .ai-section .matrix-wrapper {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: clamp(170px, 28vh, 260px);
+    max-height: 80%;
     aspect-ratio: 10 / 20 !important;
-    border-radius: 3px;
+    border-radius: 4px;
     border: 1.5px solid rgba(255, 0, 127, 0.45);
-    box-shadow: 0 0 15px rgba(255, 0, 127, 0.18);
-    position: relative;
+    background: #060812;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1889,7 +1899,7 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20 !important;
     object-fit: fill;
     display: block;
-    border-radius: 1px;
+    border-radius: 2px;
   }
 
   .ai-match-card {
