@@ -1817,11 +1817,19 @@ body.is-desktop-device .desktop-only {
     flex-shrink: 0;
   }
 
-  .mode-vs_ai .player-section .matrix-title-bar {
+  .mode-vs_ai .player-section .matrix-title-bar,
+  .mode-vs_ai .ai-section .matrix-title-bar {
     width: 100%;
     padding: 0 4px;
     margin-bottom: 2px;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mode-vs_ai .matrix-title-bar .attack-gauge {
+    display: none !important;
   }
 
   .mode-vs_ai .player-section .matrix-wrapper {
@@ -1861,21 +1869,12 @@ body.is-desktop-device .desktop-only {
     flex-shrink: 0;
   }
 
-  .mode-vs_ai .ai-section .matrix-title-bar {
-    padding: 0 4px;
-    margin-top: 0;
-    margin-bottom: 1px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
   .mode-vs_ai .ai-section .matrix-label {
     font-size: clamp(0.68rem, 0.76vw, 0.78rem);
-  }
-
-  .mode-vs_ai .ai-section .attack-gauge {
-    font-size: clamp(0.62rem, 0.7vw, 0.72rem);
-    padding: 1px 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
   }
 
   .mode-vs_ai .ai-section .matrix-wrapper {
