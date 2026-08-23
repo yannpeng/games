@@ -58,8 +58,6 @@
   const btnGoLogin = document.getElementById('btn-go-login');
 
   const btnSoundToggle = document.getElementById('btn-sound-toggle');
-  const iconSoundOn = document.getElementById('icon-sound-on');
-  const iconSoundOff = document.getElementById('icon-sound-off');
   const btnMobilePause = document.getElementById('btn-mobile-pause');
 
   const btnLeaderboard = document.getElementById('btn-leaderboard');
@@ -450,12 +448,10 @@
   }
 
   function updateSoundIcon() {
-    if (sound.isMuted) {
-      iconSoundOn.classList.add('hidden');
-      iconSoundOff.classList.remove('hidden');
-    } else {
-      iconSoundOn.classList.remove('hidden');
-      iconSoundOff.classList.add('hidden');
+    const isMuted = sound.isMuted;
+    if (btnSoundToggle) {
+      btnSoundToggle.textContent = isMuted ? '🔇' : '🔊';
+      btnSoundToggle.setAttribute('title', isMuted ? (ArcadeI18n ? ArcadeI18n.t('defense.mute') : 'Mute') : (ArcadeI18n ? ArcadeI18n.t('defense.audio') : 'Sound'));
     }
   }
 
