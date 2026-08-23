@@ -1537,6 +1537,8 @@ body.is-desktop-device .desktop-only {
     padding: 2px 4px;
     gap: 2px;
     margin-bottom: 0;
+  }
+
   /* Mobile Mode Switcher */
   .mode-switch-group {
     order: 3;
