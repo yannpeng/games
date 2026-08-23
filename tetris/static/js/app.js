@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const playerMatrixLabel = document.getElementById('player-matrix-label');
   const playerAttackGauge = document.getElementById('player-attack-gauge');
   const aiAttackGauge = document.getElementById('ai-attack-gauge');
-  const aiDifficultyBadge = document.getElementById('ai-difficulty-badge');
 
   const statScore = document.getElementById('stat-score');
   const statScoreMobile = document.getElementById('stat-score-mobile');
@@ -234,9 +233,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       const diffKeys = { 1: 'tetris.diff_easy', 2: 'tetris.diff_med', 3: 'tetris.diff_hard', 4: 'tetris.diff_master' };
       const diffLabel = ArcadeI18n.t(diffKeys[selectedAiDifficulty] || 'tetris.diff_med');
       selectedAiDiffVal.textContent = diffLabel;
-      if (aiDifficultyBadge) {
-        aiDifficultyBadge.textContent = `AI · ${diffLabel}`;
-      }
       if (aiMatchDiffVal) {
         aiMatchDiffVal.textContent = diffLabel;
       }
