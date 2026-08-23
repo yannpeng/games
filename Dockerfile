@@ -19,8 +19,8 @@ RUN apt-get update && \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create application data directory (ownership will be set after user creation)
-RUN mkdir -p /app/data
+# Create application data directory with open permissions
+RUN mkdir -p /app/data && chmod 755 /app/data
 
 # Copy application assets and backend code
 COPY app/ app/
@@ -34,7 +34,7 @@ COPY entrypoint.sh .
 # Ensure executable permissions on Linux entrypoint
 RUN chmod +x /app/entrypoint.sh
 
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app/data
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
 USER appuser
 
 # Expose HTTP port
