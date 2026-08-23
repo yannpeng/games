@@ -4,11 +4,11 @@
  */
 
 const DefenseConfig = {
-  CANVAS_WIDTH: 800,
-  CANVAS_HEIGHT: 600,
+  CANVAS_WIDTH: 900,
+  CANVAS_HEIGHT: 540,
   GRID_COLS: 20,
-  GRID_ROWS: 15,
-  TILE_SIZE: 40,
+  GRID_ROWS: 12,
+  TILE_SIZE: 45,
 
   INITIAL_GOLD: 350,
   INITIAL_LIVES: 20,
@@ -424,7 +424,7 @@ const DefenseConfig = {
         { x: 11, y: 2 },
         { x: 15, y: 2 },
         { x: 15, y: 8 },
-        { x: 18, y: 8 },
+        { x: 19, y: 8 },
       ],
       obstacles: [
         { col: 3, row: 1 }, { col: 8, row: 4 }, { col: 13, row: 5 }, { col: 2, row: 6 },
@@ -448,7 +448,7 @@ const DefenseConfig = {
         { x: 8, y: 4 },
         { x: 13, y: 4 },
         { x: 13, y: 8 },
-        { x: 18, y: 8 },
+        { x: 19, y: 8 },
       ],
       obstacles: [
         { col: 2, row: 4 }, { col: 6, row: 2 }, { col: 10, row: 7 }, { col: 15, row: 3 },
@@ -474,7 +474,7 @@ const DefenseConfig = {
         { x: 7, y: 5 },
         { x: 11, y: 5 },
         { x: 11, y: 7 },
-        { x: 18, y: 7 },
+        { x: 19, y: 7 },
       ],
       obstacles: [
         { col: 5, row: 3 }, { col: 9, row: 3 }, { col: 5, row: 7 }, { col: 12, row: 3 },

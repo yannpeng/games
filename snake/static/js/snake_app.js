@@ -75,6 +75,7 @@
   const userBadge = document.getElementById('user-badge');
   const userAvatar = document.getElementById('user-avatar');
   const displayUsername = document.getElementById('display-username');
+  const displayUserBest = document.getElementById('display-user-best');
   const btnLogout = document.getElementById('btn-logout');
 
   const modalAuth = document.getElementById('modal-auth');
@@ -103,6 +104,12 @@
     updateSoundIcon();
     await checkUserAuth();
     requestAnimationFrame(renderLoop);
+
+    window.addEventListener('arcadeLanguageChanged', () => {
+      updateDynamicTexts();
+      updateSliderHints();
+      updateUserAuthUI();
+    });
   }
 
   function setupCanvas() {

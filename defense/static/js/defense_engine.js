@@ -11,11 +11,14 @@ class DefenseEngine {
     this.config = config;
     this.audio = audio;
 
-    this.width = config.CANVAS_WIDTH;
-    this.height = config.CANVAS_HEIGHT;
-    this.tileSize = config.TILE_SIZE;
-    this.cols = config.GRID_COLS;
-    this.rows = config.GRID_ROWS;
+    this.width = config.CANVAS_WIDTH || 900;
+    this.height = config.CANVAS_HEIGHT || 540;
+    this.tileSize = config.TILE_SIZE || 45;
+    this.cols = config.GRID_COLS || 20;
+    this.rows = config.GRID_ROWS || 12;
+
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
 
     // Game State
     this.gold = config.INITIAL_GOLD;

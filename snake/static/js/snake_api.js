@@ -125,3 +125,7 @@ const SnakeAPI = {
     return await res.json();
   },
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = SnakeAPI;
+}
