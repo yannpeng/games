@@ -1,6 +1,13 @@
 /* Modern Cyberpunk / Retro Neon Arcade Style for Snake */
 
 :root {
+  --nav-accent: #00ff88;
+  --nav-accent-glow: rgba(0, 255, 136, 0.4);
+  --nav-border: rgba(64, 86, 140, 0.45);
+  --nav-bg-surface: rgba(18, 22, 40, 0.85);
+  --nav-text-main: #f0f4fc;
+  --nav-text-muted: #8a99b5;
+
   --bg-primary: #0a0c16;
   --bg-surface: rgba(18, 22, 40, 0.85);
   --bg-surface-elevated: rgba(28, 34, 62, 0.95);
@@ -114,31 +121,7 @@ body {
   padding: clamp(4px, 1vh, 12px) clamp(6px, 1.5vw, 18px);
 }
 
-/* Header */
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: clamp(5px, 0.9vh, 9px) clamp(10px, 1.5vw, 18px);
-  background: var(--bg-surface);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-  flex-shrink: 0;
-  margin-bottom: clamp(4px, 0.7vh, 8px);
-  min-height: 48px;
-  max-height: 52px;
-  box-sizing: border-box;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
+/* Snake-Specific Brand Blocks & Active Mode Gradient */
 .brand-icon {
   display: flex;
   gap: 2px;
@@ -152,42 +135,6 @@ body {
 .b-g1 { background: #00ff88; box-shadow: 0 0 6px #00ff88; }
 .b-g2 { background: #00f0ff; box-shadow: 0 0 6px #00f0ff; }
 .b-c1 { background: #ffd700; box-shadow: 0 0 6px #ffd700; }
-
-.brand-title {
-  font-family: var(--font-digital);
-  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
-  letter-spacing: 2px;
-  color: var(--text-main);
-  text-shadow: 0 0 10px var(--color-primary-glow);
-}
-
-.brand-title span {
-  color: var(--color-primary);
-}
-
-.mode-switch-group {
-  display: flex;
-  background: rgba(10, 12, 22, 0.7);
-  border: 1px solid var(--border-color);
-  border-radius: 30px;
-  padding: 2px;
-}
-
-.mode-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-family: var(--font-body);
-  font-size: clamp(0.85rem, 1.05vw, 0.98rem);
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: all 0.2s ease;
-}
 
 .mode-btn.active {
   background: linear-gradient(135deg, rgba(0, 255, 136, 0.25), rgba(0, 240, 255, 0.25));

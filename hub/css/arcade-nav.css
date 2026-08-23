@@ -1,0 +1,415 @@
+/* ==========================================================================
+   ARCADE NAV CORE - Global Header & Navigator Architecture
+   Shared cross-game standard layout, responsive heights, and button geometries.
+   Sub-games override CSS custom properties (--nav-accent, --nav-glow, etc.)
+   ========================================================================== */
+
+:root {
+  --nav-accent: #00f0ff;
+  --nav-accent-glow: rgba(0, 240, 255, 0.4);
+  --nav-border: rgba(0, 240, 255, 0.25);
+  --nav-bg-surface: rgba(14, 18, 36, 0.85);
+  --nav-text-main: #ffffff;
+  --nav-text-muted: #8e9aaf;
+  --nav-font-digital: 'Orbitron', -apple-system, sans-serif;
+  --nav-font-body: 'Rajdhani', sans-serif;
+}
+
+/* Base Top Navigator Container (Desktop Standard) */
+.app-header,
+.game-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(5px, 0.9vh, 9px) clamp(10px, 1.5vw, 18px);
+  background: var(--nav-bg-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--nav-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  margin-bottom: clamp(4px, 0.7vh, 8px);
+  min-height: 48px;
+  max-height: 52px;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+/* Brand Area & Logo */
+.brand,
+.brand-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.brand-title {
+  font-family: var(--nav-font-digital);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  letter-spacing: 1.5px;
+  color: var(--nav-text-main);
+  text-shadow: 0 0 10px var(--nav-accent-glow);
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.brand-title span {
+  color: var(--nav-accent);
+}
+
+/* Mode Switch Group */
+.mode-switch-group {
+  display: flex;
+  background: rgba(10, 12, 22, 0.7);
+  border: 1px solid var(--nav-border);
+  border-radius: 30px;
+  padding: 2px;
+  height: 34px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.mode-btn {
+  background: transparent;
+  border: none;
+  color: var(--nav-text-muted);
+  font-family: var(--nav-font-body);
+  font-size: clamp(0.85rem, 1.05vw, 0.98rem);
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mode-btn:hover {
+  color: var(--nav-text-main);
+}
+
+.mode-btn.active {
+  background: var(--nav-accent);
+  color: #000;
+  box-shadow: 0 0 10px var(--nav-accent-glow);
+}
+
+/* Action Controls Container */
+.header-actions,
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+
+/* Unified Icon-Only Action Buttons */
+.btn-nav-icon,
+.btn-icon {
+  width: 34px !important;
+  min-width: 34px !important;
+  max-width: 34px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--nav-border) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--nav-text-main) !important;
+  font-size: 15px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.btn-nav-icon span,
+.btn-icon span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.btn-nav-icon:hover,
+.btn-icon:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: var(--nav-accent) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px var(--nav-accent-glow);
+}
+
+.btn-nav-icon:active,
+.btn-icon:active {
+  transform: scale(0.92);
+}
+
+/* Header Text / Pill Buttons */
+.header-actions .btn-secondary,
+.header-actions .btn-small,
+.btn-login {
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 10px !important;
+  font-size: 13px !important;
+  font-weight: 700;
+  border-radius: 8px !important;
+  border: 1px solid var(--nav-border) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--nav-text-main) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px !important;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.header-actions .btn-secondary:hover,
+.btn-login:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: var(--nav-accent) !important;
+  box-shadow: 0 0 10px var(--nav-accent-glow);
+}
+
+/* Language Selector Dropdown */
+.lang-selector-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  max-height: 34px;
+}
+
+.lang-select {
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  line-height: 32px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  font-size: 13px !important;
+  font-weight: 700;
+  border-radius: 8px !important;
+  border: 1px solid var(--nav-border) !important;
+  background: rgba(10, 12, 22, 0.85);
+  color: var(--nav-accent);
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.lang-select:hover,
+.lang-select:focus {
+  border-color: var(--nav-accent);
+  box-shadow: 0 0 8px var(--nav-accent-glow);
+}
+
+.lang-select option {
+  background: #0a0c16;
+  color: #fff;
+}
+
+/* User Auth Section & Profile Badge */
+.user-auth-section {
+  display: inline-flex;
+  align-items: center;
+  height: 34px !important;
+  max-height: 34px !important;
+  margin: 0 !important;
+}
+
+.user-badge {
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--nav-border);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.user-badge .avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--nav-accent);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.72rem;
+}
+
+.user-badge .username {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--nav-text-main);
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon-btn-small {
+  background: transparent;
+  border: none;
+  color: var(--nav-text-muted);
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 0.85rem;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.icon-btn-small:hover {
+  color: #ff3366;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVE UNIFIED NAVIGATION (<= 768px)
+   Standardized 56px height for 2-row games, 36px for 1-row games
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* 2-Row Dual-Mode Header (Tetris, Snake) */
+  .app-header {
+    flex-wrap: wrap;
+    padding: 2px 4px !important;
+    gap: 2px !important;
+    margin-bottom: 0 !important;
+    flex-shrink: 0;
+    min-height: 56px !important;
+    max-height: 58px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 1-Row Compact Header (Cyber Defense) */
+  .game-header {
+    flex-wrap: nowrap !important;
+    padding: 3px 6px !important;
+    min-height: 36px !important;
+    max-height: 38px !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+  }
+
+  .brand,
+  .brand-area {
+    order: 1;
+    gap: 4px;
+  }
+
+  .brand-title {
+    font-size: 0.92rem !important;
+  }
+
+  .header-actions,
+  .header-controls {
+    order: 2;
+    gap: 2px;
+  }
+
+  .header-actions .btn-secondary,
+  .header-actions .btn-small,
+  .btn-login,
+  .btn-icon {
+    padding: 0 5px !important;
+    font-size: 10.5px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    border-radius: 6px !important;
+  }
+
+  .btn-nav-icon,
+  .lang-select {
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    font-size: 11px !important;
+    padding: 0 !important;
+    border-radius: 6px !important;
+  }
+
+  .user-badge {
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    padding: 1px 6px;
+  }
+
+  .user-badge .avatar {
+    width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+  }
+
+  .user-badge .username {
+    font-size: 0.72rem;
+    max-width: 60px;
+  }
+
+  .mode-switch-group {
+    order: 3;
+    width: 100%;
+    margin-top: 0;
+    padding: 1px;
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+    box-sizing: border-box;
+  }
+
+  .mode-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 2px 4px;
+    font-size: 0.72rem;
+    height: 22px;
+    line-height: 20px;
+  }
+}

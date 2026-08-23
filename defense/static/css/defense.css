@@ -4,6 +4,13 @@
    ========================================================================== */
 
 :root {
+  --nav-accent: #00ff88;
+  --nav-accent-glow: rgba(0, 255, 136, 0.4);
+  --nav-border: rgba(0, 255, 136, 0.35);
+  --nav-bg-surface: rgba(14, 26, 20, 0.85);
+  --nav-text-main: #e8f5e9;
+  --nav-text-muted: #81c784;
+
   --bg-primary: #0a0f0d;
   --bg-panel: rgba(14, 26, 20, 0.85);
   --bg-card: rgba(20, 38, 28, 0.9);
@@ -54,32 +61,7 @@ html, body {
   touch-action: manipulation;
 }
 
-/* Header */
-.game-header {
-  width: 100%;
-  max-width: min(1600px, 96vw);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: clamp(5px, 0.9vh, 9px) clamp(10px, 1.5vw, 18px);
-  background: var(--bg-panel);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-glow);
-  box-shadow: 0 4px 20px rgba(0, 255, 136, 0.1);
-  min-height: 48px;
-  max-height: 52px;
-  box-sizing: border-box;
-  flex-wrap: nowrap;
-  gap: 8px;
-}
-
-.brand-area {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
+/* Defense-Specific Brand Logo Animation */
 .brand-logo {
   font-size: 26px;
   animation: floatBounce 3s ease-in-out infinite;
@@ -88,18 +70,6 @@ html, body {
 @keyframes floatBounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
-}
-
-.brand-title {
-  font-size: clamp(16px, 2vw, 20px);
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: 0.5px;
-  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-}
-
-.brand-title span {
-  color: var(--accent-green);
 }
 
 .header-controls {

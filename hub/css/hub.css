@@ -1,6 +1,13 @@
 /* Cyberpunk Arcade Game Lobby Portal Styling */
 
 :root {
+  --nav-accent: #00f0ff;
+  --nav-accent-glow: rgba(0, 240, 255, 0.4);
+  --nav-border: rgba(64, 86, 140, 0.45);
+  --nav-bg-surface: rgba(18, 22, 40, 0.85);
+  --nav-text-main: #f0f4fc;
+  --nav-text-muted: #8a99b5;
+
   --bg-primary: #0a0c16;
   --bg-surface: rgba(18, 22, 40, 0.85);
   --bg-surface-elevated: rgba(28, 34, 62, 0.95);
