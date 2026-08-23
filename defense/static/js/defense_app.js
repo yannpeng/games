@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="card-trait">${traitStr}</div>
           <div class="card-cost">💰 ${t.cost}G</div>
         </div>
-        ${isLocked ? `<div class="lock-overlay">🔒 第${t.unlockWave}波解锁</div>` : ''}
+        ${isLocked ? `<div class="lock-overlay">🔒 ${window.ArcadeI18n ? (window.ArcadeI18n.t('defense.unlock_wave_prefix') + t.unlockWave + window.ArcadeI18n.t('defense.unlock_wave_suffix')) : ('Wave ' + t.unlockWave)}</div>` : ''}
       `;
 
       card.addEventListener('click', (e) => {
@@ -208,7 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (btnPause) {
-      btnPause.innerHTML = state.isPaused ? '▶️ <span data-i18n="defense.pause">继续</span>' : '⏸️ <span data-i18n="defense.pause">暂停</span>';
+      const pauseLabel = state.isPaused ? (window.ArcadeI18n ? window.ArcadeI18n.t('defense.resume') : 'Resume') : (window.ArcadeI18n ? window.ArcadeI18n.t('defense.pause') : 'Pause');
+      btnPause.innerHTML = `${state.isPaused ? '▶️' : '⏸️'} <span data-i18n="defense.pause">${pauseLabel}</span>`;
     }
 
     // Update Skill Cooldowns
@@ -247,24 +248,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const traitStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.traitKey)) || t.traitKey;
 
     let badgeText = `v${t.level}`;
-    if (t.level === 2) badgeText = 'v2 进阶';
-    if (t.level === 3) badgeText = 'v3 大师';
-    if (t.level === 4) badgeText = 'v4 终极 (MAX)';
+    if (t.level === 2) badgeText = window.ArcadeI18n ? window.ArcadeI18n.t('defense.lvl_2') : 'v2 Advanced';
+    if (t.level === 3) badgeText = window.ArcadeI18n ? window.ArcadeI18n.t('defense.lvl_3') : 'v3 Master';
+    if (t.level === 4) badgeText = window.ArcadeI18n ? window.ArcadeI18n.t('defense.lvl_4') : 'v4 Ultimate (MAX)';
 
     if (inspectorTitle) inspectorTitle.innerHTML = `${t.icon} ${nameStr} <span class="badge-lvl lvl-${t.level}">${badgeText}</span>`;
     if (inspectorDesc) inspectorDesc.textContent = traitStr;
     if (inspectorDmg) inspectorDmg.textContent = t.damage;
-    if (inspectorRng) inspectorRng.textContent = t.range >= 9000 ? '全图' : t.range;
+    if (inspectorRng) inspectorRng.textContent = t.range >= 9000 ? (window.ArcadeI18n ? window.ArcadeI18n.t('defense.global_range') : 'Global') : t.range;
     if (inspectorSpd) inspectorSpd.textContent = `${(1 / t.cooldown).toFixed(1)}/s`;
 
     if (btnUpgrade) {
       if (t.level >= 4) {
         btnUpgrade.disabled = true;
-        if (upgradeCostSpan) upgradeCostSpan.textContent = 'MAX (已满级)';
+        if (upgradeCostSpan) upgradeCostSpan.textContent = window.ArcadeI18n ? window.ArcadeI18n.t('defense.max_level') : 'MAX';
       } else {
         btnUpgrade.disabled = engine.gold < t.upgradeCost;
         if (upgradeCostSpan) {
-          const nextLvlLabel = t.level === 3 ? '升级至 v4 (MAX)' : `升级至 v${t.level + 1}`;
+          const nextLvlLabel = t.level === 3 
+            ? (window.ArcadeI18n ? window.ArcadeI18n.t('defense.upgrade_to_max') : 'Upgrade to v4 (MAX)')
+            : (window.ArcadeI18n ? `${window.ArcadeI18n.t('defense.upgrade_to')}${t.level + 1}` : `Upgrade to v${t.level + 1}`);
           upgradeCostSpan.textContent = `${nextLvlLabel} (${t.upgradeCost}G)`;
         }
       }
@@ -386,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnRestart) {
     btnRestart.addEventListener('click', () => {
-      if (confirm('确定要重置当前防线吗？')) {
+      if (confirm(window.ArcadeI18n ? window.ArcadeI18n.t('defense.confirm_restart') : 'Reset defense?')) {
         engine.resetGame();
         renderTowerDeck();
         engine.start();
@@ -397,7 +400,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnAudioToggle) {
     btnAudioToggle.addEventListener('click', () => {
       const isMuted = engine.audio.toggleMute();
-      btnAudioToggle.innerHTML = isMuted ? '🔇 <span data-i18n="defense.audio">静音</span>' : '🔊 <span data-i18n="defense.audio">音效</span>';
+      const soundLabel = isMuted ? (window.ArcadeI18n ? window.ArcadeI18n.t('defense.mute') : 'Mute') : (window.ArcadeI18n ? window.ArcadeI18n.t('defense.audio') : 'Sound');
+      btnAudioToggle.innerHTML = `${isMuted ? '🔇' : '🔊'} <span data-i18n="${isMuted ? 'defense.mute' : 'defense.audio'}">${soundLabel}</span>`;
     });
   }
 
@@ -426,6 +430,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (btnAnimalFrenzy) {
     btnAnimalFrenzy.addEventListener('click', () => engine.triggerSkill('animal_frenzy'));
+  }
+
+
+  function updateMapSelectOptions() {
+    const mapSelectDropdown = document.getElementById('map-select-dropdown');
+    if (!mapSelectDropdown) return;
+    const currentVal = mapSelectDropdown.value || '0';
+    mapSelectDropdown.innerHTML = `
+      <option value="0">${ArcadeI18n.t('defense.map_meadow')}</option>
+      <option value="1">${ArcadeI18n.t('defense.map_woods')}</option>
+      <option value="2">${ArcadeI18n.t('defense.map_canyon')}</option>
+    `;
+    mapSelectDropdown.value = currentVal;
   }
 
   // --- Map Selector ---
@@ -640,6 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Listen to Language Changes
   window.addEventListener('arcadeLanguageChanged', () => {
+    updateMapSelectOptions();
     renderTowerDeck();
     updateHUD(engine);
   });
@@ -650,6 +668,7 @@ document.addEventListener('DOMContentLoaded', () => {
   checkAuthStatus();
 
   // Start initial game loop
+  updateMapSelectOptions();
   renderTowerDeck();
   engine.start();
 });

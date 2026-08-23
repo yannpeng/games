@@ -433,7 +433,7 @@ class DefenseEngine {
     const burstColor = tower.level === 4 ? '#ffd700' : tower.level === 3 ? '#bf00ff' : '#00f0ff';
     this.createParticleBurst(tower.x, tower.y, burstColor, tower.level === 4 ? 36 : 22);
 
-    const lvlName = tower.level === 4 ? '👑 v4 (MAX) 终极觉醒!' : `v${tower.level} 强化成功!`;
+    const lvlName = tower.level === 4 ? `👑 v4 (MAX) ${window.ArcadeI18n ? window.ArcadeI18n.t('defense.ultimate_awakening') : 'Ultimate Awakening!'}` : `v${tower.level} ${window.ArcadeI18n ? window.ArcadeI18n.t('defense.upgrade_success') : 'Enhanced!'}`;
     this.createFloatingText(tower.x, tower.y - 20, lvlName, burstColor, tower.level === 4 ? 20 : 16);
     this.notifyState();
     return true;
