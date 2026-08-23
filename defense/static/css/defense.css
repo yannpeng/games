@@ -816,18 +816,4 @@ html, body {
   }
 }
 
-@media (max-width: 520px) {
-  .game-header {
-    padding: 6px 10px;
-    gap: 6px;
-  }
-  .header-controls .btn-icon {
-    padding: 4px 6px;
-    font-size: 11px;
-  }
-  .lang-select, .map-select {
-    padding: 4px 6px;
-    font-size: 11px;
-  }
-}
 
