@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('defense-canvas');
   if (!canvas) return;
 
+  if (window.ArcadeI18n && typeof window.ArcadeI18n.initLanguageUI === 'function') {
+    window.ArcadeI18n.initLanguageUI();
+  }
+
   // Initialize Engine
   const engine = new DefenseEngine(canvas, DefenseConfig, DefenseAudio);
 
