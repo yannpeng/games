@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap');
+
 /* ==========================================================================
    ARCADE NAV CORE - Global Header & Navigator Architecture
    Shared cross-game standard layout, responsive heights, and button geometries.
@@ -12,7 +14,7 @@
   --nav-text-main: #ffffff;
   --nav-text-muted: #8e9aaf;
   --nav-font-digital: 'Orbitron', -apple-system, sans-serif;
-  --nav-font-body: 'Rajdhani', sans-serif;
+  --nav-font-body: 'Rajdhani', -apple-system, sans-serif;
 }
 
 /* Base Top Navigator Container (Desktop Standard) */
@@ -182,8 +184,9 @@
   box-sizing: border-box !important;
   margin: 0 !important;
   padding: 0 10px !important;
+  font-family: var(--nav-font-body) !important;
   font-size: 13px !important;
-  font-weight: 700;
+  font-weight: 600 !important;
   border-radius: 8px !important;
   border: 1px solid var(--nav-border) !important;
   background: rgba(255, 255, 255, 0.08) !important;
@@ -239,8 +242,9 @@
   box-sizing: border-box !important;
   margin: 0 !important;
   padding: 0 16px 0 8px !important;
+  font-family: var(--nav-font-body) !important;
   font-size: 13px !important;
-  font-weight: 700;
+  font-weight: 600 !important;
   border-radius: 8px !important;
   border: 1px solid var(--nav-border) !important;
   background-color: var(--nav-bg-surface, rgba(10, 12, 22, 0.92)) !important;
@@ -294,6 +298,7 @@
   padding: 0 8px 0 3px !important;
   border-radius: 17px !important;
   flex-shrink: 0 !important;
+  font-family: var(--nav-font-body) !important;
 }
 
 .user-badge .avatar {
@@ -309,8 +314,9 @@
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-weight: 800 !important;
-  font-size: 0.8rem !important;
+  font-family: var(--nav-font-body) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
   line-height: 1 !important;
   box-shadow: 0 0 8px var(--nav-accent-glow) !important;
   flex-shrink: 0 !important;
@@ -318,8 +324,9 @@
 }
 
 .user-badge .username {
-  font-size: 0.88rem !important;
-  font-weight: 700 !important;
+  font-family: var(--nav-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
   color: var(--nav-text-main) !important;
   max-width: 110px !important;
   white-space: nowrap !important;
