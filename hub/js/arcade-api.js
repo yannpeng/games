@@ -114,44 +114,51 @@ const ArcadeAPI = (function () {
     const token = getToken();
     if (!token) return null;
 
+    const payload = {
+      game_id: gameId,
+      mode: mode,
+      score: score,
+      lines: lines,
+      level: level,
+      start_level: startLevel,
+      is_cleared: isCleared,
+      duration_seconds: durationSeconds,
+    };
+
     try {
-      return await request('/api/scores', {
+      return await request('/api/scores/submit', {
         method: 'POST',
-        body: JSON.stringify({
-          game_id: gameId,
-          mode: mode,
-          score: score,
-          lines: lines,
-          level: level,
-          start_level: startLevel,
-          is_cleared: isCleared,
-          duration_seconds: durationSeconds,
-        }),
+        body: JSON.stringify(payload),
       });
     } catch (err) {
-      console.error(`[ArcadeAPI] Failed to submit score for ${gameId}:`, err);
-      return null;
+      try {
+        return await request('/api/scores', {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        });
+      } catch (err2) {
+        console.error(`[ArcadeAPI] Failed to submit score for ${gameId}:`, err);
+        return null;
+      }
     }
   }
 
   async function getLeaderboard(gameId, mode = null) {
-    const url = mode 
-      ? `/api/scores/leaderboard/${gameId}?mode=${encodeURIComponent(mode)}&limit=50`
-      : `/api/scores/leaderboard/${gameId}?limit=50`;
+    const url = `/api/scores/top50?game_id=${encodeURIComponent(gameId)}${mode ? '&mode=' + encodeURIComponent(mode) : ''}`;
     return await request(url);
   }
 
   async function getUserBest(gameId = null) {
     const token = getToken();
     if (!token) return null;
-    const url = gameId ? `/api/scores/user/best?game_id=${gameId}` : '/api/scores/user/best';
+    const url = gameId ? `/api/scores/my?game_id=${encodeURIComponent(gameId)}` : '/api/scores/my';
     return await request(url);
   }
 
   async function getUserRecent(gameId = null) {
     const token = getToken();
     if (!token) return [];
-    const url = gameId ? `/api/scores/user/recent?game_id=${gameId}&limit=20` : '/api/scores/user/recent?limit=20';
+    const url = gameId ? `/api/scores/my?game_id=${encodeURIComponent(gameId)}` : '/api/scores/my';
     return await request(url);
   }
 
