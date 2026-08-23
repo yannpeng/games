@@ -1113,28 +1113,7 @@ body {
     gap: 2px;
   }
 
-  .header-actions .btn-secondary,
-  .header-actions .btn-small {
-    padding: 0 5px !important;
-    font-size: 10.5px !important;
-    height: 26px !important;
-    min-height: 26px !important;
-  }
-
-  .header-actions .btn-nav-icon,
-  .header-actions .lang-select {
-    width: 26px !important;
-    min-width: 26px !important;
-    height: 26px !important;
-    min-height: 26px !important;
-    font-size: 11px !important;
-  }
-
-  .header-actions .user-badge {
-    height: 26px !important;
-    min-height: 26px !important;
-  }
-
+  /* Mobile Mode Switcher */
   .mode-switch-group {
     order: 3;
     width: 100%;

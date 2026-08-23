@@ -120,55 +120,14 @@ html, body {
   box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
 }
 
-/* Unified Icon-Only Top Navigator Action Buttons */
-.btn-nav-icon {
-  width: 34px !important;
-  min-width: 34px !important;
-  max-width: 34px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-  line-height: 1 !important;
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border-radius: 8px !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid var(--border-glow) !important;
-  color: var(--text-main) !important;
-  font-size: 15px !important;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  flex-shrink: 0;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.btn-nav-icon:hover {
-  background: rgba(0, 255, 136, 0.2) !important;
-  border-color: var(--accent-green) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
-}
-
-.btn-nav-icon:active {
-  transform: scale(0.92);
-}
-
-.lang-select, .map-select {
+/* In-Game HUD Map Selector */
+.hud-actions .map-select {
   height: 34px !important;
   min-height: 34px !important;
   max-height: 34px !important;
   line-height: 32px !important;
   box-sizing: border-box !important;
   margin: 0 !important;
-  background: rgba(10, 25, 18, 0.9);
-  border: 1px solid var(--border-glow) !important;
-  color: var(--text-main);
   padding: 0 8px !important;
   border-radius: 8px !important;
   outline: none;
@@ -179,78 +138,10 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.hud-actions .map-select {
   background: rgba(12, 30, 22, 0.95);
-  border-color: rgba(0, 255, 136, 0.4) !important;
+  border: 1px solid rgba(0, 255, 136, 0.4) !important;
   color: var(--accent-green);
   font-weight: 700;
-}
-
-/* User Auth Badge in Header */
-.user-auth-section {
-  display: inline-flex;
-  align-items: center;
-  height: 34px !important;
-  max-height: 34px !important;
-  margin: 0 !important;
-}
-
-.user-badge {
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-  line-height: 1 !important;
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px !important;
-  background: rgba(0, 255, 136, 0.12);
-  border: 1px solid var(--accent-green) !important;
-  padding: 0 8px 0 5px !important;
-  border-radius: 20px !important;
-}
-
-.user-badge .avatar {
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  min-height: 24px !important;
-  box-sizing: border-box !important;
-  border-radius: 50% !important;
-  background: var(--accent-green);
-  color: #000;
-  font-weight: 800;
-  font-size: 12px;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1 !important;
-  flex-shrink: 0;
-}
-
-.user-badge .username {
-  font-size: 13px !important;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1 !important;
-  display: inline-flex;
-  align-items: center;
-}
-
-.icon-btn-small {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 2px !important;
-  font-size: 13px !important;
-  line-height: 1 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
 }
 
 .icon-btn-small:hover {
@@ -836,45 +727,6 @@ html, body {
     white-space: nowrap !important;
   }
 
-  .header-controls {
-    gap: 3px !important;
-  }
-
-  .header-controls .btn-icon,
-  .btn-icon {
-    height: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
-    font-size: 11px !important;
-    padding: 0 6px !important;
-    border-radius: 6px !important;
-  }
-
-  .btn-nav-icon {
-    width: 26px !important;
-    min-width: 26px !important;
-    max-width: 26px !important;
-    height: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
-    font-size: 12px !important;
-    border-radius: 6px !important;
-  }
-
-  .lang-select {
-    height: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
-    font-size: 11px !important;
-    padding: 0 4px !important;
-    border-radius: 6px !important;
-  }
-
-  .user-badge {
-    height: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
-  }
 }
 
 @media (max-width: 600px) {
