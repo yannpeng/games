@@ -100,61 +100,77 @@ html, body {
   flex-wrap: nowrap;
 }
 
+.header-controls .btn-icon,
 .btn-icon {
-  height: 34px;
-  min-height: 34px;
-  box-sizing: border-box;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-glow);
+  border: 1px solid var(--border-glow) !important;
   color: var(--text-main);
-  padding: 0 10px;
-  border-radius: 8px;
+  padding: 0 10px !important;
+  border-radius: 8px !important;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 13px !important;
   font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
   text-decoration: none;
   transition: all 0.2s ease;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
+.header-controls .btn-icon span,
+.btn-icon span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+}
+
 .btn-icon:hover {
   background: rgba(0, 255, 136, 0.2);
-  border-color: var(--accent-green);
+  border-color: var(--accent-green) !important;
   box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
 }
 
 /* Unified Icon-Only Top Navigator Action Buttons */
 .btn-nav-icon {
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  min-height: 34px;
-  box-sizing: border-box;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-glow);
+  width: 34px !important;
+  min-width: 34px !important;
+  max-width: 34px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--border-glow) !important;
   color: var(--text-main);
-  font-size: 15px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 15px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
-  padding: 0;
-  position: relative;
   user-select: none;
   -webkit-user-select: none;
 }
 
 .btn-nav-icon:hover {
   background: rgba(0, 255, 136, 0.2);
-  border-color: var(--accent-green);
+  border-color: var(--accent-green) !important;
   transform: translateY(-1px);
   box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
 }
@@ -164,69 +180,84 @@ html, body {
 }
 
 .lang-select, .map-select {
-  height: 34px;
-  min-height: 34px;
-  box-sizing: border-box;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  line-height: 32px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
   background: rgba(10, 25, 18, 0.9);
-  border: 1px solid var(--border-glow);
+  border: 1px solid var(--border-glow) !important;
   color: var(--text-main);
-  padding: 0 8px;
-  border-radius: 8px;
+  padding: 0 8px !important;
+  border-radius: 8px !important;
   outline: none;
-  font-size: 13px;
+  font-size: 13px !important;
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .hud-actions .map-select {
   background: rgba(12, 30, 22, 0.95);
-  border-color: rgba(0, 255, 136, 0.4);
+  border-color: rgba(0, 255, 136, 0.4) !important;
   color: var(--accent-green);
   font-weight: 700;
 }
 
 /* User Auth Badge in Header */
 .user-auth-section {
-  display: inline-flex;
-  align-items: center;
-  height: 34px;
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 34px !important;
+  max-height: 34px !important;
+  margin: 0 !important;
 }
 
 .user-badge {
-  height: 34px;
-  min-height: 34px;
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
   background: rgba(0, 255, 136, 0.12);
-  border: 1px solid var(--accent-green);
-  padding: 0 8px 0 5px;
-  border-radius: 20px;
+  border: 1px solid var(--accent-green) !important;
+  padding: 0 8px 0 5px !important;
+  border-radius: 20px !important;
 }
 
 .user-badge .avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  box-sizing: border-box !important;
+  border-radius: 50% !important;
   background: var(--accent-green);
   color: #000;
   font-weight: 800;
   font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
   flex-shrink: 0;
 }
 
 .user-badge .username {
-  font-size: 13px;
+  font-size: 13px !important;
   font-weight: 700;
   color: #fff;
-  line-height: 1;
+  line-height: 1 !important;
+  display: inline-flex;
+  align-items: center;
 }
 
 .icon-btn-small {
@@ -234,12 +265,12 @@ html, body {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 2px;
-  font-size: 13px;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  padding: 2px !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .icon-btn-small:hover {
