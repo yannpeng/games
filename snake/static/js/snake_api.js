@@ -69,20 +69,22 @@ const SnakeAPI = {
   async getProfile() {
     const token = this.getToken();
     if (!token) {
-      this.clearToken();
-      return null;
+      return this.getCurrentUser();
     }
     try {
       const res = await fetch('/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) {
+      if (res.status === 401) {
         this.clearToken();
         return null;
       }
-      const user = await res.json();
-      this.setAuth(token, user);
-      return user;
+      if (res.ok) {
+        const user = await res.json();
+        this.setAuth(token, user);
+        return user;
+      }
+      return this.getCurrentUser();
     } catch (e) {
       return this.getCurrentUser();
     }

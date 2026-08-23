@@ -91,14 +91,18 @@ const API = {
   },
 
   async getProfile() {
-    if (!this.getToken()) return null;
+    const token = this.getToken();
+    if (!token) return this.getCurrentUser();
     try {
       const user = await this.request('/api/auth/me');
-      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+      this.setAuth(token, user);
       return user;
     } catch (e) {
-      this.clearAuth();
-      return null;
+      if (e.status === 401 || (e.message && e.message.includes('401'))) {
+        this.clearAuth();
+        return null;
+      }
+      return this.getCurrentUser();
     }
   },
 

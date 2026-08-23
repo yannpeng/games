@@ -71,21 +71,23 @@ const DefenseAPI = (function () {
   async function getCurrentUser() {
     const token = getToken();
     if (!token) {
-      clearToken();
-      return null;
+      return getCachedUser();
     }
 
     try {
       const res = await fetch('/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (res.status === 401) {
+        clearToken();
+        return null;
+      }
       if (res.ok) {
         const user = await res.json();
         setAuth(token, user);
         return user;
       }
-      clearToken();
-      return null;
+      return getCachedUser();
     } catch (e) {
       return getCachedUser();
     }

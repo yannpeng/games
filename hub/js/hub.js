@@ -130,7 +130,7 @@
         if (currentUser.language && currentUser.language !== ArcadeI18n.getLanguage()) {
           ArcadeI18n.setLanguage(currentUser.language, false);
         }
-      } else {
+      } else if (res.status === 401) {
         localStorage.removeItem('arcade_token');
         localStorage.removeItem('tetris_auth_token');
         localStorage.removeItem('tetris_token');
