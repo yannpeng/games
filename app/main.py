@@ -118,7 +118,7 @@ def serve_hub_portal():
     """Serve the Game Selector Arcade Lobby homepage."""
     index_file = os.path.join(HUB_DIR, "index.html")
     if os.path.exists(index_file):
-        return FileResponse(index_file)
+        return FileResponse(index_file, headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
     return HTMLResponse("<h1>Cyberpunk Arcade Platform Loading...</h1>")
 
 
@@ -129,7 +129,7 @@ def serve_tetris_game():
     """Serve the Tetris sub-game web page."""
     index_file = os.path.join(TETRIS_DIR, "index.html")
     if os.path.exists(index_file):
-        return FileResponse(index_file)
+        return FileResponse(index_file, headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
     return HTMLResponse("<h1>Tetris Game Not Found</h1>", status_code=404)
 
 
@@ -140,7 +140,7 @@ def serve_snake_game():
     """Serve the Snake sub-game web page."""
     index_file = os.path.join(SNAKE_DIR, "index.html")
     if os.path.exists(index_file):
-        return FileResponse(index_file)
+        return FileResponse(index_file, headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
     return HTMLResponse("<h1>Snake Game Not Found</h1>", status_code=404)
 
 
@@ -151,6 +151,6 @@ def serve_defense_game():
     """Serve the Wildwood Defenders tower defense sub-game web page."""
     index_file = os.path.join(DEFENSE_DIR, "index.html")
     if os.path.exists(index_file):
-        return FileResponse(index_file)
+        return FileResponse(index_file, headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
     return HTMLResponse("<h1>Wildwood Defenders Game Not Found</h1>", status_code=404)
 
