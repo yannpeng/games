@@ -60,10 +60,8 @@
     }
 
     await verifyUserToken();
-    renderGameCatalog();
 
     window.addEventListener('arcadeLanguageChanged', () => {
-      renderGameCatalog();
       updateUserAuthUI();
     });
   }
