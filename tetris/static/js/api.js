@@ -18,7 +18,10 @@ const API = {
     localStorage.setItem('tetris_auth_token', token);
     localStorage.setItem('tetris_token', token);
     localStorage.setItem('snake_token', token);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    if (user) {
+      localStorage.setItem('arcade_user', JSON.stringify(user));
+      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    }
   },
 
   clearAuth() {
@@ -26,11 +29,12 @@ const API = {
     localStorage.removeItem('tetris_auth_token');
     localStorage.removeItem('tetris_token');
     localStorage.removeItem('snake_token');
+    localStorage.removeItem('arcade_user');
     localStorage.removeItem(this.USER_KEY);
   },
 
   getCurrentUser() {
-    const userStr = localStorage.getItem(this.USER_KEY);
+    const userStr = localStorage.getItem('arcade_user') || localStorage.getItem(this.USER_KEY);
     try {
       return userStr ? JSON.parse(userStr) : null;
     } catch {

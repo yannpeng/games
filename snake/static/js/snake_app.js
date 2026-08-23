@@ -624,24 +624,43 @@
 
   // --- Auth & Leaderboard Handlers ---
   async function checkUserAuth() {
-    currentUser = await SnakeAPI.getProfile();
+    currentUser = SnakeAPI.getCurrentUser();
     if (currentUser) {
+      updateUserAuthUI();
+    }
+    const freshUser = await SnakeAPI.getProfile();
+    if (freshUser) {
+      currentUser = freshUser;
       if (currentUser.language && currentUser.language !== ArcadeI18n.getLanguage()) {
         ArcadeI18n.setLanguage(currentUser.language, false);
       }
+    } else {
+      currentUser = null;
     }
     updateUserAuthUI();
   }
 
   function updateUserAuthUI() {
     if (currentUser) {
-      btnOpenLogin.classList.add('hidden');
-      userBadge.classList.remove('hidden');
-      displayUsername.textContent = currentUser.username;
-      userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+      if (btnOpenLogin) {
+        btnOpenLogin.classList.add('hidden');
+        btnOpenLogin.style.display = 'none';
+      }
+      if (userBadge) {
+        userBadge.classList.remove('hidden');
+        userBadge.style.display = 'inline-flex';
+        if (displayUsername) displayUsername.textContent = currentUser.username;
+        if (userAvatar) userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+      }
     } else {
-      btnOpenLogin.classList.remove('hidden');
-      userBadge.classList.add('hidden');
+      if (btnOpenLogin) {
+        btnOpenLogin.classList.remove('hidden');
+        btnOpenLogin.style.display = 'inline-flex';
+      }
+      if (userBadge) {
+        userBadge.classList.add('hidden');
+        userBadge.style.display = 'none';
+      }
     }
   }
 

@@ -13,11 +13,15 @@ const SnakeAPI = {
            localStorage.getItem('snake_token') || null;
   },
 
-  setToken(token) {
+  setAuth(token, user) {
     localStorage.setItem('arcade_token', token);
     localStorage.setItem('tetris_auth_token', token);
     localStorage.setItem('tetris_token', token);
     localStorage.setItem('snake_token', token);
+    if (user) {
+      localStorage.setItem('arcade_user', JSON.stringify(user));
+      localStorage.setItem('tetris_auth_user', JSON.stringify(user));
+    }
   },
 
   clearToken() {
@@ -25,6 +29,17 @@ const SnakeAPI = {
     localStorage.removeItem('tetris_auth_token');
     localStorage.removeItem('tetris_token');
     localStorage.removeItem('snake_token');
+    localStorage.removeItem('arcade_user');
+    localStorage.removeItem('tetris_auth_user');
+  },
+
+  getCurrentUser() {
+    const userStr = localStorage.getItem('arcade_user') || localStorage.getItem('tetris_auth_user');
+    try {
+      return userStr ? JSON.parse(userStr) : null;
+    } catch {
+      return null;
+    }
   },
 
   async register(username, password) {
@@ -35,7 +50,7 @@ const SnakeAPI = {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || 'Registration failed');
-    this.setToken(data.token);
+    this.setAuth(data.token, data.user);
     return data;
   },
 
@@ -47,13 +62,16 @@ const SnakeAPI = {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || 'Login failed');
-    this.setToken(data.token);
+    this.setAuth(data.token, data.user);
     return data;
   },
 
   async getProfile() {
     const token = this.getToken();
-    if (!token) return null;
+    if (!token) {
+      this.clearToken();
+      return null;
+    }
     try {
       const res = await fetch('/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` },
@@ -62,9 +80,11 @@ const SnakeAPI = {
         this.clearToken();
         return null;
       }
-      return await res.json();
+      const user = await res.json();
+      this.setAuth(token, user);
+      return user;
     } catch (e) {
-      return null;
+      return this.getCurrentUser();
     }
   },
 

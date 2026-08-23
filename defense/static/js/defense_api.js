@@ -15,11 +15,15 @@ const DefenseAPI = (function () {
            localStorage.getItem('snake_token') || null;
   }
 
-  function setToken(token) {
+  function setAuth(token, user) {
     localStorage.setItem('arcade_token', token);
     localStorage.setItem('tetris_auth_token', token);
     localStorage.setItem('tetris_token', token);
     localStorage.setItem('snake_token', token);
+    if (user) {
+      localStorage.setItem('arcade_user', JSON.stringify(user));
+      localStorage.setItem('tetris_auth_user', JSON.stringify(user));
+    }
   }
 
   function clearToken() {
@@ -27,6 +31,17 @@ const DefenseAPI = (function () {
     localStorage.removeItem('tetris_auth_token');
     localStorage.removeItem('tetris_token');
     localStorage.removeItem('snake_token');
+    localStorage.removeItem('arcade_user');
+    localStorage.removeItem('tetris_auth_user');
+  }
+
+  function getCachedUser() {
+    const userStr = localStorage.getItem('arcade_user') || localStorage.getItem('tetris_auth_user');
+    try {
+      return userStr ? JSON.parse(userStr) : null;
+    } catch {
+      return null;
+    }
   }
 
   async function register(username, password) {
@@ -37,7 +52,7 @@ const DefenseAPI = (function () {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || 'Registration failed');
-    setToken(data.token);
+    setAuth(data.token, data.user);
     return data;
   }
 
@@ -49,25 +64,30 @@ const DefenseAPI = (function () {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || 'Login failed');
-    setToken(data.token);
+    setAuth(data.token, data.user);
     return data;
   }
 
   async function getCurrentUser() {
     const token = getToken();
-    if (!token) return null;
+    if (!token) {
+      clearToken();
+      return null;
+    }
 
     try {
       const res = await fetch('/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
-        return await res.json();
+        const user = await res.json();
+        setAuth(token, user);
+        return user;
       }
       clearToken();
       return null;
     } catch (e) {
-      return null;
+      return getCachedUser();
     }
   }
 

@@ -49,6 +49,16 @@
     ArcadeI18n.initLanguageUI();
     setupAuthListeners();
     setupLeaderboardListeners();
+
+    // Instant cached user check
+    const cachedUserStr = localStorage.getItem('arcade_user') || localStorage.getItem('tetris_auth_user');
+    if (cachedUserStr) {
+      try {
+        currentUser = JSON.parse(cachedUserStr);
+        updateUserAuthUI();
+      } catch {}
+    }
+
     await verifyUserToken();
     renderGameCatalog();
 
@@ -69,24 +79,33 @@
 
   function updateUserAuthUI() {
     if (currentUser) {
-      if (btnUserAuth) btnUserAuth.classList.add('hidden');
+      if (btnUserAuth) {
+        btnUserAuth.classList.add('hidden');
+        btnUserAuth.style.display = 'none';
+      }
       if (userBadge) {
         userBadge.classList.remove('hidden');
+        userBadge.style.display = 'inline-flex';
         if (displayUsername) displayUsername.textContent = currentUser.username;
         if (userAvatar) userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
       }
     } else {
       if (btnUserAuth) {
         btnUserAuth.classList.remove('hidden');
+        btnUserAuth.style.display = 'inline-flex';
         if (userDisplayName) userDisplayName.textContent = ArcadeI18n.t('hub.login_btn');
       }
-      if (userBadge) userBadge.classList.add('hidden');
+      if (userBadge) {
+        userBadge.classList.add('hidden');
+        userBadge.style.display = 'none';
+      }
     }
   }
 
   // --- Auth Handlers ---
   async function verifyUserToken() {
     if (!authToken) {
+      currentUser = null;
       updateUserAuthUI();
       return;
     }
@@ -98,12 +117,14 @@
 
       if (res.ok) {
         currentUser = await res.json();
-        updateUserAuthUI();
-        // Sync token
+        // Sync token & user cache
         localStorage.setItem('arcade_token', authToken);
         localStorage.setItem('tetris_auth_token', authToken);
         localStorage.setItem('tetris_token', authToken);
         localStorage.setItem('snake_token', authToken);
+        localStorage.setItem('arcade_user', JSON.stringify(currentUser));
+        localStorage.setItem('tetris_auth_user', JSON.stringify(currentUser));
+        updateUserAuthUI();
 
         // Sync user preferred language if set on account
         if (currentUser.language && currentUser.language !== ArcadeI18n.getLanguage()) {
@@ -114,6 +135,8 @@
         localStorage.removeItem('tetris_auth_token');
         localStorage.removeItem('tetris_token');
         localStorage.removeItem('snake_token');
+        localStorage.removeItem('arcade_user');
+        localStorage.removeItem('tetris_auth_user');
         authToken = null;
         currentUser = null;
         updateUserAuthUI();
@@ -137,6 +160,8 @@
           localStorage.removeItem('tetris_auth_token');
           localStorage.removeItem('tetris_token');
           localStorage.removeItem('snake_token');
+          localStorage.removeItem('arcade_user');
+          localStorage.removeItem('tetris_auth_user');
           authToken = null;
           currentUser = null;
           updateUserAuthUI();
@@ -184,6 +209,9 @@
           localStorage.setItem('arcade_token', authToken);
           localStorage.setItem('tetris_auth_token', authToken);
           localStorage.setItem('tetris_token', authToken);
+          localStorage.setItem('snake_token', authToken);
+          localStorage.setItem('arcade_user', JSON.stringify(currentUser));
+          localStorage.setItem('tetris_auth_user', JSON.stringify(currentUser));
           updateUserAuthUI();
           modalAuth.classList.add('hidden');
 

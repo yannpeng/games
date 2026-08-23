@@ -714,31 +714,51 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // --- Auth Management ---
+  function updateUserAuthUI() {
+    if (currentUser) {
+      if (displayUsername) displayUsername.textContent = currentUser.username;
+      if (displayUserBest) displayUserBest.textContent = `Best: ${(currentUser.best_score || 0).toLocaleString()}`;
+      if (userAvatar) userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+
+      if (btnOpenLogin) {
+        btnOpenLogin.classList.add('hidden');
+        btnOpenLogin.style.display = 'none';
+      }
+      if (userBadge) {
+        userBadge.classList.remove('hidden');
+        userBadge.style.display = 'inline-flex';
+      }
+    } else {
+      if (btnOpenLogin) {
+        btnOpenLogin.classList.remove('hidden');
+        btnOpenLogin.style.display = 'inline-flex';
+      }
+      if (userBadge) {
+        userBadge.classList.add('hidden');
+        userBadge.style.display = 'none';
+      }
+    }
+  }
+
   async function checkAuthStatus() {
+    currentUser = API.getCurrentUser();
+    if (currentUser) {
+      updateUserAuthUI();
+    }
     try {
       const user = await API.getProfile();
       if (user) {
         currentUser = user;
-        if (displayUsername) displayUsername.textContent = user.username;
-        if (displayUserBest) displayUserBest.textContent = `Best: ${(user.best_score || 0).toLocaleString()}`;
-        if (userAvatar) userAvatar.textContent = user.username.charAt(0).toUpperCase();
-
-        if (btnOpenLogin) btnOpenLogin.classList.add('hidden');
-        if (userBadge) userBadge.classList.remove('hidden');
-
-        // Sync preferred language from account
         if (user.language && user.language !== ArcadeI18n.getLanguage()) {
           ArcadeI18n.setLanguage(user.language, false);
         }
       } else {
         currentUser = null;
-        if (btnOpenLogin) btnOpenLogin.classList.remove('hidden');
-        if (userBadge) userBadge.classList.add('hidden');
       }
+      updateUserAuthUI();
     } catch {
       currentUser = null;
-      if (btnOpenLogin) btnOpenLogin.classList.remove('hidden');
-      if (userBadge) userBadge.classList.add('hidden');
+      updateUserAuthUI();
     }
   }
 
