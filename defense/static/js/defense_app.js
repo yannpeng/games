@@ -481,6 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateUserAuthUI() {
     if (currentUser) {
       if (displayUsername) displayUsername.textContent = currentUser.username;
+      if (userAvatar) userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
       if (btnOpenLogin) {
         btnOpenLogin.classList.add('hidden');
         btnOpenLogin.style.display = 'none';
@@ -513,13 +514,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (user.language && user.language !== ArcadeI18n.getLanguage()) {
           ArcadeI18n.setLanguage(user.language, false);
         }
-      } else {
+        updateUserAuthUI();
+      } else if (!currentUser) {
         currentUser = null;
+        updateUserAuthUI();
       }
-      updateUserAuthUI();
     } catch {
-      currentUser = null;
-      updateUserAuthUI();
+      if (!currentUser) {
+        currentUser = null;
+        updateUserAuthUI();
+      }
     }
   }
 

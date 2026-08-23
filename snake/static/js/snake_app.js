@@ -98,6 +98,7 @@
     }
     setupCanvas();
     setupEventListeners();
+    setupModalListeners();
     setupEngineCallbacks();
     updateSoundIcon();
     await checkUserAuth();
@@ -628,16 +629,24 @@
     if (currentUser) {
       updateUserAuthUI();
     }
-    const freshUser = await SnakeAPI.getProfile();
-    if (freshUser) {
-      currentUser = freshUser;
-      if (currentUser.language && currentUser.language !== ArcadeI18n.getLanguage()) {
-        ArcadeI18n.setLanguage(currentUser.language, false);
+    try {
+      const freshUser = await SnakeAPI.getProfile();
+      if (freshUser) {
+        currentUser = freshUser;
+        if (currentUser.language && currentUser.language !== ArcadeI18n.getLanguage()) {
+          ArcadeI18n.setLanguage(currentUser.language, false);
+        }
+        updateUserAuthUI();
+      } else if (!currentUser) {
+        currentUser = null;
+        updateUserAuthUI();
       }
-    } else {
-      currentUser = null;
+    } catch {
+      if (!currentUser) {
+        currentUser = null;
+        updateUserAuthUI();
+      }
     }
-    updateUserAuthUI();
   }
 
   function updateUserAuthUI() {
