@@ -96,3 +96,25 @@ def test_submit_and_isolate_multi_game_scores(client):
     assert data_snk["scores"][0]["username"] == "snake_master"
     assert data_snk["scores"][0]["score"] == 12000
     assert data_snk["scores"][0]["lines"] == 28
+
+    # Test POST /api/scores root endpoint
+    res3 = client.post(
+        "/api/scores",
+        headers={"Authorization": f"Bearer {token_tet}"},
+        json={
+            "game_id": "tetris",
+            "mode": "vs_ai",
+            "score": 45000,
+            "lines": 40,
+            "level": 1,
+            "is_cleared": False,
+            "duration_seconds": 120,
+        },
+    )
+    assert res3.status_code == 201
+
+    # Verify Leaderboard via /api/scores/leaderboard/tetris
+    res_lb_vs = client.get("/api/scores/leaderboard/tetris?mode=vs_ai")
+    assert res_lb_vs.status_code == 200
+    assert res_lb_vs.json()["count"] == 1
+    assert res_lb_vs.json()["scores"][0]["score"] == 45000

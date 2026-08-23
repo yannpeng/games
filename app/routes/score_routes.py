@@ -11,6 +11,7 @@ from app.models import ScoreSubmitRequest, ScoreItem, LeaderboardResponse, MySco
 router = APIRouter(prefix="/api/scores", tags=["Leaderboard & Scores"])
 
 
+@router.post("", status_code=status.HTTP_201_CREATED)
 @router.post("/submit", status_code=status.HTTP_201_CREATED)
 def submit_score(req: ScoreSubmitRequest, current_user: dict = Depends(get_current_user)):
     """Record a completed game session score associated with current user and game_id."""
@@ -129,6 +130,140 @@ def get_my_scores(
             """,
             (user_id, target_game),
         )
+        rows = cur.fetchall()
+
+    scores_list = [
+        ScoreItem(
+            rank=idx + 1,
+            username=row["username"],
+            game_id=row["game_id"],
+            mode=row["mode"],
+            score=row["score"],
+            lines=row["lines"],
+            level=row["level"],
+            start_level=row["start_level"],
+            is_cleared=bool(row["is_cleared"]),
+            duration_seconds=row["duration_seconds"],
+            played_at=str(row["played_at"]),
+        )
+        for idx, row in enumerate(rows)
+    ]
+
+    return {
+        "game_id": target_game,
+        "count": len(scores_list),
+        "scores": scores_list,
+    }
+
+
+@router.get("/leaderboard/{game_id}", response_model=LeaderboardResponse)
+def get_leaderboard_by_game(
+    game_id: str,
+    mode: Optional[str] = Query(None, description="Game mode"),
+    limit: int = Query(50, ge=1, le=100),
+):
+    """Retrieve leaderboard for a specific game and optional mode."""
+    target_game = game_id.lower().strip()
+    with get_db_cursor() as cur:
+        if mode:
+            cur.execute(
+                """
+                SELECT s.id, s.game_id, s.mode, s.score, s.lines, s.level, s.start_level, 
+                       s.is_cleared, s.duration_seconds, s.played_at, u.username
+                FROM scores s
+                JOIN users u ON s.user_id = u.id
+                WHERE s.game_id = ? AND s.mode = ?
+                ORDER BY s.score DESC, s.played_at ASC
+                LIMIT ?
+                """,
+                (target_game, mode, limit),
+            )
+        else:
+            cur.execute(
+                """
+                SELECT s.id, s.game_id, s.mode, s.score, s.lines, s.level, s.start_level, 
+                       s.is_cleared, s.duration_seconds, s.played_at, u.username
+                FROM scores s
+                JOIN users u ON s.user_id = u.id
+                WHERE s.game_id = ?
+                ORDER BY s.score DESC, s.played_at ASC
+                LIMIT ?
+                """,
+                (target_game, limit),
+            )
+        rows = cur.fetchall()
+
+    scores_list = [
+        ScoreItem(
+            rank=idx + 1,
+            username=row["username"],
+            game_id=row["game_id"],
+            mode=row["mode"],
+            score=row["score"],
+            lines=row["lines"],
+            level=row["level"],
+            start_level=row["start_level"],
+            is_cleared=bool(row["is_cleared"]),
+            duration_seconds=row["duration_seconds"],
+            played_at=str(row["played_at"]),
+        )
+        for idx, row in enumerate(rows)
+    ]
+
+    return {
+        "game_id": target_game,
+        "mode": mode or "all",
+        "count": len(scores_list),
+        "scores": scores_list,
+    }
+
+
+@router.get("/user/best", response_model=MyScoresResponse)
+def get_user_best(
+    game_id: Optional[str] = Query(None, description="Game ID filter"),
+    current_user: dict = Depends(get_current_user),
+):
+    """Retrieve personal best scores for authenticated user."""
+    return get_my_scores(game_id=game_id, current_user=current_user)
+
+
+@router.get("/user/recent", response_model=MyScoresResponse)
+def get_user_recent(
+    game_id: Optional[str] = Query(None, description="Game ID filter"),
+    limit: int = Query(20, ge=1, le=50),
+    current_user: dict = Depends(get_current_user),
+):
+    """Retrieve recent game sessions for authenticated user."""
+    user_id = current_user["user_id"]
+    with get_db_cursor() as cur:
+        if game_id:
+            target_game = game_id.lower().strip()
+            cur.execute(
+                """
+                SELECT s.id, s.game_id, s.mode, s.score, s.lines, s.level, s.start_level, 
+                       s.is_cleared, s.duration_seconds, s.played_at, u.username
+                FROM scores s
+                JOIN users u ON s.user_id = u.id
+                WHERE s.user_id = ? AND s.game_id = ?
+                ORDER BY s.played_at DESC
+                LIMIT ?
+                """,
+                (user_id, target_game, limit),
+            )
+        else:
+            target_game = "all"
+            cur.execute(
+                """
+                SELECT s.id, s.game_id, s.mode, s.score, s.lines, s.level, s.start_level, 
+                       s.is_cleared, s.duration_seconds, s.played_at, u.username
+                FROM scores s
+                JOIN users u ON s.user_id = u.id
+                WHERE s.user_id = ?
+                ORDER BY s.played_at DESC
+                LIMIT ?
+                """,
+                (user_id, limit),
+            )
         rows = cur.fetchall()
 
     scores_list = [
