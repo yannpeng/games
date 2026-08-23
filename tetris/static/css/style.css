@@ -43,7 +43,11 @@ a, a:hover, a:visited, a:active, a:focus {
   text-decoration: none !important;
 }
 
-.hidden, [hidden] {
+.hidden, [hidden],
+.header-actions .hidden,
+.header-actions [hidden],
+.user-auth-section .hidden,
+.user-auth-section [hidden] {
   display: none !important;
 }
 
@@ -244,12 +248,12 @@ body {
   padding: 0 !important;
   border-radius: 8px !important;
   border: 1px solid var(--border-color, rgba(0, 240, 255, 0.25)) !important;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-main, #fff);
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-main, #fff) !important;
   font-size: 15px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -259,7 +263,7 @@ body {
 }
 
 .btn-nav-icon:hover {
-  background: rgba(0, 255, 136, 0.2);
+  background: rgba(0, 255, 136, 0.2) !important;
   border-color: var(--color-green, #00ff88) !important;
   transform: translateY(-1px);
   box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
@@ -340,9 +344,9 @@ body {
   font-weight: 700;
   border-radius: 8px !important;
   border: 1px solid var(--border-color, rgba(0, 240, 255, 0.25)) !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 5px !important;
   white-space: nowrap;
   text-decoration: none;
@@ -363,8 +367,8 @@ body {
 }
 
 .user-auth-section {
-  display: inline-flex !important;
-  align-items: center !important;
+  display: inline-flex;
+  align-items: center;
   height: 34px !important;
   max-height: 34px !important;
   margin: 0 !important;
@@ -394,8 +398,8 @@ body {
   line-height: 1 !important;
   box-sizing: border-box !important;
   margin: 0 !important;
-  display: inline-flex !important;
-  align-items: center !important;
+  display: inline-flex;
+  align-items: center;
   gap: 6px !important;
   background: rgba(0, 240, 255, 0.08);
   border: 1px solid var(--border-glow) !important;

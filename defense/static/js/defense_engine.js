@@ -540,7 +540,7 @@ class DefenseEngine {
         towerCount: this.towers ? this.towers.length : 0,
         maxTowers: this.maxTowers,
         isRunning: this.isRunning,
-        waveActive: this.isRunning,
+        waveActive: this.waveActive,
         isPaused: this.isPaused,
         isGameOver: this.isGameOver,
         isVictory: this.isVictory,

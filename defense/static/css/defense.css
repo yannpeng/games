@@ -30,7 +30,11 @@ a, a:hover, a:visited, a:active, a:focus {
   text-decoration: none !important;
 }
 
-.hidden, [hidden] {
+.hidden, [hidden],
+.header-controls .hidden,
+.header-controls [hidden],
+.user-auth-section .hidden,
+.user-auth-section [hidden] {
   display: none !important;
 }
 
@@ -108,17 +112,17 @@ html, body {
   line-height: 1 !important;
   box-sizing: border-box !important;
   margin: 0 !important;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08) !important;
   border: 1px solid var(--border-glow) !important;
-  color: var(--text-main);
+  color: var(--text-main) !important;
   padding: 0 10px !important;
   border-radius: 8px !important;
   cursor: pointer;
   font-size: 13px !important;
   font-weight: 600;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 6px !important;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -136,7 +140,7 @@ html, body {
 }
 
 .btn-icon:hover {
-  background: rgba(0, 255, 136, 0.2);
+  background: rgba(0, 255, 136, 0.2) !important;
   border-color: var(--accent-green) !important;
   box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
 }
@@ -154,12 +158,13 @@ html, body {
   margin: 0 !important;
   padding: 0 !important;
   border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
   border: 1px solid var(--border-glow) !important;
-  color: var(--text-main);
+  color: var(--text-main) !important;
   font-size: 15px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -169,7 +174,7 @@ html, body {
 }
 
 .btn-nav-icon:hover {
-  background: rgba(0, 255, 136, 0.2);
+  background: rgba(0, 255, 136, 0.2) !important;
   border-color: var(--accent-green) !important;
   transform: translateY(-1px);
   box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
@@ -196,9 +201,9 @@ html, body {
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hud-actions .map-select {
@@ -210,8 +215,8 @@ html, body {
 
 /* User Auth Badge in Header */
 .user-auth-section {
-  display: inline-flex !important;
-  align-items: center !important;
+  display: inline-flex;
+  align-items: center;
   height: 34px !important;
   max-height: 34px !important;
   margin: 0 !important;
@@ -224,8 +229,8 @@ html, body {
   line-height: 1 !important;
   box-sizing: border-box !important;
   margin: 0 !important;
-  display: inline-flex !important;
-  align-items: center !important;
+  display: inline-flex;
+  align-items: center;
   gap: 6px !important;
   background: rgba(0, 255, 136, 0.12);
   border: 1px solid var(--accent-green) !important;

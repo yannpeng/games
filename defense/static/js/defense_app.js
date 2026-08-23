@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (maxTowersDisplay) maxTowersDisplay.textContent = maxTowers;
 
     if (btnStartWave) {
-      btnStartWave.disabled = state.waveActive || state.isRunning || state.isGameOver || state.isVictory;
+      btnStartWave.disabled = !!(state.waveActive || state.isGameOver || state.isVictory);
     }
 
     if (btnAutoWave) {
@@ -710,6 +710,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateMapSelectOptions();
     renderTowerDeck();
     updateHUD(engine);
+    updateUserAuthUI();
   });
 
   // Setup Auth & Leaderboards
