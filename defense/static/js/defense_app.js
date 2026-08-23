@@ -184,26 +184,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- HUD Updates ---
   function updateHUD(state) {
+    if (!state) return;
     if (goldDisplay) goldDisplay.textContent = state.gold;
     if (livesDisplay) livesDisplay.textContent = state.lives;
     if (scoreDisplay) scoreDisplay.textContent = state.score;
     if (waveDisplay) waveDisplay.textContent = state.wave;
-    if (maxWaveDisplay) maxWaveDisplay.textContent = state.maxWave;
+    if (maxWaveDisplay) maxWaveDisplay.textContent = state.maxWave || state.maxWaves || 30;
+    
+    const towerCount = (state.towers && state.towers.length !== undefined) ? state.towers.length : (state.towerCount || 0);
+    const maxTowers = state.maxTowers || 8;
     if (towersDisplay) {
-      towersDisplay.textContent = state.towers.length;
+      towersDisplay.textContent = towerCount;
       const statTowersContainer = towersDisplay.closest('.stat-towers');
       if (statTowersContainer) {
-        if (state.towers.length >= state.maxTowers) {
+        if (towerCount >= maxTowers) {
           statTowersContainer.classList.add('limit-reached');
         } else {
           statTowersContainer.classList.remove('limit-reached');
         }
       }
     }
-    if (maxTowersDisplay) maxTowersDisplay.textContent = state.maxTowers;
+    if (maxTowersDisplay) maxTowersDisplay.textContent = maxTowers;
 
     if (btnStartWave) {
-      btnStartWave.disabled = state.waveActive || state.isGameOver || state.isVictory;
+      btnStartWave.disabled = state.waveActive || state.isRunning || state.isGameOver || state.isVictory;
     }
 
     if (btnAutoWave) {
