@@ -14,15 +14,86 @@
 - **路由路径**：`http://127.0.0.1:8000/snake`
 - **核心机制**：动态发光蛇身、4种变异能量食物（普通红果、黄金星、疾风蓝核、缩短紫菌）、10级激光路障闯关、A* 寻路双蛇实时竞技。
 
-### 3. 🚀 未来扩展 (Expandable Architecture)
-- 平台支持随时通过新增子目录（如 `pacman/`、`minesweeper/`）以极简方式快速挂载新小游戏。
+### 3. 🌐 四语言完整国际化 (i18n Localization)
+- 🌐 English (`en`)
+- 🇨🇳 简体中文 (`zh`)
+- 🇭🇰 繁體中文 (`zh-TW`)
+- 🇯🇵 日本語 (`ja`)
 
 ---
 
-## 🚀 启动方式 (Quick Start)
+## 🐳 Docker 部署指南 (Docker Deployment)
+
+本平台已全面支持 Docker 容器化部署，用户数据（账号密码、游戏记录与排行榜）通过数据卷（Volume）自动持久化。
+
+### 方式 1：Docker Run 单命令极简启动 (Recommended)
+
+直接从 Docker Hub 拉取并运行公共镜像：
+
+```bash
+docker run -d \
+  --name cyberpunk-arcade \
+  -p 8000:8000 \
+  -v arcade_data:/app/data \
+  --restart unless-stopped \
+  yannpeng/games:latest
+```
+
+启动完成后，打开浏览器访问 **[http://localhost:8000](http://localhost:8000)** 即可开始游玩！
+
+---
+
+### 方式 2：Docker Compose 一键编排启动
+
+在包含 `docker-compose.yml` 的目录下执行：
+
+```bash
+docker compose up -d
+```
+
+停止并保留数据：
+```bash
+docker compose down
+```
+
+---
+
+### 方式 3：WSL2 / 本地从源码构建与多架构发布 (Build & Publish)
+
+#### 1. 进入 WSL2 环境构建本地镜像
+```bash
+cd /mnt/d/_workspace/antigravity/Games
+docker build -t games:test .
+```
+
+#### 2. 本地测试运行
+```bash
+mkdir -p data
+docker run -d -p 8000:8000 -v "$(pwd)/data:/app/data" --name arcade-test games:test
+```
+
+#### 3. 使用 Docker Buildx 构建多架构镜像并推送到 Docker Hub (Multi-Arch: AMD64 + ARM64)
+```bash
+# 登录 Docker Hub
+docker login
+
+# 创建并启用 buildx 实例
+docker buildx create --use --name arcade-builder
+
+# 构建多平台镜像并直接发布
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t yannpeng/games:latest \
+  -t yannpeng/games:v2.0.0 \
+  --push .
+```
+
+---
+
+## 💻 本地 Python 原生启动 (Native Start without Docker)
 
 在 `Games/` 根目录下执行：
 ```bash
 uv run python start.py
 ```
-或直接在文件管理器中双击 [start.bat](file:///d:/_workspace/antigravity/Games/start.bat) 启动！浏览器自动打开 **[http://127.0.0.1:8000](http://127.0.0.1:8000)** 进入游戏大厅！
+或直接在 Windows 文件管理器中双击 [start.bat](file:///d:/_workspace/antigravity/Games/start.bat) 启动！

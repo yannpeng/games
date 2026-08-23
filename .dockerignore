@@ -1,0 +1,34 @@
+# Version control & metadata
+.git/
+.gitignore
+.gemini/
+
+# Virtual environments & dependencies
+.venv/
+env/
+venv/
+ENV/
+
+# Python cache & build files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Databases (prevent baking local data into image)
+*.db
+*.sqlite
+*.sqlite3
+arcade_games.db
+data/
+
+# Documentation & tests (not needed inside container)
+docs/
+tests/
+run_tests.py
+
+# Windows launcher scripts
+*.bat
+setup_env.py
+start.py

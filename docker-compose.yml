@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  arcade-games:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: yannpeng/games:latest
+    container_name: cyberpunk-arcade
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - ARCADE_DB_PATH=/app/data/arcade_games.db
+      - PORT=8000
+    volumes:
+      # Persistent SQLite database storage for player accounts & leaderboards
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/api/games"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

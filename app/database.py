@@ -11,13 +11,27 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def get_db_path():
-    """Retrieve dynamic database file path."""
-    return os.environ.get("ARCADE_DB_PATH", os.path.join(BASE_DIR, "arcade_games.db"))
+    """Retrieve dynamic database file path with auto-created parent directory."""
+    path = os.environ.get("ARCADE_DB_PATH", os.path.join(BASE_DIR, "arcade_games.db"))
+    db_dir = os.path.dirname(os.path.abspath(path))
+    if db_dir and not os.path.exists(db_dir):
+        try:
+            os.makedirs(db_dir, exist_ok=True)
+        except OSError:
+            pass
+    return path
 
 
 def get_db_connection():
-    """Create a connection to SQLite database with Row factory."""
-    conn = sqlite3.connect(get_db_path(), check_same_thread=False)
+    """Create a connection to SQLite database with Row factory and permission fallback."""
+    db_path = get_db_path()
+    try:
+        conn = sqlite3.connect(db_path, check_same_thread=False)
+    except sqlite3.OperationalError:
+        # Fallback to local BASE_DIR if mounted path is inaccessible
+        fallback_path = os.path.join(BASE_DIR, "arcade_games.db")
+        print(f"[WARN] Failed to open database at {db_path}, falling back to {fallback_path}")
+        conn = sqlite3.connect(fallback_path, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 
