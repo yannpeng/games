@@ -132,8 +132,9 @@ const DefenseAPI = (function () {
 
   return {
     getToken,
-    setToken,
+    setAuth,
     clearToken,
+    getCachedUser,
     register,
     login,
     getCurrentUser,
