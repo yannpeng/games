@@ -42,10 +42,20 @@
         <!-- Global Leaderboard Button -->
         <button type="button" id="btn-open-leaderboard" class="btn-nav-icon" data-i18n-title="lb.title" title="Leaderboard" aria-label="Leaderboard">🏆</button>
 
-        <!-- Unified User Auth Button -->
-        <button type="button" id="btn-user-auth" class="btn-nav-icon" data-i18n-title="nav.login" title="Login / Register" aria-label="Login">
-          <span class="user-icon" id="user-display-name">👤</span>
-        </button>
+        <!-- User Authentication Section -->
+        <div id="user-auth-section" class="user-auth-section">
+          <button type="button" id="btn-user-auth" class="btn btn-secondary btn-small">
+            <span class="user-icon">👤</span>
+            <span id="user-display-name" data-i18n="hub.login_btn">登录 / 注册</span>
+          </button>
+          <div id="user-badge" class="user-badge hidden">
+            <div class="avatar" id="user-avatar">U</div>
+            <div class="user-info">
+              <span class="username" id="display-username">Player</span>
+            </div>
+            <button type="button" id="btn-logout" class="icon-btn-small" title="Logout">✕</button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -246,7 +256,7 @@
   <div id="toast" class="toast hidden"></div>
 
   <!-- Scripts -->
-  <script src="/hub_static/js/i18n.js?v=1.6.0"></script>
-  <script src="/hub_static/js/hub.js?v=1.6.0"></script>
+  <script src="/hub_static/js/i18n.js?v=3.0.0"></script>
+  <script src="/hub_static/js/hub.js?v=3.0.0"></script>
 </body>
 </html>

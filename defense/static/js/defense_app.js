@@ -116,8 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.add('locked');
       }
 
-      const nameStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.nameKey)) || t.nameKey;
-      const traitStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.traitKey)) || t.traitKey;
+      const nameStr = DefenseConfig.getLocalizedName(t);
+      const traitStr = DefenseConfig.getLocalizedTrait(t);
 
       card.innerHTML = `
         <div class="card-icon" style="background: ${t.color}22; border-color: ${t.color}">${t.icon}</div>
@@ -257,8 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (inspectorPanel) inspectorPanel.style.display = 'flex';
-    const nameStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.nameKey)) || t.nameKey;
-    const traitStr = (window.ArcadeI18n && window.ArcadeI18n.t(t.traitKey)) || t.traitKey;
+    const nameStr = DefenseConfig.getLocalizedName(t);
+    const traitStr = DefenseConfig.getLocalizedTrait(t);
 
     let badgeText = `v${t.level}`;
     if (t.level === 2) badgeText = window.ArcadeI18n ? window.ArcadeI18n.t('defense.lvl_2') : 'v2 Advanced';

@@ -1,19 +1,60 @@
 /**
- * Wildwood Defenders (田园守卫战) - Game Configuration
- * Definitions for 9 Defender Towers (including Golden Shaded Cat & British Longhair Blue Cat),
- * Invading Enemies (including Thief Raccoon), 8-Tower Population Limit, and 4-Tier Evolution.
+ * Wildwood Defenders - Configuration Constants & Game Balances
+ * Map data, Tower definitions, Enemy waves, Boss stats, and Skill trees.
  */
 
 const DefenseConfig = {
-  CANVAS_WIDTH: 900,
-  CANVAS_HEIGHT: 540,
-  GRID_COLS: 18,
-  GRID_ROWS: 11,
-  TILE_SIZE: 50,
+  CANVAS_WIDTH: 800,
+  CANVAS_HEIGHT: 600,
+  GRID_COLS: 20,
+  GRID_ROWS: 15,
+  TILE_SIZE: 40,
 
-  INITIAL_GOLD: 380,
+  INITIAL_GOLD: 350,
   INITIAL_LIVES: 20,
   MAX_TOWERS: 8, // Population Cap: Max 8 towers on the field!
+
+  getLocalizedName(t) {
+    if (!t) return '';
+    const key = t.nameKey || t;
+    if (window.ArcadeI18n) {
+      const val = window.ArcadeI18n.t(key);
+      if (val && val !== key) return val;
+    }
+    const currentLang = (window.ArcadeI18n && window.ArcadeI18n.getLanguage()) || 'zh';
+    if (t.name && typeof t.name === 'object') {
+      return t.name[currentLang] || t.name.zh || t.name.en || key;
+    }
+    return key;
+  },
+
+  getLocalizedTrait(t) {
+    if (!t) return '';
+    const key = t.traitKey || t;
+    if (window.ArcadeI18n) {
+      const val = window.ArcadeI18n.t(key);
+      if (val && val !== key) return val;
+    }
+    const currentLang = (window.ArcadeI18n && window.ArcadeI18n.getLanguage()) || 'zh';
+    if (t.trait && typeof t.trait === 'object') {
+      return t.trait[currentLang] || t.trait.zh || t.trait.en || key;
+    }
+    return key;
+  },
+
+  getLocalizedDesc(t) {
+    if (!t) return '';
+    const key = t.descKey || t;
+    if (window.ArcadeI18n) {
+      const val = window.ArcadeI18n.t(key);
+      if (val && val !== key) return val;
+    }
+    const currentLang = (window.ArcadeI18n && window.ArcadeI18n.getLanguage()) || 'zh';
+    if (t.desc && typeof t.desc === 'object') {
+      return t.desc[currentLang] || t.desc.zh || t.desc.en || key;
+    }
+    return key;
+  },
 
   // 9 Animal Defender Towers
   TOWERS: {
@@ -21,6 +62,10 @@ const DefenseConfig = {
       id: 'rabbit',
       nameKey: 'tower_rabbit_name',
       descKey: 'tower_rabbit_desc',
+      traitKey: 'tower_rabbit_trait',
+      name: { en: 'Gatling Rabbit', zh: '急速机枪兔', 'zh-TW': '急速機槍兔', ja: 'ガトリング・ラビット' },
+      trait: { en: 'Ultra rapid-fire carrot machine gun', zh: '胡萝卜风暴：超高频机关枪速射压制', 'zh-TW': '胡蘿蔔風暴：超高頻機關槍速射壓制', ja: 'ニンジンストーム：超高速弾幕制圧' },
+      desc: { en: 'Ultra high-speed carrot bullets.', zh: '发射超高射速胡萝卜弹药。', 'zh-TW': '發射超高射速胡蘿蔔彈藥。', ja: 'ニンジン弾薬の超高速ガトリング乱射。' },
       icon: '🐰',
       cost: 90,
       damage: 10,
@@ -31,13 +76,16 @@ const DefenseConfig = {
       projectileType: 'carrot_bullet',
       upgradeCost: 80,
       maxLevel: 4,
-      traitKey: 'tower_rabbit_trait',
       unlockWave: 0,
     },
     rooster: {
       id: 'rooster',
       nameKey: 'tower_rooster_name',
       descKey: 'tower_rooster_desc',
+      traitKey: 'tower_rooster_trait',
+      name: { en: 'Rooster Guard', zh: '雄鸡守卫', 'zh-TW': '雄雞守衛', ja: 'オンドリ警備員' },
+      trait: { en: 'Dawn Cry: +25% attack speed to nearby towers', zh: '晨曦破晓：提升周围防御塔 25% 攻击速度', 'zh-TW': '晨曦破曉：提升周圍防禦塔 25% 攻擊速度', ja: '夜明けの叫び：周囲タワーの攻撃速度+25%' },
+      desc: { en: 'Close-range pecks and Dawn Cry aura.', zh: '近战破晓啄击与战吼光环。', 'zh-TW': '近戰破曉啄擊與戰吼光環。', ja: '近接つつき攻撃＆夜明けの雄叫びオーラ。' },
       icon: '🐓',
       cost: 110,
       damage: 22,
@@ -48,13 +96,16 @@ const DefenseConfig = {
       projectileType: 'peck',
       upgradeCost: 90,
       maxLevel: 4,
-      traitKey: 'tower_rooster_trait',
       unlockWave: 0,
     },
     hen: {
       id: 'hen',
       nameKey: 'tower_hen_name',
       descKey: 'tower_hen_desc',
+      traitKey: 'tower_hen_trait',
+      name: { en: 'Captain Hen', zh: '母鸡上尉', 'zh-TW': '母雞上尉', ja: 'メンドリ隊長' },
+      trait: { en: 'Egg Bomb AOE & Golden Egg economy (+12G/10s)', zh: '爆破蛋群范围杀伤，且每10秒产出12枚金币', 'zh-TW': '爆破蛋群範圍殺傷，且每10秒產出12枚金幣', ja: '範囲卵爆弾＆金卵産卵（+12G/10秒）' },
+      desc: { en: 'Explosive egg bombs & periodic golden egg economy.', zh: '轰炸范围鸡蛋与周期性产出金币。', 'zh-TW': '轟炸範圍雞蛋與週期性產出金幣。', ja: '範囲爆発の卵爆弾＆定期的な金卵ボーナス。' },
       icon: '🐔',
       cost: 130,
       damage: 48,
@@ -67,13 +118,16 @@ const DefenseConfig = {
       upgradeCost: 100,
       maxLevel: 4,
       economyBonus: 12,
-      traitKey: 'tower_hen_trait',
       unlockWave: 0,
     },
     deer: {
       id: 'deer',
       nameKey: 'tower_deer_name',
       descKey: 'tower_deer_desc',
+      traitKey: 'tower_deer_trait',
+      name: { en: 'Lord Deer', zh: '黑尾鹿领主', 'zh-TW': '黑尾鹿領主', ja: '黒尾シカ男爵' },
+      trait: { en: 'Ground Stomp: 50% slow to all nearby enemies', zh: '撼地践踏：造成大范围 50% 强力减速', 'zh-TW': '撼地踐踏：造成大範圍 50% 強力減速', ja: '大地踏みつけ：広範囲の敵を50%減速' },
+      desc: { en: 'Ground stomp shockwave that slows enemies.', zh: '践踏震地波，范围减速所有入侵者。', 'zh-TW': '踐踏震地波，範圍減速所有入侵者。', ja: '足踏み衝撃波で敵全体を減速。' },
       icon: '🦌',
       cost: 140,
       damage: 26,
@@ -86,13 +140,16 @@ const DefenseConfig = {
       slowDuration: 2.5,
       upgradeCost: 110,
       maxLevel: 4,
-      traitKey: 'tower_deer_trait',
       unlockWave: 0,
     },
     squirrel: {
       id: 'squirrel',
       nameKey: 'tower_squirrel_name',
       descKey: 'tower_squirrel_desc',
+      traitKey: 'tower_squirrel_trait',
+      name: { en: 'Sniper Squirrel', zh: '松鼠狙击手', 'zh-TW': '松鼠狙擊手', ja: 'スナイパーリス' },
+      trait: { en: 'Long-range sniper with 35% crit & pierce 2', zh: '致命狙杀：35%暴击几率且穿透2名目标', 'zh-TW': '致命狙殺：35%暴擊幾率且穿透2名目標', ja: '致命狙撃：クリティカル率35%＆2体貫通' },
+      desc: { en: 'Long-range acorn sniper with linear piercing.', zh: '超远距离坚果穿透狙击。', 'zh-TW': '超遠距離堅果穿透狙擊。', ja: '超長距離ドングリ貫通スナイプ。' },
       icon: '🐿️',
       cost: 160,
       damage: 105,
@@ -106,13 +163,16 @@ const DefenseConfig = {
       pierce: 2,
       upgradeCost: 130,
       maxLevel: 4,
-      traitKey: 'tower_squirrel_trait',
       unlockWave: 0,
     },
     owl: {
       id: 'owl',
       nameKey: 'tower_owl_name',
       descKey: 'tower_owl_desc',
+      traitKey: 'tower_owl_trait',
+      name: { en: 'Wise Owl', zh: '猫头鹰先知', 'zh-TW': '貓頭鷹先知', ja: '賢者フクロウ' },
+      trait: { en: 'True Sight stealth reveal & 4-target chain lightning', zh: '真视之眼：侦测隐身单位，闪电弹跳4次', 'zh-TW': '真視之眼：偵測隱身單位，閃電彈跳4次', ja: '真実の瞳：ステルス看破＆4体連鎖雷撃' },
+      desc: { en: 'Chain lightning & True Sight revealing stealth.', zh: '闪电连环链与真视反隐。', 'zh-TW': '閃電連環鏈與真視反隱。', ja: '連鎖雷撃＆インビジブル看破。' },
       icon: '🦉',
       cost: 180,
       damage: 38,
@@ -125,13 +185,16 @@ const DefenseConfig = {
       detectsStealth: true,
       upgradeCost: 140,
       maxLevel: 4,
-      traitKey: 'tower_owl_trait',
       unlockWave: 0,
     },
     eagle: {
       id: 'eagle',
       nameKey: 'tower_eagle_name',
       descKey: 'tower_eagle_desc',
+      traitKey: 'tower_eagle_trait',
+      name: { en: 'Sky Eagle', zh: '苍穹老鹰', 'zh-TW': '蒼穹老鷹', ja: 'スカイ・イーグル' },
+      trait: { en: 'Global patrol: 3x execute damage under 30% HP', zh: '鹰击长空：全图索敌，对低于30%血量造成3倍斩杀', 'zh-TW': '鷹擊長空：全圖索敵，對低於30%血量造成3倍斬殺', ja: '全域索敵：残HP30%以下に3倍ダメージの斬殺' },
+      desc: { en: 'Global range dive claw, executes low HP enemies.', zh: '全图巡航俯冲，对残血目标造成斩杀。', 'zh-TW': '全圖巡航俯衝，對殘血目標造成斬殺。', ja: '全マップ巡回急降下＆残HP30%以下即死斬殺。' },
       icon: '🦅',
       cost: 220,
       damage: 150,
@@ -142,14 +205,16 @@ const DefenseConfig = {
       projectileType: 'dive_claw',
       upgradeCost: 180,
       maxLevel: 4,
-      traitKey: 'tower_eagle_trait',
       unlockWave: 0,
     },
-    // ULTIMATE CAT 1: Golden Shaded Cat (金渐层战神)
     cat_golden: {
       id: 'cat_golden',
       nameKey: 'tower_cat_golden_name',
       descKey: 'tower_cat_golden_desc',
+      traitKey: 'tower_cat_golden_trait',
+      name: { en: 'Golden Shaded Cat', zh: '贵族金渐层猫', 'zh-TW': '貴族金漸層貓', ja: '貴族ゴールデン・キャット' },
+      trait: { en: 'Golden Fortune: Critical AOE & 30% lucky coin drop', zh: '招财进宝：高暴击范围爆破，击败30%额外掉落金币', 'zh-TW': '招財進寶：高暴擊範圍爆破，擊敗30%額外掉落金幣', ja: '招財進宝：高会心範囲爆破＆30%でコイン追加ドロップ' },
+      desc: { en: 'Late-game powerhouse with bouncing golden paws, high crit and lucky gold coin drops.', zh: '后期主力神猫，招财猫爪弹射大范围爆破并额外掉落金币。', 'zh-TW': '後期主力神貓，招財貓爪彈射大範圍爆破並額外掉落金幣。', ja: '後半の主力神猫。招財の肉球エネルギーで大爆破し金貨を生成。' },
       icon: '🐱',
       cost: 280,
       damage: 85,
@@ -163,14 +228,16 @@ const DefenseConfig = {
       critMultiplier: 2.8,
       upgradeCost: 220,
       maxLevel: 4,
-      traitKey: 'tower_cat_golden_trait', // Golden Fortune: Critical AOE + bonus gold drops
-      unlockWave: 8, // Unlocks at Wave 8!
+      unlockWave: 8,
     },
-    // ULTIMATE CAT 2: British Longhair Blue Cat (英国长毛蓝猫)
     cat_blue: {
       id: 'cat_blue',
       nameKey: 'tower_cat_blue_name',
       descKey: 'tower_cat_blue_desc',
+      traitKey: 'tower_cat_blue_trait',
+      name: { en: 'British Longhair Blue Cat', zh: '英国长毛蓝猫', 'zh-TW': '英國長毛藍貓', ja: 'ブリティッシュロングヘア（ブルー）' },
+      trait: { en: 'Absolute Zero: Massive blizzard AOE & freezes enemies solid', zh: '绝对零度：超大范围极寒暴风雪彻底冰封敌人', 'zh-TW': '絕對零度：超大範圍極寒暴風雪徹底冰封敵人', ja: '絶対零度：超広域吹雪で完全凍結＆アーマー剥奪' },
+      desc: { en: 'Ultimate crowd controller summoning glacial blizzards to freeze all invaders.', zh: '终极控制神猫，召唤超广域冰封暴风雪彻底冻结全场入侵者。', 'zh-TW': '終極控制神貓，召喚超廣域冰封暴風雪徹底凍結全場入侵者。', ja: '最強の氷結神猫。超広域の吹雪ですべての敵を完全凍結。' },
       icon: '🦁',
       cost: 340,
       damage: 120,
@@ -184,9 +251,8 @@ const DefenseConfig = {
       freezeDuration: 2.0,
       upgradeCost: 260,
       maxLevel: 4,
-      traitKey: 'tower_cat_blue_trait', // Absolute Zero: Blizzard AOE + freezes enemies solid
-      unlockWave: 15, // Unlocks at Wave 15!
-    }
+      unlockWave: 15,
+    },
   },
 
   // Invading Enemy Types (including Thief Raccoon)
@@ -194,6 +260,7 @@ const DefenseConfig = {
     fox: {
       id: 'fox',
       nameKey: 'enemy_fox_name',
+      name: { en: 'Wild Fox', zh: '灵狐', 'zh-TW': '靈狐', ja: 'キツネ' },
       icon: '🦊',
       baseHp: 85,
       speed: 2.6,
@@ -205,10 +272,11 @@ const DefenseConfig = {
     weasel: {
       id: 'weasel',
       nameKey: 'enemy_weasel_name',
+      name: { en: 'Sneaky Weasel', zh: '狡黠黄鼠狼', 'zh-TW': '狡黠黃鼠狼', ja: 'イタチ' },
       icon: '🦡',
       baseHp: 140,
       speed: 2.0,
-      stealth: true, // Invisible unless revealed
+      stealth: true,
       bounty: 18,
       scoreValue: 80,
       radius: 13,
@@ -217,179 +285,189 @@ const DefenseConfig = {
     raccoon: {
       id: 'raccoon',
       nameKey: 'enemy_raccoon_name',
+      name: { en: 'Thief Raccoon', zh: '神偷浣熊', 'zh-TW': '神偷浣熊', ja: '怪盗アライグマ' },
       icon: '🦝',
-      baseHp: 200,
-      speed: 2.2,
-      stealsGold: true, // Thief Raccoon steals gold from player!
-      stolenGoldPerHit: 12,
-      bounty: 35,
-      scoreValue: 150,
-      radius: 16,
-      color: '#2e8b57',
+      baseHp: 180,
+      speed: 2.8,
+      stealsGold: 15,
+      bounty: 24,
+      scoreValue: 120,
+      radius: 15,
+      color: '#4a5568',
     },
     wolf: {
       id: 'wolf',
       nameKey: 'enemy_wolf_name',
+      name: { en: 'Muddy Wolf', zh: '灰狼', 'zh-TW': '灰狼', ja: 'オオカミ' },
       icon: '🐺',
-      baseHp: 240,
-      speed: 2.1,
-      bounty: 24,
+      baseHp: 280,
+      speed: 1.8,
+      bounty: 22,
       scoreValue: 110,
-      radius: 17,
-      color: '#4682b4',
-      hasHowl: true,
+      radius: 16,
+      color: '#808080',
     },
     boar: {
       id: 'boar',
       nameKey: 'enemy_boar_name',
+      name: { en: 'Gluttonous Boar', zh: '狂暴野猪', 'zh-TW': '狂暴野豬', ja: 'イノシシ' },
       icon: '🐗',
-      baseHp: 380,
-      speed: 1.1,
-      armor: 0.25, // 25% damage reduction
-      bounty: 28,
-      scoreValue: 130,
-      radius: 20,
-      color: '#8b4513',
+      baseHp: 580,
+      speed: 1.3,
+      armor: 0.35,
+      bounty: 35,
+      scoreValue: 160,
+      radius: 18,
+      color: '#5c4033',
     },
     badger: {
       id: 'badger',
       nameKey: 'enemy_badger_name',
+      name: { en: 'Poison Badger', zh: '剧毒獾', 'zh-TW': '劇毒獾', ja: 'アナグマ' },
       icon: '🦨',
-      baseHp: 300,
-      speed: 1.4,
-      bounty: 30,
-      scoreValue: 160,
+      baseHp: 420,
+      speed: 1.7,
+      healsAllies: 25,
+      bounty: 40,
+      scoreValue: 200,
       radius: 16,
-      color: '#2f4f4f',
+      color: '#9932cc',
     },
-    bear_boss: {
-      id: 'bear_boss',
+    bear: {
+      id: 'bear',
       nameKey: 'enemy_bear_name',
+      name: { en: 'Raging Bear', zh: '暴怒黑熊', 'zh-TW': '暴怒黑熊', ja: '暴走グマ' },
       icon: '🐻',
-      baseHp: 2800,
-      speed: 0.85,
+      baseHp: 1400,
+      speed: 1.1,
+      armor: 0.45,
       isBoss: true,
-      bounty: 180,
+      bounty: 90,
+      scoreValue: 450,
+      radius: 24,
+      color: '#2f1b0c',
+    },
+    harvester: {
+      id: 'harvester',
+      nameKey: 'enemy_harvester_name',
+      name: { en: 'Mecha Harvester', zh: '机甲伐木机', 'zh-TW': '機械伐木機', ja: '伐採ロボ' },
+      icon: '🚜',
+      baseHp: 3800,
+      speed: 0.85,
+      armor: 0.6,
+      isBoss: true,
+      destroysTowers: true,
+      bounty: 250,
       scoreValue: 1200,
       radius: 28,
-      color: '#3d1c02',
+      color: '#b22222',
     },
-    harvester_boss: {
-      id: 'harvester_boss',
-      nameKey: 'enemy_harvester_name',
-      icon: '🚜',
-      baseHp: 6500,
-      speed: 0.75,
-      isBoss: true,
-      bounty: 350,
-      scoreValue: 3000,
-      radius: 34,
-      color: '#800000',
-    }
   },
 
-  // Maps
-  MAPS: [
-    {
-      id: 'farm_meadow',
-      nameKey: 'map_meadow_name',
-      descKey: 'map_meadow_desc',
-      theme: 'meadow',
-      bgGradient: ['#142b14', '#0d1f0d'],
-      pathColor: '#c29d5b',
-      borderColor: '#2e7d32',
-      waypoints: [
-        { x: 0, y: 3 },
-        { x: 5, y: 3 },
-        { x: 5, y: 7 },
-        { x: 11, y: 7 },
-        { x: 11, y: 2 },
-        { x: 15, y: 2 },
-        { x: 15, y: 8 },
-        { x: 18, y: 8 }
-      ],
-      obstacles: [
-        { col: 3, row: 1 }, { col: 8, row: 4 }, { col: 13, row: 5 }, { col: 2, row: 6 }
-      ]
-    },
-    {
-      id: 'whispering_woods',
-      nameKey: 'map_woods_name',
-      descKey: 'map_woods_desc',
-      theme: 'woods',
-      bgGradient: ['#0f1d1a', '#081412'],
-      pathColor: '#8a6840',
-      borderColor: '#00897b',
-      waypoints: [
-        { x: 0, y: 1 },
-        { x: 4, y: 1 },
-        { x: 4, y: 9 },
-        { x: 8, y: 9 },
-        { x: 8, y: 4 },
-        { x: 13, y: 4 },
-        { x: 13, y: 8 },
-        { x: 18, y: 8 }
-      ],
-      obstacles: [
-        { col: 2, row: 4 }, { col: 6, row: 2 }, { col: 10, row: 7 }, { col: 15, row: 3 }
-      ]
-    },
-    {
-      id: 'misty_canyon',
-      nameKey: 'map_canyon_name',
-      descKey: 'map_canyon_desc',
-      theme: 'canyon',
-      bgGradient: ['#1e1428', '#110b19'],
-      pathColor: '#8c7b99',
-      borderColor: '#7b1fa2',
-      waypoints: [
-        { x: 0, y: 5 },
-        { x: 3, y: 5 },
-        { x: 3, y: 1 },
-        { x: 14, y: 1 },
-        { x: 14, y: 9 },
-        { x: 7, y: 9 },
-        { x: 7, y: 5 },
-        { x: 11, y: 5 },
-        { x: 11, y: 7 },
-        { x: 18, y: 7 }
-      ],
-      obstacles: [
-        { col: 5, row: 3 }, { col: 9, row: 3 }, { col: 5, row: 7 }, { col: 12, row: 3 }
-      ]
-    }
-  ],
-
-  // 3 Commander Active Skills
+  // Commander Global Active Skills
   SKILLS: {
     carrot_rain: {
       id: 'carrot_rain',
       nameKey: 'skill_carrot_rain_name',
       descKey: 'skill_carrot_rain_desc',
+      name: { en: 'Carrot Rain', zh: '胡萝卜暴雨', 'zh-TW': '胡蘿蔔暴雨', ja: 'ニンジン爆撃' },
+      desc: { en: 'Calls a barrage of carrots dealing massive AOE damage.', zh: '召唤大范围胡萝卜空投轰炸，造成巨额范围伤害。', 'zh-TW': '召喚大範圍胡蘿蔔空投轟炸，造成巨額範圍傷害。', ja: '広範囲にニンジンを投下し敵に大ダメージを与える。' },
       icon: '🥕',
-      cooldown: 35,
-      cost: 60,
-      damage: 220,
-      radius: 180
+      cooldown: 25,
+      cost: 0,
+      damage: 320,
+      radius: 180,
     },
     gold_airdrop: {
       id: 'gold_airdrop',
       nameKey: 'skill_gold_airdrop_name',
       descKey: 'skill_gold_airdrop_desc',
+      name: { en: 'Egg Airdrop', zh: '金蛋空投', 'zh-TW': '金蛋空投', ja: '金の卵補給' },
+      desc: { en: 'Instantly grants 150 gold resources.', zh: '紧急空投农场金蛋，瞬间增加 150 枚金币资源。', 'zh-TW': '緊急空投農場金蛋，瞬間增加 150 枚金幣資源。', ja: 'ゴールド150Gを緊急獲得する。' },
       icon: '🥚',
-      cooldown: 45,
-      rewardGold: 180
+      cooldown: 40,
+      cost: 0,
+      goldBonus: 150,
     },
     animal_frenzy: {
       id: 'animal_frenzy',
       nameKey: 'skill_frenzy_name',
       descKey: 'skill_frenzy_desc',
-      icon: '⚡',
-      cooldown: 50,
-      duration: 8,
-      speedBoost: 1.0 // +100% attack speed
-    }
-  }
+      name: { en: 'Animal Frenzy', zh: '动物狂暴', 'zh-TW': '動物狂暴', ja: 'アニマル暴走' },
+      desc: { en: 'Boosts all towers with +100% attack speed for 6 seconds.', zh: '激发全员战意，所有动物守卫攻速提升 100%，持续 6 秒。', 'zh-TW': '激發全員戰意，所有動物守衛攻速提升 100%，持續 6 秒。', ja: '6秒間、味方全タワーの攻撃速度が+100%になる。' },
+      icon: '🔥',
+      cooldown: 35,
+      cost: 0,
+      duration: 6.0,
+      speedMultiplier: 2.0,
+    },
+  },
+
+  // 3 Distinct Maps
+  MAPS: [
+    {
+      id: 'meadow',
+      nameKey: 'defense.map_meadow',
+      name: { en: '🌾 Farm Meadow', zh: '🌾 麦浪庄园', 'zh-TW': '🌾 麥浪莊園', ja: '🌾 ファーム・メドウ' },
+      desc: { en: 'Classic double-bend meadow trail suitable for beginners.', zh: '经典双折角农田小道，适宜新手建立防线。', 'zh-TW': '經典雙折角農田小道，適宜新手建立防線。', ja: '初心者向けの緩やかな二重カーブの草道。' },
+      path: [
+        { x: 0, y: 3 },
+        { x: 5, y: 3 },
+        { x: 5, y: 10 },
+        { x: 14, y: 10 },
+        { x: 14, y: 4 },
+        { x: 19, y: 4 },
+      ],
+      theme: {
+        grassColor: '#2b5329',
+        gridLine: 'rgba(255, 255, 255, 0.05)',
+        pathColor: '#c2b280',
+        pathBorder: '#8b7355',
+      },
+    },
+    {
+      id: 'woods',
+      nameKey: 'defense.map_woods',
+      name: { en: '🌲 Whispering Woods', zh: '🌲 密林溪谷', 'zh-TW': '🌲 密林溪谷', ja: '🌲 ウィスパリング・ウッズ' },
+      desc: { en: 'Multi-fork forest paths requiring strategic coverage.', zh: '多岔道密林通道，需合理规划中远距离守卫火力。', 'zh-TW': '多岔道密林通道，需合理規劃中遠距離守衛火力。', ja: '複数分岐のある森林ルート。長射程の配置が重要。' },
+      path: [
+        { x: 0, y: 7 },
+        { x: 4, y: 7 },
+        { x: 4, y: 2 },
+        { x: 10, y: 2 },
+        { x: 10, y: 12 },
+        { x: 16, y: 12 },
+        { x: 16, y: 6 },
+        { x: 19, y: 6 },
+      ],
+      theme: {
+        grassColor: '#1d3e2c',
+        gridLine: 'rgba(0, 255, 136, 0.06)',
+        pathColor: '#8a7355',
+        pathBorder: '#5c4033',
+      },
+    },
+    {
+      id: 'canyon',
+      nameKey: 'defense.map_canyon',
+      name: { en: '⛰️ Misty Canyon', zh: '⛰️ 迷雾峡谷', 'zh-TW': '⛰️ 迷霧峽谷', ja: '⛰️ ミスティ・キャニオン' },
+      desc: { en: 'Narrow canyon pass with swift invaders.', zh: '险要狭窄峡谷关隘，怪物移动速度极快。', 'zh-TW': '險要狹窄峽谷關隘，怪物移動速度極快。', ja: '敵の移動が素早い狭隘な霧の峡谷。' },
+      path: [
+        { x: 0, y: 2 },
+        { x: 16, y: 2 },
+        { x: 16, y: 7 },
+        { x: 3, y: 7 },
+        { x: 3, y: 12 },
+        { x: 19, y: 12 },
+      ],
+      theme: {
+        grassColor: '#2b2d42',
+        gridLine: 'rgba(0, 240, 255, 0.06)',
+        pathColor: '#5c5470',
+        pathBorder: '#352f44',
+      },
+    },
+  ],
 };
 
 if (typeof module !== 'undefined' && module.exports) {

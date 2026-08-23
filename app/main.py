@@ -34,6 +34,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Middleware to prevent stale static browser caching
+@app.middleware("http")
+async def add_no_cache_headers(request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith(("/static", "/hub_static", "/tetris_static", "/snake_static", "/defense_static")):
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+    return response
+
 # Include API routers
 app.include_router(auth_router)
 app.include_router(score_router)

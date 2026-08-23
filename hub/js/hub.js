@@ -17,6 +17,11 @@
   // DOM Elements
   const btnUserAuth = document.getElementById('btn-user-auth');
   const userDisplayName = document.getElementById('user-display-name');
+  const userBadge = document.getElementById('user-badge');
+  const userAvatar = document.getElementById('user-avatar');
+  const displayUsername = document.getElementById('display-username');
+  const btnLogout = document.getElementById('btn-logout');
+
   const modalAuth = document.getElementById('modal-auth');
   const btnCloseAuth = document.getElementById('btn-close-auth');
   const authForm = document.getElementById('auth-form');
@@ -45,6 +50,12 @@
     setupAuthListeners();
     setupLeaderboardListeners();
     await verifyUserToken();
+    renderGameCatalog();
+
+    window.addEventListener('arcadeLanguageChanged', () => {
+      renderGameCatalog();
+      updateUserAuthUI();
+    });
   }
 
   function showToast(msg, duration = 2500) {
@@ -56,10 +67,27 @@
     }, duration);
   }
 
+  function updateUserAuthUI() {
+    if (currentUser) {
+      if (btnUserAuth) btnUserAuth.classList.add('hidden');
+      if (userBadge) {
+        userBadge.classList.remove('hidden');
+        if (displayUsername) displayUsername.textContent = currentUser.username;
+        if (userAvatar) userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+      }
+    } else {
+      if (btnUserAuth) {
+        btnUserAuth.classList.remove('hidden');
+        if (userDisplayName) userDisplayName.textContent = ArcadeI18n.t('hub.login_btn');
+      }
+      if (userBadge) userBadge.classList.add('hidden');
+    }
+  }
+
   // --- Auth Handlers ---
   async function verifyUserToken() {
     if (!authToken) {
-      userDisplayName.textContent = ArcadeI18n.t('hub.login_btn');
+      updateUserAuthUI();
       return;
     }
 
@@ -70,7 +98,7 @@
 
       if (res.ok) {
         currentUser = await res.json();
-        userDisplayName.textContent = `👤 ${currentUser.username}`;
+        updateUserAuthUI();
         // Sync token
         localStorage.setItem('arcade_token', authToken);
         localStorage.setItem('tetris_auth_token', authToken);
@@ -87,7 +115,8 @@
         localStorage.removeItem('tetris_token');
         localStorage.removeItem('snake_token');
         authToken = null;
-        userDisplayName.textContent = ArcadeI18n.t('hub.login_btn');
+        currentUser = null;
+        updateUserAuthUI();
       }
     } catch (e) {
       console.warn('Auth verification skipped.');
@@ -95,8 +124,14 @@
   }
 
   function setupAuthListeners() {
-    btnUserAuth.addEventListener('click', () => {
-      if (currentUser) {
+    if (btnUserAuth) {
+      btnUserAuth.addEventListener('click', () => {
+        openAuthModal(false);
+      });
+    }
+
+    if (btnLogout) {
+      btnLogout.addEventListener('click', () => {
         if (confirm(ArcadeI18n.t('auth.confirm_logout'))) {
           localStorage.removeItem('arcade_token');
           localStorage.removeItem('tetris_auth_token');
@@ -104,13 +139,11 @@
           localStorage.removeItem('snake_token');
           authToken = null;
           currentUser = null;
-          userDisplayName.textContent = ArcadeI18n.t('hub.login_btn');
+          updateUserAuthUI();
           showToast('👋 Logged out successfully');
         }
-      } else {
-        openAuthModal(false);
-      }
-    });
+      });
+    }
 
     btnCloseAuth.addEventListener('click', () => {
       modalAuth.classList.add('hidden');
@@ -151,8 +184,7 @@
           localStorage.setItem('arcade_token', authToken);
           localStorage.setItem('tetris_auth_token', authToken);
           localStorage.setItem('tetris_token', authToken);
-          localStorage.setItem('snake_token', authToken);
-          userDisplayName.textContent = `👤 ${currentUser.username}`;
+          updateUserAuthUI();
           modalAuth.classList.add('hidden');
 
           // Sync preferred language from account
