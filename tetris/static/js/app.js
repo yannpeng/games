@@ -1040,8 +1040,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const touchHardDrop = document.getElementById('btn-touch-harddrop');
     const touchHold = document.getElementById('btn-touch-hold');
     const touchPause = document.getElementById('btn-touch-pause');
+    const headerPause = document.getElementById('btn-mobile-pause');
 
     if (touchPause) touchPause.addEventListener('click', pauseGame);
+    if (headerPause) headerPause.addEventListener('click', pauseGame);
 
     const bindTouchAction = (el, action) => {
       if (!el) return;

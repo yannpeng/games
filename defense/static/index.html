@@ -16,13 +16,6 @@
     </div>
 
     <div class="header-controls">
-      <!-- Map Selection -->
-      <select id="map-select-dropdown" class="map-select" aria-label="Select Map">
-        <option value="0" data-i18n="defense.map_meadow">🌾 麦浪庄园</option>
-        <option value="1" data-i18n="defense.map_woods">🌲 密林溪谷</option>
-        <option value="2" data-i18n="defense.map_canyon">⛰️ 迷雾峡谷</option>
-      </select>
-
       <!-- Language Selector -->
       <select id="lang-select-dropdown" class="lang-select" aria-label="Language Selector">
         <option value="en">EN</option>
@@ -31,11 +24,16 @@
         <option value="ja">日</option>
       </select>
 
-      <!-- Sound Toggle -->
-      <button type="button" id="btn-audio-toggle" class="btn-icon">🔊 <span data-i18n="defense.audio">音效</span></button>
-
       <!-- Return to Arcade Hub -->
       <a href="/" class="btn-icon" title="Hub">🏠 <span data-i18n="nav.hub">大厅</span></a>
+
+      <!-- Unified Pause in Top Navigator -->
+      <button type="button" id="btn-header-pause" class="btn-icon" title="Pause Game">
+        <span id="header-pause-icon">⏸</span> <span id="header-pause-text" data-i18n="defense.pause">暂停</span>
+      </button>
+
+      <!-- Sound Toggle -->
+      <button type="button" id="btn-audio-toggle" class="btn-icon">🔊 <span data-i18n="defense.audio">音效</span></button>
 
       <!-- Global Leaderboard Button -->
       <button type="button" id="btn-leaderboard" class="btn-icon">🏆 <span data-i18n="lb.title">排行榜</span></button>
@@ -69,13 +67,19 @@
       </div>
 
       <div class="hud-actions">
+        <!-- Map Selection in Game HUD -->
+        <select id="map-select-dropdown" class="map-select" aria-label="Select Map">
+          <option value="0" data-i18n="defense.map_meadow">🌾 麦浪庄园</option>
+          <option value="1" data-i18n="defense.map_woods">🌲 密林溪谷</option>
+          <option value="2" data-i18n="defense.map_canyon">⛰️ 迷雾峡谷</option>
+        </select>
+
         <div class="btn-speed-group">
           <button type="button" class="btn-speed active" data-speed="1">1x</button>
           <button type="button" class="btn-speed" data-speed="2">2x</button>
           <button type="button" class="btn-speed" data-speed="4">4x</button>
         </div>
         <button type="button" id="btn-auto-wave" class="btn-toggle-auto">⚡ <span data-i18n="defense.auto_wave">自动出波</span></button>
-        <button type="button" id="btn-pause" class="btn-icon">⏸️ <span data-i18n="defense.pause">暂停</span></button>
         <button type="button" id="btn-restart" class="btn-icon">🔄 <span data-i18n="defense.restart">重开</span></button>
         <button type="button" id="btn-start-wave" class="btn-primary-action">⚔️ <span data-i18n="defense.start_wave">开始进攻</span></button>
       </div>
@@ -215,11 +219,11 @@
   <div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(14,26,20,0.95);border:1px solid var(--accent-green);color:#fff;padding:8px 18px;border-radius:30px;z-index:2000;font-weight:700;display:none;"></div>
 
   <!-- Scripts -->
-  <script src="/defense_static/js/i18n.js?v=2.6.0"></script>
-  <script src="/defense_static/js/defense_config.js?v=2.6.0"></script>
-  <script src="/defense_static/js/defense_audio.js?v=2.6.0"></script>
-  <script src="/defense_static/js/defense_api.js?v=2.6.0"></script>
-  <script src="/defense_static/js/defense_engine.js?v=2.6.0"></script>
-  <script src="/defense_static/js/defense_app.js?v=2.6.0"></script>
+  <script src="/defense_static/js/i18n.js?v=2.7.0"></script>
+  <script src="/defense_static/js/defense_config.js?v=2.7.0"></script>
+  <script src="/defense_static/js/defense_audio.js?v=2.7.0"></script>
+  <script src="/defense_static/js/defense_api.js?v=2.7.0"></script>
+  <script src="/defense_static/js/defense_engine.js?v=2.7.0"></script>
+  <script src="/defense_static/js/defense_app.js?v=2.7.0"></script>
 </body>
 </html>

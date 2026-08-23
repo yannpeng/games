@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const speedButtons = document.querySelectorAll('.btn-speed');
   const btnAutoWave = document.getElementById('btn-auto-wave');
   const btnPause = document.getElementById('btn-pause');
+  const btnHeaderPause = document.getElementById('btn-header-pause');
   const btnRestart = document.getElementById('btn-restart');
   const btnAudioToggle = document.getElementById('btn-audio-toggle');
 
@@ -53,6 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Game End Modals
   const gameOverModal = document.getElementById('game-over-modal');
   const victoryModal = document.getElementById('victory-modal');
+  const finalScoreSpan = document.getElementById('final-score');
+  const finalWaveSpan = document.getElementById('final-wave');
   const goWave = document.getElementById('go-wave');
   const goScore = document.getElementById('go-score');
   const vicScore = document.getElementById('vic-score');
@@ -87,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentUser = null;
   let isRegistering = false;
 
-  function showToast(msg, duration = 2500) {
+  function showToast(msg, duration = 2000) {
     if (!toast) return;
     toast.textContent = msg;
     toast.style.display = 'block';
@@ -119,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
       card.innerHTML = `
         <div class="card-icon" style="background: ${t.color}22; border-color: ${t.color}">${t.icon}</div>
         <div class="card-info">
-          <div class="card-title">${nameStr}</div>
-          <div class="card-trait">${traitStr}</div>
+          <div class="card-title" data-i18n="${t.nameKey}">${nameStr}</div>
+          <div class="card-trait" data-i18n="${t.traitKey}">${traitStr}</div>
           <div class="card-cost">💰 ${t.cost}G</div>
         </div>
         ${isLocked ? `<div class="lock-overlay">🔒 ${window.ArcadeI18n ? (window.ArcadeI18n.t('defense.unlock_wave_prefix') + t.unlockWave + window.ArcadeI18n.t('defense.unlock_wave_suffix')) : ('Wave ' + t.unlockWave)}</div>` : ''}
@@ -213,7 +216,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnPause) {
       const pauseLabel = state.isPaused ? (window.ArcadeI18n ? window.ArcadeI18n.t('defense.resume') : 'Resume') : (window.ArcadeI18n ? window.ArcadeI18n.t('defense.pause') : 'Pause');
-      btnPause.innerHTML = `${state.isPaused ? '▶️' : '⏸️'} <span data-i18n="defense.pause">${pauseLabel}</span>`;
+      btnPause.innerHTML = `${state.isPaused ? '▶️' : '⏸️'} <span data-i18n="${state.isPaused ? 'defense.resume' : 'defense.pause'}">${pauseLabel}</span>`;
+    }
+
+    if (btnHeaderPause) {
+      const pauseLabel = state.isPaused ? (window.ArcadeI18n ? window.ArcadeI18n.t('defense.resume') : 'Resume') : (window.ArcadeI18n ? window.ArcadeI18n.t('defense.pause') : 'Pause');
+      btnHeaderPause.innerHTML = `<span id="header-pause-icon">${state.isPaused ? '▶' : '⏸'}</span> <span id="header-pause-text" data-i18n="${state.isPaused ? 'defense.resume' : 'defense.pause'}">${pauseLabel}</span>`;
     }
 
     // Update Skill Cooldowns
@@ -386,6 +394,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnPause) {
     btnPause.addEventListener('click', () => {
+      engine.togglePause();
+      updateHUD(engine);
+    });
+  }
+
+  if (btnHeaderPause) {
+    btnHeaderPause.addEventListener('click', () => {
       engine.togglePause();
       updateHUD(engine);
     });
