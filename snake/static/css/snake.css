@@ -1017,49 +1017,80 @@ body {
     height: auto;
     min-height: 100dvh;
     max-height: none;
-    padding: 6px;
-    gap: 8px;
-  }
-
-  .header-actions {
-    gap: 4px;
-  }
-
-  .game-layout {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+    padding: 6px 8px;
     gap: 6px;
   }
 
-  .panel-left {
-    order: 1;
-    width: 48%;
-    height: auto;
-    max-height: none;
+  /* Responsive 2-Row Header on Mobile */
+  .app-header {
+    flex-wrap: wrap;
+    padding: 6px 10px;
+    gap: 6px;
   }
 
-  .panel-right {
+  .brand {
+    order: 1;
+  }
+
+  .brand-title {
+    font-size: 1.15rem;
+  }
+
+  .header-actions {
     order: 2;
-    width: 48%;
-    height: auto;
-    max-height: none;
+    gap: 4px;
+  }
+
+  .header-actions .btn-secondary {
+    padding: 4px 8px;
+    font-size: 0.78rem;
+  }
+
+  .mode-switch-group {
+    order: 3;
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .mode-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 5px 6px;
+    font-size: 0.8rem;
+  }
+
+  /* Responsive Game Board */
+  .game-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .panel-left, .panel-right {
+    display: none;
   }
 
   .game-center {
-    order: 3;
     width: 100%;
-    height: auto;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
   }
 
   .canvas-wrapper {
     width: 100%;
-    max-width: 380px;
-    height: auto;
+    max-width: min(85vw, 360px);
     aspect-ratio: 1 / 1;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   #snake-canvas {
@@ -1070,13 +1101,13 @@ body {
   .touch-controller {
     order: 4;
     width: 100%;
-    padding: 6px 0 12px;
+    padding: 4px 0 10px;
   }
 
   .dpad-btn {
-    width: 58px;
-    height: 58px;
-    font-size: 1.4rem;
+    width: 52px;
+    height: 52px;
+    font-size: 1.3rem;
   }
 
   .modal-dialog {
@@ -1090,4 +1121,5 @@ body {
     -webkit-overflow-scrolling: touch;
   }
 }
+
 

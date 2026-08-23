@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>TETRIS PRO - Adaptive Cyberpunk Arcade Edition</title>
-  <link rel="stylesheet" href="/static/css/style.css?v=4.2">
+  <link rel="stylesheet" href="/static/css/style.css?v=4.3">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -164,13 +164,6 @@
           </div>
         </div>
 
-        <!-- Mobile Touch Operation Hints (Mobile Only) -->
-        <div class="card controls-card touch-only mobile-hints-card">
-          <div class="card-header">
-            <h3>📱 Touch Hints</h3>
-          </div>
-          <p class="touch-hint-text">Use on-screen glowing virtual buttons to move, rotate, soft drop, and hold.</p>
-        </div>
       </aside>
 
       <!-- Center: Player Tetris Matrix Grid Canvas -->
@@ -202,10 +195,7 @@
                   <input type="range" id="start-level-slider" min="1" max="50" value="1" step="1">
                   <div class="slider-marks">
                     <span>Lv.1</span>
-                    <span>Lv.10</span>
-                    <span>Lv.20</span>
-                    <span>Lv.30</span>
-                    <span>Lv.40</span>
+                    <span>Lv.25</span>
                     <span>Lv.50</span>
                   </div>
                 </div>
@@ -224,8 +214,6 @@
                   <input type="range" id="ai-diff-slider" min="1" max="4" value="2" step="1">
                   <div class="slider-marks">
                     <span data-i18n="tetris.diff_easy">Beginner</span>
-                    <span data-i18n="tetris.diff_med">Standard</span>
-                    <span data-i18n="tetris.diff_hard">Advanced</span>
                     <span data-i18n="tetris.diff_master">Master</span>
                   </div>
                 </div>
@@ -381,34 +369,33 @@
 
     <!-- Mobile Virtual Gamepad (Touch Devices Only) -->
     <div id="touch-controller" class="touch-controller touch-only">
-      <div class="touch-left-cluster">
+      <!-- Left Hand D-Pad Cluster (Move & Soft Drop + Hold) -->
+      <div class="touch-cluster touch-cluster-left">
         <button id="btn-touch-hold" class="touch-btn touch-btn-hold" aria-label="Hold Piece">
           <span class="touch-icon">🔄</span>
           <span class="touch-sub">HOLD</span>
         </button>
-        <button id="btn-touch-pause" class="touch-btn touch-btn-pause" aria-label="Pause Game">
-          <span class="touch-icon">⏸</span>
-          <span class="touch-sub">PAUSE</span>
-        </button>
+        <div class="dpad-direction-group">
+          <button id="btn-touch-left" class="touch-btn touch-btn-direction" aria-label="Move Left">◀</button>
+          <button id="btn-touch-down" class="touch-btn touch-btn-direction" aria-label="Soft Drop">▼</button>
+          <button id="btn-touch-right" class="touch-btn touch-btn-direction" aria-label="Move Right">▶</button>
+        </div>
       </div>
 
-      <div class="touch-dpad-cluster">
-        <button id="btn-touch-left" class="touch-btn touch-btn-dpad" aria-label="Move Left">◀</button>
-        <button id="btn-touch-down" class="touch-btn touch-btn-dpad" aria-label="Soft Drop">▼</button>
-        <button id="btn-touch-right" class="touch-btn touch-btn-dpad" aria-label="Move Right">▶</button>
-      </div>
-
-      <div class="touch-action-cluster">
-        <button id="btn-touch-rot-ccw" class="touch-btn touch-btn-action" aria-label="Rotate CCW">
-          <span class="touch-icon">↺</span>
-          <span class="touch-sub">Z</span>
-        </button>
-        <button id="btn-touch-rot-cw" class="touch-btn touch-btn-action touch-btn-primary" aria-label="Rotate CW">
-          <span class="touch-icon">↻</span>
-          <span class="touch-sub">UP</span>
-        </button>
+      <!-- Right Hand Actions Cluster (Rotate & Hard Drop) -->
+      <div class="touch-cluster touch-cluster-right">
+        <div class="rot-button-group">
+          <button id="btn-touch-rot-ccw" class="touch-btn touch-btn-action" aria-label="Rotate CCW">
+            <span class="touch-icon">↺</span>
+            <span class="touch-sub">Z</span>
+          </button>
+          <button id="btn-touch-rot-cw" class="touch-btn touch-btn-action touch-btn-primary" aria-label="Rotate CW">
+            <span class="touch-icon">↻</span>
+            <span class="touch-sub">UP</span>
+          </button>
+        </div>
         <button id="btn-touch-harddrop" class="touch-btn touch-btn-drop" aria-label="Hard Drop">
-          <span class="touch-icon">⤓</span>
+          <span class="touch-icon">⚡</span>
           <span class="touch-sub">DROP</span>
         </button>
       </div>

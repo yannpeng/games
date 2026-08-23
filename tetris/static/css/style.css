@@ -1256,28 +1256,48 @@ body {
 /* ==========================================================================
    Mobile Virtual Touch Gamepad Controls (Enhanced for Mobile Browsers)
    ========================================================================== */
-.mobile-controls {
-  margin-top: 4px;
+.touch-controller {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  padding: 6px 10px;
+  padding: 6px 12px 8px;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   flex-shrink: 0;
   width: 100%;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 520px;
+  margin: 4px auto 0;
 }
 
-.dpad-container, .actions-container {
+.touch-cluster {
   display: flex;
-  gap: 6px;
   align-items: center;
+  gap: 6px;
+}
+
+.touch-cluster-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dpad-direction-group {
+  display: flex;
+  gap: 4px;
+}
+
+.touch-cluster-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rot-button-group {
+  display: flex;
+  gap: 4px;
 }
 
 .touch-btn {
@@ -1286,8 +1306,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: clamp(44px, 6.2vh, 56px);
-  height: clamp(44px, 6.2vh, 56px);
+  width: clamp(38px, 9.5vw, 50px);
+  height: clamp(38px, 9.5vw, 50px);
   background: rgba(255, 255, 255, 0.08);
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -1298,13 +1318,13 @@ body {
 }
 
 .touch-btn .touch-icon {
-  font-size: clamp(1.05rem, 2vh, 1.25rem);
+  font-size: clamp(1rem, 1.8vh, 1.2rem);
   line-height: 1;
   font-weight: 900;
 }
 
 .touch-btn .touch-sub {
-  font-size: 0.58rem;
+  font-size: 0.55rem;
   color: var(--text-muted);
   line-height: 1;
   margin-top: 2px;
@@ -1314,15 +1334,13 @@ body {
 .touch-btn-direction {
   border-color: rgba(0, 240, 255, 0.4);
   background: rgba(0, 240, 255, 0.08);
+  font-size: 1.1rem;
 }
 .touch-btn-direction:active, .touch-btn-direction.touch-active {
   background: var(--color-primary);
   color: #000;
   box-shadow: 0 0 16px var(--color-primary);
   transform: scale(0.92);
-}
-.touch-btn-direction:active .touch-sub, .touch-btn-direction.touch-active .touch-sub {
-  color: #000;
 }
 
 /* Action & Rotate Buttons */
@@ -1349,7 +1367,7 @@ body {
 /* Hard Drop Button */
 .touch-btn-drop {
   border-color: var(--color-accent);
-  background: rgba(255, 0, 127, 0.12);
+  background: rgba(255, 0, 127, 0.15);
   color: var(--color-accent);
 }
 .touch-btn-drop:active, .touch-btn-drop.touch-active {
@@ -1432,14 +1450,14 @@ body.is-desktop-device .desktop-only {
   body:not(.is-touch-device) .desktop-only { display: block !important; }
 }
 
-/* Mobile & Tablet (including iPad) layout adaptations */
+/* Mobile & Tablet layout adaptations */
 @media (max-width: 1024px) {
   .app-container {
     padding: 6px 10px;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   html, body {
     overflow-y: auto;
     overscroll-behavior: none;
@@ -1449,45 +1467,154 @@ body.is-desktop-device .desktop-only {
     height: auto;
     min-height: 100dvh;
     max-height: none;
-    padding: 4px;
+    padding: 4px 8px 8px;
+    gap: 6px;
   }
 
-  .game-layout {
-    flex-direction: row;
+  /* Responsive 2-Row Header on Mobile */
+  .app-header {
     flex-wrap: wrap;
+    padding: 6px 10px;
+    gap: 6px;
+  }
+
+  .brand {
+    order: 1;
+  }
+
+  .brand-title {
+    font-size: 1.15rem;
+  }
+
+  .header-actions {
+    order: 2;
+    gap: 4px;
+  }
+
+  .header-actions .btn-secondary {
+    padding: 4px 8px;
+    font-size: 0.78rem;
+  }
+
+  .mode-switch-group {
+    order: 3;
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .mode-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 5px 6px;
+    font-size: 0.8rem;
+  }
+
+  /* Responsive Game Board */
+  .game-layout {
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 6px;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
   }
 
   .panel-left {
     order: 1;
-    width: 66px;
+    width: 68px;
     height: auto;
     max-height: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-self: flex-start;
   }
 
   .game-center {
     order: 2;
-    height: 48vh;
-    max-height: 380px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  .matrix-wrapper {
+    height: auto;
+    max-height: min(52vh, 460px);
+    width: auto;
+    aspect-ratio: 1 / 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #matrix-canvas {
+    height: 100%;
+    width: auto;
+    max-height: min(52vh, 460px);
   }
 
   .panel-right {
     order: 3;
-    width: 66px;
+    width: 68px;
     height: auto;
     max-height: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-self: flex-start;
   }
 
-  .panel .card { padding: 4px; }
-  .panel .card-header h3 { font-size: 0.58rem; }
-  #hold-canvas { max-height: 42px; }
-  #next-canvas { max-height: 90px; }
-  .stat-label { font-size: 0.58rem; }
-  .stat-value { font-size: 0.82rem; }
+  .panel .card {
+    padding: 4px;
+  }
 
-  .mobile-hints-card {
-    display: none;
+  .panel .card-header h3 {
+    font-size: 0.65rem;
+  }
+
+  #hold-canvas {
+    width: 54px;
+    height: 54px;
+  }
+
+  #next-canvas {
+    width: 54px;
+    height: 108px;
+  }
+
+  .stat-item {
+    margin-bottom: 2px;
+  }
+
+  .stat-label {
+    font-size: 0.55rem;
+  }
+
+  .stat-value {
+    font-size: 0.82rem;
+  }
+
+  .overlay-content {
+    max-width: 290px;
+    padding: 14px 10px;
+  }
+
+  .slider-marks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+  }
+
+  .touch-controller {
+    order: 4;
+    width: 100%;
+    max-width: 480px;
+    padding: 6px 8px 10px;
   }
 }
+
