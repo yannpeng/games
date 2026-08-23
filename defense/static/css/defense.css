@@ -101,10 +101,13 @@ html, body {
 }
 
 .btn-icon {
+  height: 34px;
+  min-height: 34px;
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border-glow);
   color: var(--text-main);
-  padding: 6px 12px;
+  padding: 0 10px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 13px;
@@ -126,15 +129,16 @@ html, body {
 
 /* Unified Icon-Only Top Navigator Action Buttons */
 .btn-nav-icon {
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  min-height: 36px;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  box-sizing: border-box;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border-glow);
   color: var(--text-main);
-  font-size: 16px;
+  font-size: 15px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -160,16 +164,21 @@ html, body {
 }
 
 .lang-select, .map-select {
+  height: 34px;
+  min-height: 34px;
+  box-sizing: border-box;
   background: rgba(10, 25, 18, 0.9);
   border: 1px solid var(--border-glow);
   color: var(--text-main);
-  padding: 6px 10px;
+  padding: 0 8px;
   border-radius: 8px;
   outline: none;
   font-size: 13px;
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
 }
 
 .hud-actions .map-select {
@@ -181,37 +190,43 @@ html, body {
 
 /* User Auth Badge in Header */
 .user-auth-section {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  height: 34px;
 }
 
 .user-badge {
-  display: flex;
+  height: 34px;
+  min-height: 34px;
+  box-sizing: border-box;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   background: rgba(0, 255, 136, 0.12);
   border: 1px solid var(--accent-green);
-  padding: 3px 8px;
+  padding: 0 8px 0 5px;
   border-radius: 20px;
 }
 
 .user-badge .avatar {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--accent-green);
   color: #000;
   font-weight: 800;
-  font-size: 11px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .user-badge .username {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: #fff;
+  line-height: 1;
 }
 
 .icon-btn-small {
@@ -219,10 +234,12 @@ html, body {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 12px;
-  padding: 0 2px;
-  display: flex;
+  padding: 2px;
+  font-size: 13px;
+  line-height: 1;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
 }
 
 .icon-btn-small:hover {

@@ -197,19 +197,28 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+.lang-selector-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .lang-select {
+  height: 34px;
+  min-height: 34px;
+  box-sizing: border-box;
   background: rgba(10, 12, 22, 0.85);
   border: 1px solid var(--border-color);
   color: var(--color-primary);
   font-family: var(--font-body);
-  font-size: clamp(0.78rem, 0.9vw, 0.88rem);
+  font-size: 13px;
   font-weight: 700;
-  padding: clamp(3px, 0.5vh, 6px) clamp(6px, 0.8vw, 10px);
-  border-radius: var(--radius-sm);
+  padding: 0 8px;
+  border-radius: 8px;
   outline: none;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
   transition: all 0.2s ease;
 }
 
@@ -225,15 +234,16 @@ body {
 
 /* Unified Icon-Only Top Navigator Action Buttons */
 .btn-nav-icon {
-  width: clamp(32px, 2.5vw, 36px);
-  height: clamp(32px, 2.5vw, 36px);
-  min-width: clamp(32px, 2.5vw, 36px);
-  min-height: clamp(32px, 2.5vw, 36px);
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  box-sizing: border-box;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border-color, rgba(0, 240, 255, 0.25));
   color: var(--text-main, #fff);
-  font-size: clamp(14px, 1.1vw, 16px);
+  font-size: 15px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -332,36 +342,52 @@ body {
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
-.icon-btn:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+.btn-small {
+  height: 34px;
+  min-height: 34px;
+  box-sizing: border-box;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 8px;
+}
+
+.user-auth-section {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
 }
 
 .user-badge {
-  display: flex;
+  height: 34px;
+  min-height: 34px;
+  box-sizing: border-box;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   background: rgba(0, 255, 136, 0.1);
   border: 1px solid var(--color-primary);
-  padding: 3px 8px;
+  padding: 0 8px 0 5px;
   border-radius: 20px;
 }
 .user-badge .avatar {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--color-primary);
   color: #000;
   font-weight: 800;
-  font-size: 0.75rem;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 .user-badge .username {
-  font-size: 0.85rem;
+  font-size: 13px;
   font-weight: 700;
   color: #fff;
+  line-height: 1;
 }
 .user-badge .user-best { display: none; }
 .icon-btn-small {
@@ -369,7 +395,12 @@ body {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 0.85rem;
+  padding: 2px;
+  font-size: 13px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Main Layout */
