@@ -221,7 +221,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnHeaderPause) {
       const pauseLabel = state.isPaused ? (window.ArcadeI18n ? window.ArcadeI18n.t('defense.resume') : 'Resume') : (window.ArcadeI18n ? window.ArcadeI18n.t('defense.pause') : 'Pause');
-      btnHeaderPause.innerHTML = `<span id="header-pause-icon">${state.isPaused ? '▶' : '⏸'}</span> <span id="header-pause-text" data-i18n="${state.isPaused ? 'defense.resume' : 'defense.pause'}">${pauseLabel}</span>`;
+      btnHeaderPause.textContent = state.isPaused ? '▶' : '⏸';
+      btnHeaderPause.setAttribute('title', pauseLabel);
     }
 
     // Update Skill Cooldowns
@@ -420,7 +421,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btnAudioToggle.addEventListener('click', () => {
       const isMuted = engine.audio.toggleMute();
       const soundLabel = isMuted ? (window.ArcadeI18n ? window.ArcadeI18n.t('defense.mute') : 'Mute') : (window.ArcadeI18n ? window.ArcadeI18n.t('defense.audio') : 'Sound');
-      btnAudioToggle.innerHTML = `${isMuted ? '🔇' : '🔊'} <span data-i18n="${isMuted ? 'defense.mute' : 'defense.audio'}">${soundLabel}</span>`;
+      btnAudioToggle.textContent = isMuted ? '🔇' : '🔊';
+      btnAudioToggle.setAttribute('title', soundLabel);
     });
   }
 

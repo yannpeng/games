@@ -215,6 +215,41 @@ body {
   color: #fff;
 }
 
+/* Unified Icon-Only Top Navigator Action Buttons */
+.btn-nav-icon {
+  width: clamp(32px, 2.5vw, 36px);
+  height: clamp(32px, 2.5vw, 36px);
+  min-width: clamp(32px, 2.5vw, 36px);
+  min-height: clamp(32px, 2.5vw, 36px);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color, rgba(0, 240, 255, 0.25));
+  color: var(--text-main, #fff);
+  font-size: clamp(14px, 1.1vw, 16px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  padding: 0;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.btn-nav-icon:hover {
+  background: rgba(0, 255, 136, 0.2);
+  border-color: var(--color-green, #00ff88);
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+}
+
+.btn-nav-icon:active {
+  transform: scale(0.92);
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;

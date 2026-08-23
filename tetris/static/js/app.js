@@ -158,12 +158,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --- Sound UI ---
   function updateSoundUI() {
     const isMuted = sound.isMuted();
-    if (isMuted) {
-      if (iconSoundOn) iconSoundOn.classList.add('hidden');
-      if (iconSoundOff) iconSoundOff.classList.remove('hidden');
-    } else {
-      if (iconSoundOn) iconSoundOn.classList.remove('hidden');
-      if (iconSoundOff) iconSoundOff.classList.add('hidden');
+    const btnSound = document.getElementById('btn-sound-toggle');
+    if (btnSound) {
+      btnSound.textContent = isMuted ? '🔇' : '🔊';
+      btnSound.setAttribute('title', isMuted ? (ArcadeI18n ? ArcadeI18n.t('defense.mute') : 'Mute') : (ArcadeI18n ? ArcadeI18n.t('defense.audio') : 'Sound'));
     }
   }
 
@@ -383,6 +381,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     playerGame.isPaused = !playerGame.isPaused;
     if (currentMode === 'vs_ai') {
       aiGame.isPaused = playerGame.isPaused;
+    }
+
+    const headerPause = document.getElementById('btn-mobile-pause');
+    if (headerPause) {
+      headerPause.textContent = playerGame.isPaused ? '▶' : '⏸';
+      headerPause.setAttribute('title', playerGame.isPaused ? (ArcadeI18n ? ArcadeI18n.t('defense.resume') : 'Resume') : (ArcadeI18n ? ArcadeI18n.t('defense.pause') : 'Pause'));
     }
 
     if (playerGame.isPaused) {

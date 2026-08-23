@@ -260,6 +260,14 @@
     updateStatsDisplay();
   }
 
+  function updateSoundIcon() {
+    const isMuted = sound.isMuted();
+    if (btnSoundToggle) {
+      btnSoundToggle.textContent = isMuted ? '🔇' : '🔊';
+      btnSoundToggle.setAttribute('title', isMuted ? (ArcadeI18n ? ArcadeI18n.t('defense.mute') : 'Mute') : (ArcadeI18n ? ArcadeI18n.t('defense.audio') : 'Sound'));
+    }
+  }
+
   function togglePause() {
     if (!engine.isPlaying || engine.isGameOver) return;
     if (engine.isPaused) {
@@ -272,12 +280,20 @@
   function pauseGame() {
     engine.isPaused = true;
     overlayPause.classList.remove('hidden');
+    if (btnMobilePause) {
+      btnMobilePause.textContent = '▶';
+      btnMobilePause.setAttribute('title', ArcadeI18n ? ArcadeI18n.t('defense.resume') : 'Resume');
+    }
   }
 
   function resumeGame() {
     engine.isPaused = false;
     overlayPause.classList.add('hidden');
     lastTime = performance.now();
+    if (btnMobilePause) {
+      btnMobilePause.textContent = '⏸';
+      btnMobilePause.setAttribute('title', ArcadeI18n ? ArcadeI18n.t('defense.pause') : 'Pause');
+    }
   }
 
   async function handleGameOver(isVictory, messageKey = '') {

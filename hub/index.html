@@ -31,7 +31,7 @@
       <div class="header-right">
         <!-- Language Selector Dropdown -->
         <div class="lang-selector-wrap">
-          <select id="lang-select-dropdown" class="lang-select" aria-label="Language Selector">
+          <select id="lang-select-dropdown" class="lang-select" aria-label="Language Selector" data-i18n-title="nav.lang_tip" title="Language">
             <option value="en">EN</option>
             <option value="zh">简</option>
             <option value="zh-TW">繁</option>
@@ -39,15 +39,12 @@
           </select>
         </div>
 
-        <!-- Unified User Auth Button -->
-        <button id="btn-user-auth" class="btn btn-secondary btn-small">
-          <span class="user-icon">👤</span>
-          <span id="user-display-name" data-i18n="hub.login_btn">Login / Register</span>
-        </button>
-
         <!-- Global Leaderboard Button -->
-        <button id="btn-open-leaderboard" class="btn btn-primary btn-small">
-          <span class="icon">🏆</span> <span data-i18n="lb.title">Leaderboard</span>
+        <button type="button" id="btn-open-leaderboard" class="btn-nav-icon" data-i18n-title="lb.title" title="Leaderboard" aria-label="Leaderboard">🏆</button>
+
+        <!-- Unified User Auth Button -->
+        <button type="button" id="btn-user-auth" class="btn-nav-icon" data-i18n-title="nav.login" title="Login / Register" aria-label="Login">
+          <span class="user-icon" id="user-display-name">👤</span>
         </button>
       </div>
     </header>
@@ -249,7 +246,7 @@
   <div id="toast" class="toast hidden"></div>
 
   <!-- Scripts -->
-  <script src="/hub_static/js/i18n.js?v=1.5.0"></script>
-  <script src="/hub_static/js/hub.js?v=1.5.0"></script>
+  <script src="/hub_static/js/i18n.js?v=1.6.0"></script>
+  <script src="/hub_static/js/hub.js?v=1.6.0"></script>
 </body>
 </html>
