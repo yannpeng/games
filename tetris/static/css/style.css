@@ -1531,28 +1531,6 @@ body.is-desktop-device .desktop-only {
     gap: 3px;
   }
 
-  /* Compact Header on Mobile */
-  .app-header {
-    flex-wrap: wrap;
-    padding: 2px 4px;
-    gap: 2px;
-    margin-bottom: 0;
-  }
-
-  /* Mobile Mode Switcher */
-  .mode-switch-group {
-    order: 3;
-    width: 100%;
-    margin-top: 0;
-  }
-
-  .mode-btn {
-    flex: 1;
-    justify-content: center;
-    padding: 3px 5px;
-    font-size: 0.72rem;
-  }
-
   /* Game Layout */
   .game-layout {
     display: flex;

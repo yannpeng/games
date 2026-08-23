@@ -1099,39 +1099,6 @@ body {
     box-sizing: border-box;
   }
 
-  .brand {
-    order: 1;
-    gap: 4px;
-  }
-
-  .brand-title {
-    font-size: 0.92rem !important;
-  }
-
-  .header-actions {
-    order: 2;
-    gap: 2px;
-  }
-
-  /* Mobile Mode Switcher */
-  .mode-switch-group {
-    order: 3;
-    width: 100%;
-    margin-top: 0;
-    padding: 1px;
-    height: 24px;
-    box-sizing: border-box;
-  }
-
-  .mode-btn {
-    flex: 1;
-    justify-content: center;
-    padding: 2px 4px;
-    font-size: 0.72rem;
-    height: 22px;
-    line-height: 20px;
-  }
-
   /* Responsive Game Board */
   .game-layout {
     display: flex;
