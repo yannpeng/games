@@ -528,13 +528,22 @@ body {
 }
 
 /* Matrix Center Area */
+.game-boards-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(6px, 1.5vw, 16px);
+  height: 100%;
+  max-height: calc(100dvh - clamp(140px, 18vh, 180px));
+}
+
 .game-center {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
-  max-height: calc(100dvh - clamp(140px, 18vh, 180px));
+  max-height: 100%;
 }
 
 .matrix-title-bar {
@@ -1545,6 +1554,14 @@ body.is-desktop-device .desktop-only {
 }
 
 @media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .touch-only {
+    display: flex !important;
+  }
+
   html, body {
     overflow: hidden;
     height: 100%;
@@ -1560,12 +1577,12 @@ body.is-desktop-device .desktop-only {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: clamp(3px, 0.6vh, 6px) clamp(4px, 1vw, 8px);
+    padding: 3px 5px 6px;
     overflow: hidden;
     gap: 3px;
   }
 
-  /* Responsive Header on Mobile */
+  /* Compact Header on Mobile */
   .app-header {
     flex-wrap: wrap;
     padding: 3px 6px;
@@ -1580,7 +1597,7 @@ body.is-desktop-device .desktop-only {
   }
 
   .brand-title {
-    font-size: 0.98rem;
+    font-size: 0.95rem;
   }
 
   .header-actions {
@@ -1591,23 +1608,23 @@ body.is-desktop-device .desktop-only {
   .header-actions .btn-secondary,
   .header-actions .btn-small {
     padding: 0 6px !important;
-    font-size: 11.5px !important;
-    height: 30px !important;
-    min-height: 30px !important;
+    font-size: 11px !important;
+    height: 28px !important;
+    min-height: 28px !important;
   }
 
   .header-actions .btn-nav-icon,
   .header-actions .lang-select {
-    width: 30px !important;
-    min-width: 30px !important;
-    height: 30px !important;
-    min-height: 30px !important;
-    font-size: 13px !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    font-size: 12px !important;
   }
 
   .header-actions .user-badge {
-    height: 30px !important;
-    min-height: 30px !important;
+    height: 28px !important;
+    min-height: 28px !important;
   }
 
   .mode-switch-group {
@@ -1620,50 +1637,177 @@ body.is-desktop-device .desktop-only {
     flex: 1;
     justify-content: center;
     padding: 4px 6px;
-    font-size: 0.76rem;
+    font-size: 0.74rem;
   }
 
   /* Game Layout */
   .game-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    gap: 3px;
+    position: relative;
+  }
+
+  /* Mobile Top HUD Bar (Hold | Stats | Next) */
+  .mobile-top-hud {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 480px;
+    height: 44px;
+    min-height: 44px;
+    background: rgba(10, 14, 28, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 2px 6px;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .mobile-hud-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 38px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 1px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .hud-box-label {
+    font-family: var(--font-digital);
+    font-size: 0.52rem;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+    line-height: 1;
+    margin-bottom: 1px;
+  }
+
+  #hold-canvas-mobile,
+  #next-canvas-mobile {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Center Stats in Solo Mode */
+  .mobile-hud-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex: 1;
+    height: 100%;
+    min-width: 0;
+  }
+
+  .mobile-hud-center.hidden {
+    display: none !important;
+  }
+
+  .m-stat-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.1;
+  }
+
+  .m-stat-lbl {
+    font-size: 0.5rem;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  .m-stat-val {
+    font-family: var(--font-digital);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .m-stat-val.highlight {
+    color: var(--color-warning);
+    text-shadow: 0 0 6px rgba(255, 170, 0, 0.4);
+  }
+
+  /* Center Stats in VS Mode */
+  .vs-hud-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+  }
+
+  .m-vs-badge {
+    font-family: var(--font-digital);
+    font-size: 0.62rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(0, 240, 255, 0.15);
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .m-vs-badge.ai-badge {
+    background: rgba(255, 0, 127, 0.15);
+    border-color: var(--color-accent);
+    color: #ff80bf;
+  }
+
+  .m-vs-round {
+    font-family: var(--font-digital);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* Game Boards Container */
+  .game-boards-container {
     flex: 1;
     min-height: 0;
     width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-
-  /* Responsive Game Board (Solo Mode) */
-  .game-layout.mode-solo {
-    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: clamp(4px, 1.2vw, 10px);
-    width: 100%;
+    position: relative;
+    max-height: calc(100dvh - clamp(185px, 24vh, 230px));
   }
 
-  .mode-solo .panel-left,
-  .mode-solo .panel-right {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: space-between;
-    width: clamp(56px, 15vw, 74px);
-    height: 100%;
-    max-height: calc(100dvh - clamp(155px, 21vh, 195px));
-    flex-shrink: 0;
+  /* Solo Mode on Mobile: Full-Width Player Matrix! */
+  .mode-solo .game-boards-container {
+    justify-content: center;
   }
 
   .mode-solo .player-section {
+    height: 100%;
+    max-height: 100%;
+    width: auto;
+    max-width: 94vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    max-height: calc(100dvh - clamp(155px, 21vh, 195px));
-    flex-shrink: 0;
     min-width: 0;
+    aspect-ratio: 10 / 20;
   }
 
   .mode-solo .matrix-wrapper {
@@ -1671,67 +1815,96 @@ body.is-desktop-device .desktop-only {
     max-height: 100%;
     aspect-ratio: 10 / 20;
     width: auto;
-    position: relative;
+    max-width: 100%;
     border-radius: var(--radius-md);
   }
 
   .mode-solo #matrix-canvas {
     height: 100%;
     width: auto;
+    max-width: 100%;
     aspect-ratio: 10 / 20;
-    max-height: 100%;
   }
 
-  /* Responsive Game Board (VS AI Duel Mode on Mobile) */
-  .game-layout.mode-vs_ai {
+  /* VS AI Mode on Mobile: Major Player Board + Mini AI Reference Board! */
+  .mode-vs_ai .game-boards-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: clamp(2px, 0.8vw, 6px);
+    gap: clamp(4px, 1.5vw, 10px);
     width: 100%;
   }
 
-  .mode-vs_ai .panel-left,
-  .mode-vs_ai .panel-right {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: clamp(40px, 10.5vw, 50px);
+  /* Big Player Board */
+  .mode-vs_ai .player-section {
+    flex: 2.3;
+    max-width: 68%;
     height: 100%;
-    max-height: calc(100dvh - clamp(155px, 21vh, 195px));
-    flex-shrink: 0;
-  }
-
-  .mode-vs_ai .solo-stats-card,
-  .mode-vs_ai .stats-card {
-    display: none !important;
-  }
-
-  .mode-vs_ai .player-section,
-  .mode-vs_ai .ai-section {
+    max-height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    max-height: calc(100dvh - clamp(155px, 21vh, 195px));
-    flex: 1;
-    max-width: calc((100% - clamp(88px, 23vw, 108px)) / 2);
     min-width: 0;
   }
 
-  .mode-vs_ai .matrix-wrapper {
+  .mode-vs_ai .player-section .matrix-wrapper {
     height: 100%;
     max-height: 100%;
     aspect-ratio: 10 / 20;
     width: auto;
     max-width: 100%;
-    position: relative;
     border-radius: var(--radius-md);
   }
 
-  .mode-vs_ai #matrix-canvas,
+  .mode-vs_ai #matrix-canvas {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    aspect-ratio: 10 / 20;
+  }
+
+  /* Small Reference AI Board */
+  .mode-vs_ai .ai-section {
+    flex: 1;
+    max-width: 30%;
+    height: 80%;
+    max-height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    align-self: center;
+    opacity: 0.92;
+  }
+
+  .mode-vs_ai .ai-section .matrix-title-bar {
+    padding: 0 2px;
+    margin-bottom: 1px;
+  }
+
+  .mode-vs_ai .ai-section .matrix-label {
+    font-size: 0.58rem;
+  }
+
+  .mode-vs_ai .ai-section .attack-gauge {
+    font-size: 0.54rem;
+    padding: 0 3px;
+  }
+
+  .mode-vs_ai .ai-section .matrix-wrapper {
+    height: 100%;
+    max-height: 100%;
+    aspect-ratio: 10 / 20;
+    width: auto;
+    max-width: 100%;
+    border-radius: var(--radius-sm);
+    border-color: rgba(255, 0, 127, 0.4);
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.15);
+  }
+
   .mode-vs_ai #ai-matrix-canvas {
     height: 100%;
     width: auto;
@@ -1739,78 +1912,9 @@ body.is-desktop-device .desktop-only {
     aspect-ratio: 10 / 20;
   }
 
-  /* Matrix labels & Attack gauges */
-  .matrix-title-bar {
-    padding: 1px 3px;
-    margin-bottom: 2px;
-    width: 100%;
-  }
-
-  .matrix-label {
-    font-size: clamp(0.65rem, 1.9vw, 0.76rem);
-  }
-
-  .attack-gauge {
-    font-size: clamp(0.6rem, 1.7vw, 0.7rem);
-    padding: 1px 4px;
-  }
-
-  /* Side Panels Cards & Canvases on Mobile */
-  .panel .card {
-    padding: 3px 2px;
-    border-radius: 8px;
-    text-align: center;
-    background: rgba(10, 14, 28, 0.85);
-  }
-
-  .panel .card-header {
-    margin-bottom: 2px;
-    justify-content: center;
-  }
-
-  .panel .card-header h3 {
-    font-size: 0.62rem;
-    letter-spacing: 0.5px;
-  }
-
-  .panel .key-badge,
-  .panel .next-count-badge {
-    display: none !important;
-  }
-
-  #hold-canvas {
-    width: clamp(36px, 9.5vw, 48px);
-    height: clamp(36px, 9.5vw, 48px);
-    max-height: clamp(36px, 9.5vw, 48px);
-  }
-
-  #next-canvas {
-    width: clamp(36px, 9.5vw, 48px);
-    height: clamp(72px, 19vw, 96px);
-    max-height: clamp(72px, 19vw, 96px);
-  }
-
-  .solo-stats-card,
-  .stats-card {
-    padding: 2px 2px;
-  }
-
-  .stat-item {
-    margin-bottom: 1px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
-
-  .stat-label {
+  .mode-vs_ai .ai-badge-overlay .badge {
     font-size: 0.5rem;
-    color: var(--text-dim);
-  }
-
-  .stat-value {
-    font-size: 0.72rem;
-    font-weight: 700;
+    padding: 1px 3px;
   }
 
   /* Overlays on Mobile */
@@ -1832,14 +1936,6 @@ body.is-desktop-device .desktop-only {
 
   .game-overlay.hidden {
     display: none !important;
-  }
-
-  .mode-vs_ai .game-overlay {
-    width: min(300px, 92vw) !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    border: 1px solid var(--border-glow) !important;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9) !important;
   }
 
   #overlay-countdown.game-overlay {

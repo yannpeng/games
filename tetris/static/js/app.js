@@ -14,8 +14,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const aiMatrixCtx = aiMatrixCanvas ? aiMatrixCanvas.getContext('2d') : null;
   const holdCanvas = document.getElementById('hold-canvas');
   const holdCtx = holdCanvas ? holdCanvas.getContext('2d') : null;
+  const holdCanvasMobile = document.getElementById('hold-canvas-mobile');
+  const holdCtxMobile = holdCanvasMobile ? holdCanvasMobile.getContext('2d') : null;
   const nextCanvas = document.getElementById('next-canvas');
   const nextCtx = nextCanvas ? nextCanvas.getContext('2d') : null;
+  const nextCanvasMobile = document.getElementById('next-canvas-mobile');
+  const nextCtxMobile = nextCanvasMobile ? nextCanvasMobile.getContext('2d') : null;
 
   // 2. DOM Elements - Layout & HUD
   const gameLayout = document.getElementById('game-layout');
@@ -30,7 +34,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const statLines = document.getElementById('stat-lines');
   const statLinesMobile = document.getElementById('stat-lines-mobile');
   const statLevel = document.getElementById('stat-level');
+  const statLevelMobile = document.getElementById('stat-level-mobile');
   const statTime = document.getElementById('stat-time');
+  const statTimeMobile = document.getElementById('stat-time-mobile');
+
+  const soloHudCenter = document.getElementById('solo-hud-center');
+  const vsHudCenter = document.getElementById('vs-hud-center');
+  const mVsPlayerAttack = document.getElementById('m-vs-player-attack');
+  const mVsRoundBadge = document.getElementById('m-vs-round-badge');
+  const mVsAiAttack = document.getElementById('m-vs-ai-attack');
 
   // 3. DOM Elements - Mode Switcher Tabs
   const modeBtnSolo = document.getElementById('mode-btn-solo');
@@ -184,6 +196,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (aiSection) aiSection.classList.add('hidden');
       if (soloLevelSelectBox) soloLevelSelectBox.classList.remove('hidden');
       if (vsDifficultySelectBox) vsDifficultySelectBox.classList.add('hidden');
+      if (soloHudCenter) soloHudCenter.classList.remove('hidden');
+      if (vsHudCenter) vsHudCenter.classList.add('hidden');
     } else {
       if (modeBtnVs) modeBtnVs.classList.add('active');
       if (modeBtnSolo) modeBtnSolo.classList.remove('active');
@@ -194,6 +208,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (aiSection) aiSection.classList.remove('hidden');
       if (soloLevelSelectBox) soloLevelSelectBox.classList.add('hidden');
       if (vsDifficultySelectBox) vsDifficultySelectBox.classList.remove('hidden');
+      if (soloHudCenter) soloHudCenter.classList.add('hidden');
+      if (vsHudCenter) vsHudCenter.classList.remove('hidden');
     }
 
     if (overlayStart) overlayStart.classList.remove('hidden');
@@ -678,6 +694,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         drawPieceInBox(holdCtx, playerGame.holdPiece, holdCanvas.width, holdCanvas.height, 24);
       }
     }
+    if (holdCtxMobile && holdCanvasMobile) {
+      holdCtxMobile.clearRect(0, 0, holdCanvasMobile.width, holdCanvasMobile.height);
+      if (playerGame.holdPiece) {
+        drawPieceInBox(holdCtxMobile, playerGame.holdPiece, holdCanvasMobile.width, holdCanvasMobile.height, 24);
+      }
+    }
 
     if (nextCtx && nextCanvas) {
       nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
@@ -686,6 +708,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       queue.forEach((type, idx) => {
         drawPieceInBox(nextCtx, type, nextCanvas.width, boxHeight, 20, idx * boxHeight);
       });
+    }
+    if (nextCtxMobile && nextCanvasMobile) {
+      nextCtxMobile.clearRect(0, 0, nextCanvasMobile.width, nextCanvasMobile.height);
+      if (playerGame.nextQueue && playerGame.nextQueue.length > 0) {
+        drawPieceInBox(nextCtxMobile, playerGame.nextQueue[0], nextCanvasMobile.width, nextCanvasMobile.height, 24);
+      }
     }
   }
 
@@ -698,12 +726,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (statLevel) {
       statLevel.textContent = currentMode === 'solo' ? `${playerGame.level}/50` : `Round ${vsRound}`;
     }
+    if (statLevelMobile) {
+      statLevelMobile.textContent = currentMode === 'solo' ? `${playerGame.level}/50` : `R${vsRound}`;
+    }
 
     if (playerAttackGauge) {
       playerAttackGauge.textContent = `${ArcadeI18n.t('tetris.attack_label')}: ${playerGame.pendingGarbage}`;
     }
     if (aiAttackGauge) {
       aiAttackGauge.textContent = `${ArcadeI18n.t('tetris.attack_label')}: ${aiGame.pendingGarbage}`;
+    }
+    if (mVsPlayerAttack) {
+      mVsPlayerAttack.textContent = `YOU: ${playerGame.pendingGarbage}`;
+    }
+    if (mVsAiAttack) {
+      mVsAiAttack.textContent = `AI: ${aiGame.pendingGarbage}`;
+    }
+    if (mVsRoundBadge) {
+      mVsRoundBadge.textContent = `Round ${vsRound}`;
     }
 
     if (playerMatrixLabel) {
@@ -715,6 +755,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
       const secs = String(elapsed % 60).padStart(2, '0');
       if (statTime) statTime.textContent = `${mins}:${secs}`;
+      if (statTimeMobile) statTimeMobile.textContent = `${mins}:${secs}`;
     }
   }
 
