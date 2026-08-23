@@ -10,24 +10,26 @@
 </head>
 <body>
   <!-- Top Navigation Header -->
-  <header class="game-header">
-    <div class="brand-area">
+  <header class="app-header">
+    <div class="brand">
       <span class="brand-logo">🐾</span>
       <h1 class="brand-title" data-i18n="defense.title">田园守卫战</h1>
     </div>
 
-    <div class="header-controls">
+    <div class="header-actions">
       <!-- Language Selector -->
-      <select id="lang-select-dropdown" class="lang-select" aria-label="Language Selector" data-i18n-title="nav.lang_tip" title="Language">
-        <option value="en">EN</option>
-        <option value="zh">简</option>
-        <option value="zh-TW">繁</option>
-        <option value="ja">日</option>
-      </select>
+      <div class="lang-selector-wrap">
+        <select id="lang-select-dropdown" class="lang-select" aria-label="Language Selector" data-i18n-title="nav.lang_tip" title="Language">
+          <option value="en">EN</option>
+          <option value="zh">简</option>
+          <option value="zh-TW">繁</option>
+          <option value="ja">日</option>
+        </select>
+      </div>
 
       <!-- Return to Arcade Hub -->
-      <a href="/" class="btn-icon" title="Return to Arcade Hub">
-        <span>🏠</span>
+      <a href="/" class="btn btn-secondary btn-small" title="Return to Arcade Hub">
+        <span class="icon">🏠</span>
         <span data-i18n="nav.hub">Hub</span>
       </a>
 
@@ -42,15 +44,13 @@
 
       <!-- Unified User Authentication Section -->
       <div id="user-auth-section" class="user-auth-section">
-        <button type="button" id="btn-open-login" class="btn-icon btn-login">
-          <span>👤</span>
+        <button type="button" id="btn-open-login" class="btn btn-primary btn-small">
+          <span class="icon">👤</span>
           <span data-i18n="nav.login">Login</span>
         </button>
         <div id="user-badge" class="user-badge hidden">
           <div class="avatar" id="user-avatar">U</div>
-          <div class="user-info">
-            <span class="username" id="display-username">Player</span>
-          </div>
+          <span class="username" id="display-username">Player</span>
           <button type="button" id="btn-logout" class="icon-btn-small" title="Logout">✕</button>
         </div>
       </div>

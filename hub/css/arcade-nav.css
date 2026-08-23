@@ -43,21 +43,25 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-shrink: 0;
+  min-width: 0;
+  flex-shrink: 1;
   user-select: none;
   -webkit-user-select: none;
 }
 
 .brand-title {
   font-family: var(--nav-font-digital);
-  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
-  letter-spacing: 1.5px;
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  letter-spacing: 1.2px;
   color: var(--nav-text-main);
   text-shadow: 0 0 10px var(--nav-accent-glow);
   margin: 0;
   padding: 0;
   line-height: 1.1;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: clamp(160px, 25vw, 320px);
 }
 
 .brand-title span {
@@ -74,6 +78,7 @@
   height: 34px;
   box-sizing: border-box;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .mode-btn {
