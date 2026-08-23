@@ -61,14 +61,17 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: clamp(8px, 1vh, 12px) clamp(12px, 1.5vw, 20px);
+  padding: clamp(5px, 0.9vh, 9px) clamp(10px, 1.5vw, 18px);
   background: var(--bg-panel);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-glow);
   box-shadow: 0 4px 20px rgba(0, 255, 136, 0.1);
-  flex-wrap: wrap;
-  gap: 10px;
+  min-height: 48px;
+  max-height: 52px;
+  box-sizing: border-box;
+  flex-wrap: nowrap;
+  gap: 8px;
 }
 
 .brand-area {
@@ -840,10 +843,71 @@ html, body {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .game-header {
-    padding: 8px 12px;
+    padding: 3px 6px !important;
+    min-height: 36px !important;
+    max-height: 38px !important;
+    gap: 4px !important;
+    flex-wrap: nowrap !important;
+    box-sizing: border-box !important;
   }
+
+  .brand-area {
+    gap: 4px !important;
+  }
+
+  .brand-logo {
+    font-size: 18px !important;
+  }
+
+  .brand-title {
+    font-size: 0.92rem !important;
+    white-space: nowrap !important;
+  }
+
+  .header-controls {
+    gap: 3px !important;
+  }
+
+  .header-controls .btn-icon,
+  .btn-icon {
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    font-size: 11px !important;
+    padding: 0 6px !important;
+    border-radius: 6px !important;
+  }
+
+  .btn-nav-icon {
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    font-size: 12px !important;
+    border-radius: 6px !important;
+  }
+
+  .lang-select {
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    font-size: 11px !important;
+    padding: 0 4px !important;
+    border-radius: 6px !important;
+  }
+
+  .user-badge {
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+  }
+}
+
+@media (max-width: 600px) {
   .main-layout {
     padding: 8px;
     gap: 8px;

@@ -128,6 +128,9 @@ body {
   box-shadow: var(--shadow-card);
   flex-shrink: 0;
   margin-bottom: clamp(4px, 0.7vh, 8px);
+  min-height: 48px;
+  max-height: 52px;
+  box-sizing: border-box;
 }
 
 .brand {
@@ -1137,42 +1140,70 @@ body {
     gap: 6px;
   }
 
-  /* Responsive 2-Row Header on Mobile */
+  /* Compact 2-Row Header on Mobile (Standardized 56px across games) */
   .app-header {
     flex-wrap: wrap;
-    padding: 6px 10px;
-    gap: 6px;
+    padding: 2px 4px !important;
+    gap: 2px !important;
+    margin-bottom: 0 !important;
+    flex-shrink: 0;
+    min-height: 56px;
+    max-height: 58px;
+    box-sizing: border-box;
   }
 
   .brand {
     order: 1;
+    gap: 4px;
   }
 
   .brand-title {
-    font-size: 1.15rem;
+    font-size: 0.92rem !important;
   }
 
   .header-actions {
     order: 2;
-    gap: 4px;
+    gap: 2px;
   }
 
-  .header-actions .btn-secondary {
-    padding: 4px 8px;
-    font-size: 0.78rem;
+  .header-actions .btn-secondary,
+  .header-actions .btn-small {
+    padding: 0 5px !important;
+    font-size: 10.5px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+  }
+
+  .header-actions .btn-nav-icon,
+  .header-actions .lang-select {
+    width: 26px !important;
+    min-width: 26px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    font-size: 11px !important;
+  }
+
+  .header-actions .user-badge {
+    height: 26px !important;
+    min-height: 26px !important;
   }
 
   .mode-switch-group {
     order: 3;
     width: 100%;
-    margin-top: 2px;
+    margin-top: 0;
+    padding: 1px;
+    height: 24px;
+    box-sizing: border-box;
   }
 
   .mode-btn {
     flex: 1;
     justify-content: center;
-    padding: 5px 6px;
-    font-size: 0.8rem;
+    padding: 2px 4px;
+    font-size: 0.72rem;
+    height: 22px;
+    line-height: 20px;
   }
 
   /* Responsive Game Board */

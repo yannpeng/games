@@ -128,6 +128,9 @@ body {
   box-shadow: var(--shadow-card);
   flex-shrink: 0;
   margin-bottom: clamp(4px, 0.7vh, 8px);
+  min-height: 48px;
+  max-height: 52px;
+  box-sizing: border-box;
 }
 
 .brand {
