@@ -7,12 +7,16 @@ import hmac
 import hashlib
 import base64
 import time
+import secrets
 from typing import Optional
 from fastapi import HTTPException, Security, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from app.database import get_db_cursor
 
-SECRET_KEY = os.environ.get("ARCADE_SECRET_KEY", "super-secret-arcade-neon-key-2026")
+SECRET_KEY = os.environ.get("ARCADE_SECRET_KEY")
+if not SECRET_KEY:
+    print("[WARN] ARCADE_SECRET_KEY not set. Generating a random key for this session.")
+    SECRET_KEY = secrets.token_urlsafe(32)
+
 security_bearer = HTTPBearer(auto_error=False)
 
 
@@ -54,6 +58,8 @@ def decode_access_token(token_str: str) -> Optional[dict]:
         if len(parts) != 4:
             return None
         user_id_str, username, timestamp_str, sig = parts
+        if time.time() - int(timestamp_str) > 7 * 86400:
+            return None
         payload = f"{user_id_str}:{username}:{timestamp_str}"
         expected_sig = hmac.new(SECRET_KEY.encode("utf-8"), payload.encode("utf-8"), hashlib.sha256).hexdigest()
         if not hmac.compare_digest(sig, expected_sig):

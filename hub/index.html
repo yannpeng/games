@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>CYBERPUNK ARCADE - Multi-Game Hub</title>
   <link rel="stylesheet" href="/hub_static/css/arcade-nav.css?v=1.0.0">
   <link rel="stylesheet" href="/hub_static/css/hub.css?v=4.3.0">
@@ -54,7 +54,7 @@
             <div class="user-info">
               <span class="username" id="display-username">Player</span>
             </div>
-            <button type="button" id="btn-logout" class="icon-btn-small" title="Logout">✕</button>
+            <button type="button" id="btn-logout" class="icon-btn-small" title="Logout" aria-label="Logout">✕</button>
           </div>
         </div>
       </div>
@@ -185,7 +185,7 @@
     <div class="modal-dialog">
       <div class="modal-header">
         <h3 id="auth-modal-title" data-i18n="auth.login_title">Player Login</h3>
-        <button id="btn-close-auth" class="btn-close">&times;</button>
+        <button id="btn-close-auth" class="btn-close" aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
         <div class="tab-group auth-tab-group">
@@ -215,7 +215,7 @@
     <div class="modal-dialog modal-dialog-large">
       <div class="modal-header">
         <h3 data-i18n="lb.modal_title">🏆 Global Top 50 Leaderboard</h3>
-        <button id="btn-close-leaderboard" class="btn-close">&times;</button>
+        <button id="btn-close-leaderboard" class="btn-close" aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
         <!-- Game Selector Tabs -->

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>CYBER SNAKE - Adaptive Cyberpunk Arcade Edition</title>
   <link rel="stylesheet" href="/hub_static/css/arcade-nav.css?v=1.0.0">
   <link rel="stylesheet" href="/snake_static/css/snake.css?v=4.4.0">
@@ -58,10 +58,10 @@
         </a>
 
         <!-- Header Pause Toggle -->
-        <button type="button" id="btn-mobile-pause" class="btn-nav-icon" data-i18n-title="defense.pause" title="Pause / Resume" aria-label="Pause">⏸</button>
+        <button type="button" id="btn-mobile-pause" class="btn-nav-icon" data-i18n-title="nav.pause" title="Pause / Resume" aria-label="Pause">⏸</button>
 
         <!-- Audio Mute Toggle -->
-        <button type="button" id="btn-sound-toggle" class="btn-nav-icon" data-i18n-title="defense.audio" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
+        <button type="button" id="btn-sound-toggle" class="btn-nav-icon" data-i18n-title="nav.audio" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
 
         <!-- Top 50 Leaderboard Button -->
         <button type="button" id="btn-leaderboard" class="btn-nav-icon" data-i18n-title="lb.title" title="Leaderboard" aria-label="Leaderboard">🏆</button>
@@ -75,7 +75,7 @@
           <div id="user-badge" class="user-badge hidden">
             <div class="avatar" id="user-avatar">U</div>
             <span class="username" id="display-username">Player</span>
-            <button type="button" id="btn-logout" class="icon-btn-small" title="Logout">✕</button>
+            <button type="button" id="btn-logout" class="icon-btn-small" title="Logout" aria-label="Logout">✕</button>
           </div>
         </div>
       </div>
@@ -298,13 +298,13 @@
     <!-- Mobile Virtual Touch D-Pad (Touch Devices Only) -->
     <div id="touch-controller" class="touch-controller touch-only">
       <div class="dpad-cross">
-        <button id="btn-touch-up" class="dpad-btn btn-up">▲</button>
+        <button id="btn-touch-up" class="dpad-btn btn-up" aria-label="Up">▲</button>
         <div class="dpad-middle-row">
-          <button id="btn-touch-left" class="dpad-btn btn-left">◀</button>
+          <button id="btn-touch-left" class="dpad-btn btn-left" aria-label="Left">◀</button>
           <div class="dpad-center-core"></div>
-          <button id="btn-touch-right" class="dpad-btn btn-right">▶</button>
+          <button id="btn-touch-right" class="dpad-btn btn-right" aria-label="Right">▶</button>
         </div>
-        <button id="btn-touch-down" class="dpad-btn btn-down">▼</button>
+        <button id="btn-touch-down" class="dpad-btn btn-down" aria-label="Down">▼</button>
       </div>
     </div>
   </div>
@@ -315,7 +315,7 @@
     <div class="modal-dialog modal-dialog-large">
       <div class="modal-header">
         <h3 data-i18n="lb.modal_title">🏆 Global Top 50 Leaderboard</h3>
-        <button id="btn-close-leaderboard" class="btn-close">&times;</button>
+        <button id="btn-close-leaderboard" class="btn-close" aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
         <div class="leaderboard-tabs">
@@ -356,7 +356,7 @@
     <div class="modal-dialog">
       <div class="modal-header">
         <h3 id="auth-modal-title" data-i18n="auth.login_title">Player Login</h3>
-        <button id="btn-close-auth" class="btn-close">&times;</button>
+        <button id="btn-close-auth" class="btn-close" aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
         <div class="tab-group auth-tab-group">

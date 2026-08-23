@@ -1445,3 +1445,4 @@ const ArcadeI18n = (function () {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = ArcadeI18n;
 }
+window.ArcadeI18n = ArcadeI18n;

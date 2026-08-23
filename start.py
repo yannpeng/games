@@ -12,6 +12,7 @@ if __name__ == "__main__":
     print(" 🌐 Access Hub URL: http://127.0.0.1:8000")
     print(" 🕹️  Tetris Sub-Game: http://127.0.0.1:8000/tetris")
     print(" 🐍 Snake Sub-Game:  http://127.0.0.1:8000/snake")
+    print(" 🐾 Defense Sub-Game: http://127.0.0.1:8000/defense")
     print(" 🏆 Features: Unified User Login, Multi-Game Top 50 Leaderboards")
     print("=" * 65)
     uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=False)

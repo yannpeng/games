@@ -903,7 +903,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btnLogout) {
       btnLogout.addEventListener('click', async () => {
         if (confirm(ArcadeI18n.t('auth.confirm_logout'))) {
-          await API.logout();
+          if (API.logout) { await API.logout(); } else { API.clearAuth ? API.clearAuth() : API.clearToken(); }
           showToast('👋 Logged out successfully.');
           await checkAuthStatus();
         }

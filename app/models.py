@@ -2,7 +2,7 @@
 Pydantic schemas and request/response models for the Arcade Hub API.
 """
 
-from typing import List, Optional
+from typing import List, Literal
 from pydantic import BaseModel, Field
 
 
@@ -12,8 +12,8 @@ class UserRegisterRequest(BaseModel):
 
 
 class UserLoginRequest(BaseModel):
-    username: str
-    password: str
+    username: str = Field(..., max_length=64)
+    password: str = Field(..., max_length=64)
 
 
 class UserProfileResponse(BaseModel):
@@ -36,14 +36,14 @@ class AuthResponse(BaseModel):
 
 
 class ScoreSubmitRequest(BaseModel):
-    game_id: str = Field("tetris", description="Game identifier: 'tetris', 'snake', etc.")
-    mode: str = Field(..., description="Mode identifier: 'solo', 'vs_ai', 'classic', 'battle', etc.")
-    score: int = Field(..., ge=0)
-    lines: int = Field(0, ge=0, description="Lines cleared in Tetris or Snake length")
-    level: int = Field(1, ge=1)
-    start_level: int = Field(1, ge=1)
+    game_id: Literal["tetris", "snake", "defense"] = Field("tetris", description="Game identifier: 'tetris', 'snake', etc.")
+    mode: str = Field(..., max_length=32, description="Mode identifier: 'solo', 'vs_ai', 'classic', 'battle', etc.")
+    score: int = Field(..., ge=0, le=100_000_000)
+    lines: int = Field(0, ge=0, le=10000, description="Lines cleared in Tetris or Snake length")
+    level: int = Field(1, ge=1, le=100)
+    start_level: int = Field(1, ge=1, le=100)
     is_cleared: bool = False
-    duration_seconds: int = Field(0, ge=0)
+    duration_seconds: int = Field(0, ge=0, le=86400)
 
 
 class ScoreItem(BaseModel):

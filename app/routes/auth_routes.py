@@ -2,6 +2,7 @@
 FastAPI Router for User Authentication endpoints (register, login, me, logout).
 """
 
+import sqlite3
 from typing import Optional
 from fastapi import APIRouter, HTTPException, Depends, Query, status
 from app.database import get_db_cursor
@@ -31,11 +32,17 @@ def register_user(req: UserRegisterRequest):
                 detail=f"Username '{username}' is already taken.",
             )
 
-        cur.execute(
-            "INSERT INTO users (username, password_hash, language) VALUES (?, ?, 'en')",
-            (username, pwd_hash),
-        )
-        user_id = cur.lastrowid
+        try:
+            cur.execute(
+                "INSERT INTO users (username, password_hash, language) VALUES (?, ?, 'en')",
+                (username, pwd_hash),
+            )
+            user_id = cur.lastrowid
+        except sqlite3.IntegrityError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Username '{username}' is already taken.",
+            )
 
         cur.execute("SELECT created_at, last_login, language FROM users WHERE id = ?", (user_id,))
         user_row = cur.fetchone()

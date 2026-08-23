@@ -153,8 +153,8 @@ const ArcadeAPI = (function () {
       payload.level = Math.max(1, parseInt(args[1], 10) || 1);
       payload.mode = String(args[2] || 'classic');
       payload.start_level = 1;
-      payload.is_cleared = false;
-      payload.duration_seconds = 0;
+      payload.is_cleared = Boolean(args[3]);
+      payload.duration_seconds = parseInt(args[4], 10) || 0;
     } else if (typeof args[0] === 'string') {
       const firstStr = args[0].toLowerCase();
       const knownGames = ['tetris', 'snake', 'defense'];
@@ -249,11 +249,17 @@ const ArcadeAPI = (function () {
     clearAuth();
   }
 
+  function logout() {
+    clearAuth();
+    return Promise.resolve();
+  }
+
   return {
     getToken,
     setAuth,
     clearAuth,
     clearToken,
+    logout,
     getCurrentUser,
     getCachedUser,
     request,

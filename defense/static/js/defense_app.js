@@ -636,7 +636,7 @@ document.addEventListener('DOMContentLoaded', () => {
     leaderboardTbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:16px;">${ArcadeI18n.t('lb.loading')}</td></tr>`;
 
     try {
-      const data = await DefenseAPI.getTop50();
+      const data = await DefenseAPI.getTop50(engine?.map?.id || 'campaign');
       const scores = data.scores || [];
 
       if (scores.length === 0) {
@@ -682,13 +682,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (goScore) goScore.textContent = res.score;
     if (goWave) goWave.textContent = res.wave;
     if (gameOverModal) gameOverModal.style.display = 'flex';
-    DefenseAPI.submitScore(res.score, res.wave, engine.map.id);
+    DefenseAPI.submitScore({
+      mode: engine.map?.id || 'campaign',
+      score: res.score,
+      lines: res.wave,
+      level: res.wave,
+      startLevel: 1,
+      isCleared: res.victory || false,
+      durationSeconds: typeof gameStartTime !== 'undefined' ? Math.floor((Date.now() - gameStartTime) / 1000) || 0 : 0,
+    });
   };
 
   engine.onVictory = (res) => {
     if (vicScore) vicScore.textContent = res.score;
     if (victoryModal) victoryModal.style.display = 'flex';
-    DefenseAPI.submitScore(res.score, res.wave, engine.map.id);
+    DefenseAPI.submitScore({
+      mode: engine.map?.id || 'campaign',
+      score: res.score,
+      lines: res.wave,
+      level: res.wave,
+      startLevel: 1,
+      isCleared: res.victory || false,
+      durationSeconds: typeof gameStartTime !== 'undefined' ? Math.floor((Date.now() - gameStartTime) / 1000) || 0 : 0,
+    });
   };
 
   if (btnModalRestart) {

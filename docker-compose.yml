@@ -14,6 +14,7 @@ services:
       - PYTHONUNBUFFERED=1
       - ARCADE_DB_PATH=/app/data/arcade_games.db
       - PORT=8000
+      - ARCADE_SECRET_KEY=change-me-in-production-use-random-secret
     volumes:
       # Persistent SQLite database storage for player accounts & leaderboards
       - ./data:/app/data

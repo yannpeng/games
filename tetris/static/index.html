@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>TETRIS PRO - Adaptive Cyberpunk Arcade Edition</title>
   <link rel="stylesheet" href="/hub_static/css/arcade-nav.css?v=1.0.0">
   <link rel="stylesheet" href="/static/css/style.css?v=5.8.0">
@@ -57,10 +57,10 @@
         </a>
 
         <!-- Header Pause Toggle -->
-        <button type="button" id="btn-mobile-pause" class="btn-nav-icon" data-i18n-title="defense.pause" title="Pause / Resume" aria-label="Pause">⏸</button>
+        <button type="button" id="btn-mobile-pause" class="btn-nav-icon" data-i18n-title="nav.pause" title="Pause / Resume" aria-label="Pause">⏸</button>
 
         <!-- Audio Mute Toggle -->
-        <button type="button" id="btn-sound-toggle" class="btn-nav-icon" data-i18n-title="defense.audio" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
+        <button type="button" id="btn-sound-toggle" class="btn-nav-icon" data-i18n-title="nav.audio" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
 
         <!-- Top 50 Leaderboard Button -->
         <button type="button" id="btn-leaderboard" class="btn-nav-icon" data-i18n-title="lb.title" title="Leaderboard" aria-label="Leaderboard">🏆</button>
@@ -74,7 +74,7 @@
           <div id="user-badge" class="user-badge hidden">
             <div class="avatar" id="user-avatar">U</div>
             <span class="username" id="display-username">Player</span>
-            <button type="button" id="btn-logout" class="icon-btn-small" title="Logout">✕</button>
+            <button type="button" id="btn-logout" class="icon-btn-small" title="Logout" aria-label="Logout">✕</button>
           </div>
         </div>
       </div>
@@ -423,9 +423,9 @@
           <span class="touch-sub">HOLD</span>
         </button>
         <div class="dpad-direction-group">
-          <button id="btn-touch-left" class="touch-btn touch-btn-direction" aria-label="Move Left">◀</button>
-          <button id="btn-touch-down" class="touch-btn touch-btn-direction" aria-label="Soft Drop">▼</button>
-          <button id="btn-touch-right" class="touch-btn touch-btn-direction" aria-label="Move Right">▶</button>
+          <button id="btn-touch-left" class="touch-btn touch-btn-direction" aria-label="Move Left" aria-label="Left">◀</button>
+          <button id="btn-touch-down" class="touch-btn touch-btn-direction" aria-label="Soft Drop" aria-label="Down">▼</button>
+          <button id="btn-touch-right" class="touch-btn touch-btn-direction" aria-label="Move Right" aria-label="Right">▶</button>
         </div>
       </div>
 
