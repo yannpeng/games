@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>TETRIS PRO - Adaptive Cyberpunk Arcade Edition</title>
-  <link rel="stylesheet" href="/static/css/style.css?v=4.8.0">
+  <link rel="stylesheet" href="/static/css/style.css?v=4.9.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -152,43 +152,54 @@
         </div>
       </aside>
 
-      <!-- Mobile Top Info & Preview Strip (Touch/Mobile Only) -->
+      <!-- Mobile Top Info & Preview Strip (Touch/Mobile Only) - 2 Row Layout -->
       <div class="mobile-top-hud touch-only">
-        <div class="mobile-hud-box mobile-hold-box">
-          <span class="hud-box-label" data-i18n="tetris.hold">HOLD</span>
-          <canvas id="hold-canvas-mobile" width="120" height="120"></canvas>
+        <!-- Row 1: Realtime Stats Bar (Full Width) -->
+        <div class="mobile-stats-row">
+          <!-- Center Stats Strip for Solo Mode -->
+          <div id="solo-hud-center" class="mobile-hud-center solo-hud-center">
+            <div class="m-stat-col">
+              <span class="m-stat-lbl" data-i18n="tetris.stat_score">SCORE</span>
+              <span class="m-stat-val highlight" id="stat-score-mobile">0</span>
+            </div>
+            <div class="m-stat-col">
+              <span class="m-stat-lbl" data-i18n="tetris.stat_lines">LINES</span>
+              <span class="m-stat-val" id="stat-lines-mobile">0</span>
+            </div>
+            <div class="m-stat-col">
+              <span class="m-stat-lbl" data-i18n="tetris.stat_level">LVL</span>
+              <span class="m-stat-val" id="stat-level-mobile">1/50</span>
+            </div>
+            <div class="m-stat-col">
+              <span class="m-stat-lbl" data-i18n="tetris.stat_time">TIME</span>
+              <span class="m-stat-val" id="stat-time-mobile">00:00</span>
+            </div>
+          </div>
+
+          <!-- Center Stats Strip for VS Mode -->
+          <div id="vs-hud-center" class="mobile-hud-center vs-hud-center hidden">
+            <div class="m-vs-badge" id="m-vs-player-attack">YOU Attack: 0</div>
+            <div class="m-vs-round" id="m-vs-round-badge">Round 1</div>
+            <div class="m-vs-badge ai-badge" id="m-vs-ai-attack">AI Attack: 0</div>
+          </div>
         </div>
 
-        <!-- Center Stats Strip for Solo Mode -->
-        <div id="solo-hud-center" class="mobile-hud-center solo-hud-center">
-          <div class="m-stat-col">
-            <span class="m-stat-lbl" data-i18n="tetris.stat_score">SCORE</span>
-            <span class="m-stat-val highlight" id="stat-score-mobile">0</span>
+        <!-- Row 2: Previews Bar (Hold on Left | Next 3 Queue on Right) -->
+        <div class="mobile-previews-row">
+          <div class="mobile-hud-box mobile-hold-box">
+            <div class="mobile-box-header">
+              <span class="hud-box-label" data-i18n="tetris.hold">HOLD</span>
+            </div>
+            <canvas id="hold-canvas-mobile" width="100" height="100"></canvas>
           </div>
-          <div class="m-stat-col">
-            <span class="m-stat-lbl" data-i18n="tetris.stat_lines">LINES</span>
-            <span class="m-stat-val" id="stat-lines-mobile">0</span>
-          </div>
-          <div class="m-stat-col">
-            <span class="m-stat-lbl" data-i18n="tetris.stat_level">LVL</span>
-            <span class="m-stat-val" id="stat-level-mobile">1</span>
-          </div>
-          <div class="m-stat-col">
-            <span class="m-stat-lbl" data-i18n="tetris.stat_time">TIME</span>
-            <span class="m-stat-val" id="stat-time-mobile">00:00</span>
-          </div>
-        </div>
 
-        <!-- Center Stats Strip for VS Mode -->
-        <div id="vs-hud-center" class="mobile-hud-center vs-hud-center hidden">
-          <div class="m-vs-badge" id="m-vs-player-attack">YOU Attack: 0</div>
-          <div class="m-vs-round" id="m-vs-round-badge">Round 1</div>
-          <div class="m-vs-badge ai-badge" id="m-vs-ai-attack">AI Attack: 0</div>
-        </div>
-
-        <div class="mobile-hud-box mobile-next-box">
-          <span class="hud-box-label" data-i18n="tetris.next">NEXT</span>
-          <canvas id="next-canvas-mobile" width="120" height="120"></canvas>
+          <div class="mobile-hud-box mobile-next-box">
+            <div class="mobile-box-header">
+              <span class="hud-box-label" data-i18n="tetris.next">NEXT</span>
+              <span class="badge badge-mini">3</span>
+            </div>
+            <canvas id="next-canvas-mobile" width="240" height="80"></canvas>
+          </div>
         </div>
       </div>
 
@@ -536,12 +547,12 @@
   <div id="toast" class="toast hidden"></div>
 
   <!-- Scripts -->
-  <script src="/static/js/config.js?v=4.8.0"></script>
-  <script src="/static/js/audio.js?v=4.8.0"></script>
-  <script src="/static/js/i18n.js?v=4.8.0"></script>
-  <script src="/static/js/api.js?v=4.8.0"></script>
-  <script src="/static/js/tetris.js?v=4.8.0"></script>
-  <script src="/static/js/ai.js?v=4.8.0"></script>
-  <script src="/static/js/app.js?v=4.8.0"></script>
+  <script src="/static/js/config.js?v=4.9.0"></script>
+  <script src="/static/js/audio.js?v=4.9.0"></script>
+  <script src="/static/js/i18n.js?v=4.9.0"></script>
+  <script src="/static/js/api.js?v=4.9.0"></script>
+  <script src="/static/js/tetris.js?v=4.9.0"></script>
+  <script src="/static/js/ai.js?v=4.9.0"></script>
+  <script src="/static/js/app.js?v=4.9.0"></script>
 </body>
 </html>

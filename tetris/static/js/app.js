@@ -663,28 +663,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  function drawPieceInBox(ctx, type, canvasWidth, canvasHeight, blockSize = 24, offsetY = 0) {
+  function drawPieceInBox(ctx, type, canvasWidth, canvasHeight, blockSize = 24, offsetY = 0, offsetX = 0) {
     if (!type || !ctx) return;
     const def = TETROMINOES[type];
     const shape = def.shapes[0];
     const pieceWidth = shape[0].length * blockSize;
     const pieceHeight = shape.length * blockSize;
-    const offsetX = (canvasWidth - pieceWidth) / 2;
+    const startX = offsetX + (canvasWidth - pieceWidth) / 2;
     const boxOffsetY = offsetY + (canvasHeight - pieceHeight) / 2;
 
     for (let r = 0; r < shape.length; r++) {
       for (let c = 0; c < shape[r].length; c++) {
         if (shape[r][c]) {
           ctx.fillStyle = def.color;
-          ctx.fillRect(offsetX + c * blockSize + 1, boxOffsetY + r * blockSize + 1, blockSize - 2, blockSize - 2);
+          ctx.fillRect(startX + c * blockSize + 1, boxOffsetY + r * blockSize + 1, blockSize - 2, blockSize - 2);
 
           ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-          ctx.fillRect(offsetX + c * blockSize + 1, boxOffsetY + r * blockSize + 1, blockSize - 2, 2);
-          ctx.fillRect(offsetX + c * blockSize + 1, boxOffsetY + r * blockSize + 1, 2, blockSize - 2);
+          ctx.fillRect(startX + c * blockSize + 1, boxOffsetY + r * blockSize + 1, blockSize - 2, 2);
+          ctx.fillRect(startX + c * blockSize + 1, boxOffsetY + r * blockSize + 1, 2, blockSize - 2);
 
           ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-          ctx.fillRect(offsetX + c * blockSize + 1, boxOffsetY + (r + 1) * blockSize - 3, blockSize - 2, 2);
-          ctx.fillRect(offsetX + (c + 1) * blockSize - 3, boxOffsetY + r * blockSize + 1, 2, blockSize - 2);
+          ctx.fillRect(startX + c * blockSize + 1, boxOffsetY + (r + 1) * blockSize - 3, blockSize - 2, 2);
+          ctx.fillRect(startX + (c + 1) * blockSize - 3, boxOffsetY + r * blockSize + 1, 2, blockSize - 2);
         }
       }
     }
@@ -705,7 +705,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (holdCtxMobile && holdCanvasMobile) {
       holdCtxMobile.clearRect(0, 0, holdCanvasMobile.width, holdCanvasMobile.height);
       if (playerGame.holdPiece) {
-        drawPieceInBox(holdCtxMobile, playerGame.holdPiece, holdCanvasMobile.width, holdCanvasMobile.height, 24);
+        drawPieceInBox(holdCtxMobile, playerGame.holdPiece, holdCanvasMobile.width, holdCanvasMobile.height, 20);
       }
     }
 
@@ -719,9 +719,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     if (nextCtxMobile && nextCanvasMobile) {
       nextCtxMobile.clearRect(0, 0, nextCanvasMobile.width, nextCanvasMobile.height);
-      if (playerGame.nextQueue && playerGame.nextQueue.length > 0) {
-        drawPieceInBox(nextCtxMobile, playerGame.nextQueue[0], nextCanvasMobile.width, nextCanvasMobile.height, 24);
-      }
+      const queue = playerGame.nextQueue.slice(0, 3);
+      const slotWidth = nextCanvasMobile.width / 3;
+      queue.forEach((type, idx) => {
+        drawPieceInBox(nextCtxMobile, type, slotWidth, nextCanvasMobile.height, 18, 0, idx * slotWidth);
+      });
     }
   }
 
