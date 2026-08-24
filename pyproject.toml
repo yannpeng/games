@@ -1,6 +1,6 @@
 [project]
 name = "cyberpunk-arcade-platform"
-version = "2.2.2"
+version = "2.2.3"
 description = "Modular multi-game web arcade platform featuring Classic Tetris, Neon Snake, and expandable sub-games"
 readme = "README.md"
 requires-python = ">=3.9"
