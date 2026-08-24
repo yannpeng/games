@@ -10,17 +10,17 @@ ENV PYTHONUNBUFFERED=1 \
 # Set container working directory
 WORKDIR /app
 
-# Install curl for container health check
+# Install curl for container health check and gosu for runtime privilege step-down
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl && \
+    apt-get install -y --no-install-recommends curl gosu && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create application data directory with open permissions
-RUN mkdir -p /app/data && chmod 755 /app/data
+# Create application data directory
+RUN mkdir -p /app/data
 
 # Copy application assets and backend code
 COPY app/ app/
@@ -31,11 +31,10 @@ COPY defense/ defense/
 COPY pyproject.toml .
 COPY entrypoint.sh .
 
-# Ensure executable permissions on Linux entrypoint
-RUN chmod +x /app/entrypoint.sh
-
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
-USER appuser
+# Ensure executable permissions on Linux entrypoint and create non-root user
+RUN chmod +x /app/entrypoint.sh && \
+    useradd -m -u 1000 appuser && \
+    chown -R appuser:appuser /app
 
 # Expose HTTP port
 EXPOSE 8000
