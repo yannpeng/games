@@ -22,7 +22,7 @@ DEFENSE_DIR = os.path.join(BASE_DIR, "defense", "static")
 app = FastAPI(
     title="Cyberpunk Arcade Platform",
     description="Multi-game web platform with unified auth and leaderboards",
-    version="2.2.1",
+    version="2.2.2",
 )
 
 # Enable CORS for local cross-origin requests
